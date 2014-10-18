@@ -6,8 +6,8 @@ require 'broadsheet/version'
 Gem::Specification.new do |gem|
   gem.name          = "broadsheet"
   gem.version       = Broadsheet::VERSION
-  gem.authors       = ["Seth Thompson"]
-  gem.email         = ["s3th.thompson@gmail.com"]
+  gem.authors       = ["Seth Thompson", "Geoffrey Litt"]
+  gem.email         = ["s3th.thompson@gmail.com", "gklitt@gmail.com"]
   gem.description   = "Daily digest of online news in a beautiful format."
   gem.summary       = "Broadsheet daily digest"
   gem.homepage      = "https://github.com/s3ththompson/broadsheet"

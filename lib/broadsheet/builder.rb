@@ -1,7 +1,5 @@
-require 'broadsheet/sources/disegno-daily'
-
 class Builder
   def build
-    DisegnoDaily.download
+    "Hello World"
   end
 end
