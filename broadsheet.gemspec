@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.description   = "Daily digest of online news in a beautiful format."
   gem.summary       = "Broadsheet daily digest"
   gem.homepage      = "https://github.com/s3ththompson/broadsheet"
+  gem.licenses      = ["MIT"]
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
