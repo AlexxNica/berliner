@@ -28,7 +28,6 @@ class Builder
 end
 
 class String
-
   def classify
     self.split("-").collect(&:capitalize).join
   end
@@ -36,5 +35,4 @@ class String
   def constantize
     Object.const_get(self)
   end
-
 end
