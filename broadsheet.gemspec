@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'broadsheet/config'
+require "broadsheet/config"
 
 Gem::Specification.new do |gem|
   gem.name          = "broadsheet"
@@ -18,5 +18,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency "feedjira", ["= 1.1.0"]
-  gem.add_runtime_dependency "prawn"
+  gem.add_runtime_dependency "prawn", ["= 1.3.0"]
+  gem.add_runtime_dependency "ruby-readability", ["= 0.7.0"]
 end

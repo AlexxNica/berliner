@@ -4,9 +4,7 @@ Broadsheet is a Ruby gem and CLI that compiles a daily digest of online news in 
 
 # Installation
 
-``` ruby
-$ gem install broadsheet
-```
+  $ gem install broadsheet
 
 # Usage
 
@@ -23,7 +21,7 @@ sources:
 Build a Broadsheet from the sources in your profile.
 
 ``` ruby
-require 'broadsheet'
+require "broadsheet"
 Broadsheet.build()
 ```
 
