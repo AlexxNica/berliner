@@ -21,12 +21,8 @@ class Builder
       require "broadsheet/sources/#{source_slug}"
       source_slug.classify.constantize
     end
-
-    all_articles = @sources.map{ |source| source.fetch_articles }.flatten
-    @articles = Article.filter(all_articles, @profile)
-
-    #PDFWriter.write(@articles, 'output.pdf')
-
+    @articles = @sources.map{ |source| source.articles }.flatten
+    #PDFWriter.write(@articles, "output.pdf")
   end
 
 end
