@@ -7,17 +7,17 @@ class PDFWriter
   def self.write(articles, filename)
     Prawn::Document.generate(filename) do
       font_families.update("Chalet" => {
-         :normal => "/Users/gklitt/Library/Fonts/Chalet Book.ttf",
-         :italic => "/Users/gklitt/Library/Fonts/Chalet Book Italic.ttf",
-         :bold => "/Users/gklitt/Library/Fonts/Chalet Book Bold.ttf",
-         :bold_italic => "/Users/gklitt/Library/Fonts/Chalet Book Bold Italic.ttf",
+         normal: "/Users/gklitt/Library/Fonts/Chalet Book.ttf",
+         italic: "/Users/gklitt/Library/Fonts/Chalet Book Italic.ttf",
+         bold: "/Users/gklitt/Library/Fonts/Chalet Book Bold.ttf",
+         bold_italic: "/Users/gklitt/Library/Fonts/Chalet Book Bold Italic.ttf",
        })
 
       font_families.update("DTL Fleischmann" => {
-         :normal => "/Users/gklitt/Library/Fonts/DTL Fleischmann D Regular.ttf",
-         :italic => "/Users/gklitt/Library/Fonts/DTL Fleischmann D Medium Italic.ttf",
-         :bold => "/Users/gklitt/Library/Fonts/DTL Fleischmann D Bold.ttf",
-         :bold_italic => "/Users/gklitt/Library/Fonts/DTL Fleischmann D Bold Italic.ttf",
+         normal: "/Users/gklitt/Library/Fonts/DTL Fleischmann D Regular.ttf",
+         italic: "/Users/gklitt/Library/Fonts/DTL Fleischmann D Medium Italic.ttf",
+         bold: "/Users/gklitt/Library/Fonts/DTL Fleischmann D Bold.ttf",
+         bold_italic: "/Users/gklitt/Library/Fonts/DTL Fleischmann D Bold Italic.ttf",
        })
 
       font "Chalet"
@@ -30,7 +30,7 @@ class PDFWriter
       font "DTL Fleischmann"
       default_leading 2
 
-      bounding_box([250, 300], :width => 280, :height => 300) do
+      bounding_box([250, 300], width: 280, height: 300) do
         text "Table of contents", size: 20, style: :italic
         move_down 10
         articles.each do |article|

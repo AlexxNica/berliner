@@ -54,13 +54,13 @@ class MySource < Source
     doc = Nokogiri::HTML(html)
 
     Article.new(
-      :title => doc.css('title'),
-      :author => doc.at("meta[name='author']")['content'],
-      :content => doc.css('article'),
-      :published => doc.css('date-published'),
-      :url => doc.css('permalink'),
-      :source => @title,
-      :style => @style
+      title: doc.css('title'),
+      author: doc.at("meta[name='author']")['content'],
+      content: doc.css('article'),
+      published: doc.css('date-published'),
+      url: doc.css('permalink'),
+      source: @title,
+      style: @style
       )
   end
 end

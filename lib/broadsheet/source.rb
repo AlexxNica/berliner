@@ -18,11 +18,11 @@ class Source
   def self.parse(html)
     document = Readability::Document.new(html)
     Article.new(
-      :title => document.title,
-      :author => document.author,
-      :content => document.content,
-      :source => @title,
-      :style => @style
+      title: document.title,
+      author: document.author,
+      content: document.content,
+      source: @title,
+      style: @style
       )
   end
 
