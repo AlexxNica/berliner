@@ -2,13 +2,14 @@ require "feedjira"
 require "ruby-readability"
 require "open-uri"
 require "broadsheet/article"
+require 'active_support/core_ext'
 
 class Source
 
   def self.fetch
     entries = Feedjira::Feed.fetch_and_parse(@feed).entries
     entries.reject! do |entry|
-      entry.published < (Time.now - (60*60*24))
+      entry.published < (Time.now - 1.day)
     end
     entries.map do |entry|
       open(entry.url).read

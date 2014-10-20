@@ -21,4 +21,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "feedjira", ["= 1.1.0"]
   gem.add_runtime_dependency "prawn", ["= 1.3.0"]
   gem.add_runtime_dependency "ruby-readability", ["= 0.7.0"]
+  gem.add_runtime_dependency "activesupport", ["= 4.1.6"]
 end
