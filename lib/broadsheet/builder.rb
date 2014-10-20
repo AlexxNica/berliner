@@ -1,6 +1,7 @@
 require "yaml"
 require "broadsheet/config"
 require "broadsheet/article"
+require 'active_support/core_ext'
 
 class Builder
 
@@ -19,6 +20,16 @@ class Builder
   end
 
   def build
+    load_sources
+    renderer = load_renderer
+
+    @articles = @sources.map{ |source| source.articles }.flatten
+    renderer.render(@articles)
+  end
+
+  private
+
+  def load_sources
     @sources = @profile["sources"].map do |source_slug|
       require "broadsheet/sources/#{source_slug}"
       begin
@@ -29,7 +40,9 @@ class Builder
               "Make sure it is defined in sources/#{source_slug}.rb."
       end
     end
+  end
 
+  def load_renderer
     renderer = @profile["renderer"]
     require "broadsheet/renderers/#{renderer}"
 
@@ -41,8 +54,7 @@ class Builder
             "Make sure it is defined in renderers/#{renderer}.rb."
     end
 
-    @articles = @sources.map{ |source| source.articles }.flatten
-    renderer_klass.render(@articles) # options will get passed in here
+    renderer_klass.new  # when we have an options hash, pass it in here
   end
 
 end
