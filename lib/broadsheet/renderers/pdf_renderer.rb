@@ -1,11 +1,18 @@
+require "broadsheet/renderer"
 require "prawn"
 
-class PDFWriter
+class PdfRenderer < Renderer
 
   # Given an array of Article objects and a filename, outputs a PDF broadsheet
   # for the articles to the specified filename
-  def self.write(articles, filename)
-    Prawn::Document.generate(filename) do
+  def self.render(articles, options = {})
+
+    # Set default options
+    options.reverse_merge!({
+      filename: "bs-#{Time.now.strftime('%Y-%m-%d')}.pdf"
+    })
+
+    Prawn::Document.generate(options[:filename]) do
       font_families.update("Chalet" => {
          normal: "/Users/gklitt/Library/Fonts/Chalet Book.ttf",
          italic: "/Users/gklitt/Library/Fonts/Chalet Book Italic.ttf",
@@ -57,5 +64,8 @@ class PDFWriter
         end
       end
     end
+
+    return options[:filename]
   end
+
 end

@@ -9,7 +9,7 @@ class Source
   def self.fetch
     entries = Feedjira::Feed.fetch_and_parse(@feed).entries
     entries.reject! do |entry|
-      entry.published < (Time.now - 1.day)
+      entry.published < (Time.now - 3.days)
     end
     entries.map do |entry|
       open(entry.url).read
