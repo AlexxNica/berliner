@@ -14,17 +14,17 @@ class PdfRenderer < Renderer
 
     Prawn::Document.generate(@options[:filename]) do
       font_families.update("Chalet" => {
-         normal: "/Users/gklitt/Library/Fonts/Chalet Book.ttf",
-         italic: "/Users/gklitt/Library/Fonts/Chalet Book Italic.ttf",
-         bold: "/Users/gklitt/Library/Fonts/Chalet Book Bold.ttf",
-         bold_italic: "/Users/gklitt/Library/Fonts/Chalet Book Bold Italic.ttf",
+         normal: "#{Dir.home}/Library/Fonts/Chalet Book.ttf",
+         italic: "#{Dir.home}/Library/Fonts/Chalet Book Italic.ttf",
+         bold: "#{Dir.home}/Library/Fonts/Chalet Book Bold.ttf",
+         bold_italic: "#{Dir.home}/Library/Fonts/Chalet Book Bold Italic.ttf",
        })
 
       font_families.update("DTL Fleischmann" => {
-         normal: "/Users/gklitt/Library/Fonts/DTL Fleischmann D Regular.ttf",
-         italic: "/Users/gklitt/Library/Fonts/DTL Fleischmann D Medium Italic.ttf",
-         bold: "/Users/gklitt/Library/Fonts/DTL Fleischmann D Bold.ttf",
-         bold_italic: "/Users/gklitt/Library/Fonts/DTL Fleischmann D Bold Italic.ttf",
+         normal: "#{Dir.home}/Library/Fonts/DTL Fleischmann D Regular.ttf",
+         italic: "#{Dir.home}/Library/Fonts/DTL Fleischmann D Medium Italic.ttf",
+         bold: "#{Dir.home}/Library/Fonts/DTL Fleischmann D Bold.ttf",
+         bold_italic: "#{Dir.home}/Library/Fonts/DTL Fleischmann D Bold Italic.ttf",
        })
 
       font "Chalet"
