@@ -1,5 +1,6 @@
 require "broadsheet/renderer"
 require "prawn"
+require "nokogiri"
 
 class PdfRenderer < Renderer
 
@@ -59,8 +60,12 @@ class PdfRenderer < Renderer
         text article.author, size: 16
         move_down 20
 
+        # Convert HTML article content to printable format:
+        # Put a double newline between paragraphs, and strip leading/trailing whitespace
+        sanitized_content = Nokogiri::HTML(article.content).text.gsub("\n", "\n\n").lstrip.rstrip
+
         column_box([0, cursor], columns: 2, width: bounds.width, reflow_margins: true) do
-         text article.content, size: 10
+         text sanitized_content, size: 10
         end
       end
     end
