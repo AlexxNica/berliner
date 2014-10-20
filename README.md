@@ -10,7 +10,7 @@ $ gem install broadsheet
 
 # CLI Usage
 
-```shell
+```sh
 # list all sources
 $ broadsheet search
 
@@ -53,7 +53,7 @@ Broadsheet.read()
 All sources inherit from the base Broadsheet `Source` object.  Here are the methods and attributes a custom source can implement:
 
 ```ruby
-# lib/broadsheet/sources/my-source.rb
+# lib/broadsheet/sources/my_source.rb
 require "broadsheet/source"
 
 class MySource < Source
@@ -80,8 +80,8 @@ class MySource < Source
       content: doc.css('article'),
       published: doc.css('date-published'),
       url: doc.css('permalink'),
-      source: @title,
-      style: @style
+      source: self.class.title,
+      style: self.class.style
       )
   end
 end

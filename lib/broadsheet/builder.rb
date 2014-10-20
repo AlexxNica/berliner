@@ -31,13 +31,14 @@ class Builder
 
   def load_sources
     @sources = @profile["sources"].map do |source|
-      require "broadsheet/sources/#{source}"
+      filename = source.gsub(/-/, '_')
+      require "broadsheet/sources/#{filename}"
       begin
-        source_klass = source.gsub(/-/, '_').classify.constantize
+        source_klass = filename.classify.constantize
       rescue
         raise NameError,
-              "Error: The #{source.gsub(/-/, '_').classify} source was not found. " \
-              "Make sure it is defined in sources/#{source}.rb."
+              "Error: The #{filename.classify} source was not found. " \
+              "Make sure it is defined in sources/#{filename}.rb."
       end
       source_klass.new
     end
@@ -45,14 +46,14 @@ class Builder
 
   def load_renderer
     renderer = @profile["renderer"]
+    filename = renderer.gsub(/-/, '_')
     require "broadsheet/renderers/#{renderer}"
-
     begin
-      renderer_klass = renderer.gsub(/-/, '_').classify.constantize
+      renderer_klass = filename.classify.constantize
     rescue
       raise NameError,
-            "Error: The #{renderer.gsub(/-/, '_').classify} renderer was not found. " \
-            "Make sure it is defined in renderers/#{renderer}.rb."
+            "Error: The #{filename.classify} renderer was not found. " \
+            "Make sure it is defined in renderers/#{filename}.rb."
     end
 
     renderer_klass.new  # when we have an options hash, pass it in here
