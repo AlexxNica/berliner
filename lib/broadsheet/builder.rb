@@ -30,15 +30,16 @@ class Builder
   private
 
   def load_sources
-    @sources = @profile["sources"].map do |source_slug|
-      require "broadsheet/sources/#{source_slug}"
+    @sources = @profile["sources"].map do |source|
+      require "broadsheet/sources/#{source}"
       begin
-        source_slug.classify.constantize
+        source_klass = source.gsub(/-/, '_').classify.constantize
       rescue
         raise NameError,
-              "Error: The #{source_slug.classify} source was not found. " \
-              "Make sure it is defined in sources/#{source_slug}.rb."
+              "Error: The #{source.gsub(/-/, '_').classify} source was not found. " \
+              "Make sure it is defined in sources/#{source}.rb."
       end
+      source_klass.new
     end
   end
 
@@ -47,10 +48,10 @@ class Builder
     require "broadsheet/renderers/#{renderer}"
 
     begin
-      renderer_klass = renderer.classify.constantize
+      renderer_klass = renderer.gsub(/-/, '_').classify.constantize
     rescue
       raise NameError,
-            "Error: The #{renderer} renderer was not found. " \
+            "Error: The #{renderer.gsub(/-/, '_').classify} renderer was not found. " \
             "Make sure it is defined in renderers/#{renderer}.rb."
     end
 

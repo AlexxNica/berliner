@@ -1,7 +1,7 @@
 require "broadsheet/builder"
 
 module Broadsheet
-  def self.build
+  def self.read
     Builder.new.build
   end
 end

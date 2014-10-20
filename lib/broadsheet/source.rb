@@ -6,8 +6,12 @@ require 'active_support/core_ext'
 
 class Source
 
-  def self.fetch
-    entries = Feedjira::Feed.fetch_and_parse(@feed).entries
+  def initialize(options = {})
+    @options = options
+  end
+
+  def fetch
+    entries = Feedjira::Feed.fetch_and_parse(self.class.feed).entries
     entries.reject! do |entry|
       entry.published < (Time.now - 3.days)
     end
@@ -16,21 +20,21 @@ class Source
     end
   end
 
-  def self.parse(html)
+  def parse(html)
     document = Readability::Document.new(html)
     Article.new(
       title: document.title,
       author: document.author,
       content: document.content,
-      source: @title,
-      style: @style
+      source: self.class.title,
+      style: self.class.style
       )
   end
 
-  def self.articles
-    @entries = self.fetch
+  def articles
+    @entries = fetch
     articles = @entries.map do |entry|
-      self.parse(entry)
+      parse(entry)
     end
   end
 
