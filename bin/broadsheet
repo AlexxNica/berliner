@@ -36,7 +36,8 @@ command :search do |c|
     given, all available sources are listed.
   HERE
   c.action do |args, options|
-    puts Broadsheet.search(args[0]) 
+    raise OptionParser::InvalidArgument, args.drop(1) if args.length > 1
+    puts Broadsheet.search(args.first) 
   end
 end
 
@@ -69,6 +70,7 @@ command :list do |c|
   c.summary = "List sources added to your Broadsheet"
   c.description = "List all sources currently added to your Broadsheet."
   c.action do |args, options|
+    raise OptionParser::InvalidArgument, args if args 
     puts Broadsheet.list
   end
 end

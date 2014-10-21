@@ -37,8 +37,8 @@ module Broadsheet
         klass = filename.classify.constantize
       rescue
         raise NameError,
-          "Error: The #{filename.classify} source was not found. " \
-          "Make sure it is defined in sources/#{filename}.rb."
+          "The #{filename.classify} source was not found. " \
+          "Make sure it is defined in sources/#{filename}.rb"
       end
       klass.new
     end

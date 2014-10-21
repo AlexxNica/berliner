@@ -20,7 +20,11 @@ module Broadsheet
         source.each{ |s| add(s)}
         return true
       end
-      @profile[:sources] |= [source]
+      if SourceManager.search.include?(source)
+        @profile[:sources] |= [source]
+      else
+        raise NameError, "Source #{source} not found"
+      end
       write
     end
 

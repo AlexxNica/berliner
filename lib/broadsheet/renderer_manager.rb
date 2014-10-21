@@ -31,8 +31,8 @@ module Broadsheet
         klass = filename.classify.constantize
       rescue
         raise NameError,
-          "Error: The #{filename.classify} was not found. " \
-          "Make sure it is defined in renderers/#{filename}.rb."
+          "The #{filename.classify} was not found. " \
+          "Make sure it is defined in renderers/#{filename}.rb"
       end
       klass.new
     end
