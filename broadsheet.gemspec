@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Broadsheet::VERSION
   gem.authors       = ["Seth Thompson", "Geoffrey Litt"]
   gem.email         = ["s3th.thompson@gmail.com", "gklitt@gmail.com"]
-  gem.description   = "Daily digest of online news in a beautiful format."
-  gem.summary       = "Broadsheet daily digest"
+  gem.description   = "Broadsheet is a Ruby gem and CLI that compiles a daily digest of online news in a beautiful format."
+  gem.summary       = "Daily news digest."
   gem.homepage      = "https://github.com/s3ththompson/broadsheet"
   gem.licenses      = ["MIT"]
 
