@@ -77,7 +77,7 @@ class MySource < Source
     Article.new(
       title: doc.css("title"),
       author: doc.at("meta[name='author']")["content"],
-      content: doc.css('article'),
+      content: doc.css("article"),
       published: doc.css("date-published"),
       url: doc.css("permalink"),
       source: self.class.title,
