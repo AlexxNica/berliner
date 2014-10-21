@@ -38,7 +38,7 @@ class PdfRenderer < Renderer
       font "DTL Fleischmann"
       default_leading 2
 
-      bounding_box([250, 300], width: 280, height: 300) do
+      bounding_box([250, 600], width: 280, height: 300) do
         text "Table of contents", size: 20, style: :italic
         move_down 10
         articles.each do |article|
@@ -62,7 +62,7 @@ class PdfRenderer < Renderer
 
         # Convert HTML article content to printable format:
         # Put a double newline between paragraphs, and strip leading/trailing whitespace
-        sanitized_content = Nokogiri::HTML(article.content).text.gsub("\n", "\n\n").lstrip.rstrip
+        sanitized_content = Nokogiri::HTML(article.content).text.gsub("\n+", "\n\n").lstrip.rstrip
 
         column_box([0, cursor], columns: 2, width: bounds.width, reflow_margins: true) do
          text sanitized_content, size: 10
