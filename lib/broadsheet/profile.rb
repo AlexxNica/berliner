@@ -9,10 +9,28 @@ module Broadsheet
         @profile = YAML.load_file(Broadsheet::PROFILE_PATH).with_indifferent_access
       rescue
         @profile = {
-          sources: "test",
+          sources: [],
           renderer: "console"
         }
       end
+    end
+
+    def add(source)
+      if source.is_a?(Array)
+        source.each{ |s| add(s)}
+        return true
+      end
+      @profile[:sources] |= [source]
+      write
+    end
+
+    def remove(source)
+      if source.is_a?(Array)
+        source.each{ |s| remove(s)}
+        return true
+      end
+      @profile[:sources] -= [source]
+      write
     end
 
     def sources
@@ -21,6 +39,14 @@ module Broadsheet
 
     def renderer
       @profile[:renderer]
+    end
+
+    private
+
+    def write
+      File.open(Broadsheet::PROFILE_PATH,'w') do |f| 
+         f.write @profile.to_yaml
+      end
     end
 
   end

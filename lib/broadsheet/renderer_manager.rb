@@ -3,7 +3,7 @@ require "active_support/core_ext"
 module Broadsheet
   class RendererManager
 
-    def self.list
+    def self.search
       user_renderers = Dir["#{Dir.home}/.broadsheet/renderers/*"]
       gem_renderers = Dir["#{LIB_PATH}/broadsheet/renderers/*"]
       renderer_slugs = (user_renderers + gem_renderers).map do |path|

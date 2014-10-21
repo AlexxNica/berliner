@@ -20,9 +20,9 @@ command :read do |c|
     specified, saves the file to the given path, otherwise the file is
     saved to the current directory.
   HERE
-  c.option "-o", "--output PATH", "Output to a specific path"
+  # c.option "-o", "--output PATH", "Output to a specific path"
   c.action do |args, options|
-    # Do something or c.when_called Broadsheet::Commands::Read
+    Broadsheet.read
   end
 end
 
@@ -36,7 +36,7 @@ command :search do |c|
     given, all available sources are listed.
   HERE
   c.action do |args, options|
-    # Do something or c.when_called Broadsheet::Commands::Search
+    puts Broadsheet.search(args[0]) 
   end
 end
 
@@ -48,7 +48,7 @@ command :add do |c|
     given, add all of them.
   HERE
   c.action do |args, options|
-    # Do something or c.when_called Broadsheet::Commands::Add
+    Broadsheet.add(args)
   end
 end
 
@@ -60,7 +60,7 @@ command :remove do |c|
     given, remove all of them.
   HERE
   c.action do |args, options|
-    # Do something or c.when_called Broadsheet::Commands::Add
+    Broadsheet.remove(args)
   end
 end
 
@@ -69,7 +69,7 @@ command :list do |c|
   c.summary = "List sources added to your Broadsheet"
   c.description = "List all sources currently added to your Broadsheet."
   c.action do |args, options|
-    # Do something or c.when_called Broadsheet::Commands::List
+    puts Broadsheet.list
   end
 end
 

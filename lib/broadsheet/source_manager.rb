@@ -1,16 +1,19 @@
 require "active_support/core_ext"
+require "broadsheet/extend/string"
 
 module Broadsheet
   class SourceManager
 
-    def self.list
+    def self.search(foo=nil)
       user_sources = Dir["#{Dir.home}/.broadsheet/sources/*"]
       gem_sources = Dir["#{LIB_PATH}/broadsheet/sources/*"]
       source_slugs = (user_sources + gem_sources).map do |path|
         filename = File.basename(path, ".rb")
         filename.gsub(/_/, "-")
       end
-      source_slugs.uniq.sort
+      results = source_slugs.uniq.sort
+      results = results.grep(foo.query_regex) if foo
+      results
     end
 
     def self.load(slug)
