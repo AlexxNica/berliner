@@ -1,4 +1,5 @@
 # Broadsheet
+[![Gem Version](https://badge.fury.io/rb/broadsheet.svg)](http://badge.fury.io/rb/broadsheet)
 [![Build Status](https://travis-ci.org/s3ththompson/broadsheet.svg?branch=master)](https://travis-ci.org/s3ththompson/broadsheet)
 [![Coverage Status](https://img.shields.io/coveralls/s3ththompson/broadsheet.svg)](https://coveralls.io/r/s3ththompson/broadsheet?branch=master)
 

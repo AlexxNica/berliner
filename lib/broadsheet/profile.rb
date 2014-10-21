@@ -1,5 +1,6 @@
 require "yaml"
-require "active_support/core_ext/hash"
+require "active_support"
+require "active_support/core_ext"
 
 module Broadsheet
   class Profile
