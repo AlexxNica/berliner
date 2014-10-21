@@ -22,3 +22,4 @@ tmp
 *.pdf
 .ruby-gemset
 .ruby-version
+vendor/
