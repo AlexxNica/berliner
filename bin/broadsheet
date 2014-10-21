@@ -5,6 +5,7 @@ require "broadsheet"
 require "rubygems"
 require "commander/import"
 require "broadsheet/extend/string"
+require "optparse"
 
 program :name, "Broadsheet"
 program :version, Broadsheet::VERSION
@@ -74,4 +75,3 @@ command :list do |c|
     puts Broadsheet.list
   end
 end
-
