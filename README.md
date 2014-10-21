@@ -1,4 +1,5 @@
 # Broadsheet
+[![Build Status](https://travis-ci.org/s3ththompson/broadsheet.svg?branch=master)](https://travis-ci.org/s3ththompson/broadsheet)
 
 Broadsheet is a Ruby gem and CLI that compiles a daily digest of online news in a beautiful format.
 
