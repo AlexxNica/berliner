@@ -1,7 +1,7 @@
 require "yaml"
 require "broadsheet/config"
-require "broadsheet/article"
-require "active_support/core_ext"
+require "broadsheet/source_manager"
+require "broadsheet/renderer_manager"
 
 class Builder
 
@@ -20,43 +20,11 @@ class Builder
   end
 
   def build
-    load_sources
-    renderer = load_renderer
+    sources = SourceManager.load(@profile["sources"])
+    renderer = RendererManager.load(@profile["renderer"])
 
-    @articles = @sources.map{ |source| source.articles }.flatten
-    renderer.render(@articles)
-  end
-
-  private
-
-  def load_sources
-    @sources = @profile["sources"].map do |source|
-      filename = source.gsub(/-/, "_")
-      require "broadsheet/sources/#{filename}"
-      begin
-        source_klass = filename.classify.constantize
-      rescue
-        raise NameError,
-              "Error: The #{filename.classify} source was not found. " \
-              "Make sure it is defined in sources/#{filename}.rb."
-      end
-      source_klass.new
-    end
-  end
-
-  def load_renderer
-    renderer = @profile["renderer"]
-    filename = renderer.gsub(/-/, "_")
-    require "broadsheet/renderers/#{renderer}"
-    begin
-      renderer_klass = filename.classify.constantize
-    rescue
-      raise NameError,
-            "Error: The #{filename.classify} renderer was not found. " \
-            "Make sure it is defined in renderers/#{filename}.rb."
-    end
-
-    renderer_klass.new  # when we have an options hash, pass it in here
+    articles = sources.map{ |source| source.articles }.flatten
+    renderer.render(articles)
   end
 
 end

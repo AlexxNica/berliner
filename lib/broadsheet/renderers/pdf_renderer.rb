@@ -2,7 +2,7 @@ require "broadsheet/renderer"
 require "prawn"
 require "nokogiri"
 
-class Pdf < Renderer
+class PdfRenderer < Renderer
 
   # Given an array of Article objects and a filename, outputs a PDF broadsheet
   # for the articles to the specified filename
