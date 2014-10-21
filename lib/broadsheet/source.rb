@@ -12,15 +12,13 @@ class Source
 
   def fetch
     entries = Feedjira::Feed.fetch_and_parse(self.class.feed).entries
-    entries.reject! do |entry|
-      entry.published < (Time.now - 3.days)
-    end
-    entries.map do |entry|
-      open(entry.url).read
-    end
+
+    # For now, take articles published in the last 3 days, up to a max of 3 articles
+    entries.reject{ |entry| entry.published < (Time.now - 3.days) }.take(3)
   end
 
-  def parse(html)
+  def parse(entry)
+    html = open(entry.url).read
     document = Readability::Document.new(html)
     Article.new(
       title: document.title,
