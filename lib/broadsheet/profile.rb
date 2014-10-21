@@ -1,5 +1,5 @@
 require "yaml"
-require 'active_support/core_ext/hash'
+require "active_support/core_ext/hash"
 
 module Broadsheet
   class Profile
@@ -48,7 +48,7 @@ module Broadsheet
     private
 
     def write
-      File.open(Broadsheet::PROFILE_PATH,'w') do |f| 
+      File.open(Broadsheet::PROFILE_PATH,"w") do |f| 
          f.write @profile.to_yaml
       end
     end

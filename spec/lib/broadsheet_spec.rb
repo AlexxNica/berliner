@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Broadsheet do
   it "should have a version" do

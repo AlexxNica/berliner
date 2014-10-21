@@ -32,10 +32,10 @@ $ broadsheet read --console
 
 # Module Usage
 
-Build a profile of your favorite news sources and save it to `~/.broadsheet/profile.yaml`.  For a list of supported sources, see [here](https://github.com/s3ththompson/broadsheet/tree/master/lib/broadsheet/sources).  Choose a renderer from the supported renderers [here](https://github.com/s3ththompson/broadsheet/tree/master/lib/broadsheet/renderers).
+Build a profile of your favorite news sources and save it to `~/.broadsheet/profile.yml`.  For a list of supported sources, see [here](https://github.com/s3ththompson/broadsheet/tree/master/lib/broadsheet/sources).  Choose a renderer from the supported renderers [here](https://github.com/s3ththompson/broadsheet/tree/master/lib/broadsheet/renderers).
 
 ``` yaml
-#  Example ~/.broadsheet/profile.yaml
+#  Example ~/.broadsheet/profile.yml
 sources:
   - designo-daily
   - new-york-times
@@ -91,4 +91,4 @@ end
 
 # Supported Ruby Versions
 
-Broadsheet requires 2.1.2 or higher.
+Broadsheet is tested on Ruby 2.1.0 and 2.1.2.
