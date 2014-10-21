@@ -1,7 +1,7 @@
 require "yaml"
 require "broadsheet/config"
 require "broadsheet/article"
-require 'active_support/core_ext'
+require "active_support/core_ext"
 
 class Builder
 
@@ -31,7 +31,7 @@ class Builder
 
   def load_sources
     @sources = @profile["sources"].map do |source|
-      filename = source.gsub(/-/, '_')
+      filename = source.gsub(/-/, "_")
       require "broadsheet/sources/#{filename}"
       begin
         source_klass = filename.classify.constantize
@@ -46,7 +46,7 @@ class Builder
 
   def load_renderer
     renderer = @profile["renderer"]
-    filename = renderer.gsub(/-/, '_')
+    filename = renderer.gsub(/-/, "_")
     require "broadsheet/renderers/#{renderer}"
     begin
       renderer_klass = filename.classify.constantize

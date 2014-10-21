@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.licenses      = ["MIT"]
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.executables   = ["broadsheet"]
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
@@ -23,4 +23,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "ruby-readability", ["= 0.7.0"]
   gem.add_runtime_dependency "activesupport", ["= 4.1.6"]
   gem.add_runtime_dependency "nokogiri", ["= 1.6.3.1"]
+  gem.add_runtime_dependency "commander", ["= 4.2.1"]
 end

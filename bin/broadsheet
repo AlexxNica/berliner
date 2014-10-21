@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+
+require "broadsheet"
+
+require "rubygems"
+require "commander/import"
+require "broadsheet/extend/string"
+
+program :name, "Broadsheet"
+program :version, Broadsheet::VERSION
+program :description, Broadsheet::DESCRIPTION
+
+default_command :help
+
+command :read do |c|
+  c.syntax = "broadsheet read [options]"
+  c.summary = "Read the current Broadsheet"
+  c.description = <<-HERE.format_heredoc
+    Generate the current Broadsheet for reading.  If [-output PATH] is
+    specified, saves the file to the given path, otherwise the file is
+    saved to the current directory.
+  HERE
+  c.option "-o", "--output PATH", "Output to a specific path"
+  c.action do |args, options|
+    # Do something or c.when_called Broadsheet::Commands::Read
+  end
+end
+
+command :search do |c|
+  c.syntax = "broadsheet search [FOO]"
+  c.summary = "List all available sources or search for [FOO]"
+  c.description = <<-HERE.format_heredoc
+    Perform a substring search of formula names for [FOO].
+    If [FOO] is surrounded with slashes, then it is interpreted
+    as a regular expression.  If no search term is
+    given, all available sources are listed.
+  HERE
+  c.action do |args, options|
+    # Do something or c.when_called Broadsheet::Commands::Search
+  end
+end
+
+command :add do |c|
+  c.syntax = "broadsheet add SOURCE.."
+  c.summary = "Add a source to your Broadsheet"
+  c.description = <<-HERE.format_heredoc
+    Add a SOURCE to your Broadsheet. If more than one SOURCE is
+    given, add all of them.
+  HERE
+  c.action do |args, options|
+    # Do something or c.when_called Broadsheet::Commands::Add
+  end
+end
+
+command :remove do |c|
+  c.syntax = "broadsheet remove SOURCE.."
+  c.summary = "Remove a source from your Broadsheet"
+  c.description = <<-HERE.format_heredoc
+    Remove a SOURCE from your Broadsheet. If more than one SOURCE is
+    given, remove all of them.
+  HERE
+  c.action do |args, options|
+    # Do something or c.when_called Broadsheet::Commands::Add
+  end
+end
+
+command :list do |c|
+  c.syntax = "broadsheet list"
+  c.summary = "List sources added to your Broadsheet"
+  c.description = "List all sources currently added to your Broadsheet."
+  c.action do |args, options|
+    # Do something or c.when_called Broadsheet::Commands::List
+  end
+end
+

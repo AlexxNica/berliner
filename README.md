@@ -4,7 +4,7 @@ Broadsheet is a Ruby gem and CLI that compiles a daily digest of online news in 
 
 # Installation
 
-```shell
+```sh
 $ gem install broadsheet
 ```
 
@@ -75,11 +75,11 @@ class MySource < Source
     doc = Nokogiri::HTML(html)
 
     Article.new(
-      title: doc.css('title'),
-      author: doc.at("meta[name='author']")['content'],
+      title: doc.css("title"),
+      author: doc.at("meta[name='author']")["content"],
       content: doc.css('article'),
-      published: doc.css('date-published'),
-      url: doc.css('permalink'),
+      published: doc.css("date-published"),
+      url: doc.css("permalink"),
       source: self.class.title,
       style: self.class.style
       )

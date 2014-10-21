@@ -2,7 +2,7 @@ require "feedjira"
 require "ruby-readability"
 require "open-uri"
 require "broadsheet/article"
-require 'active_support/core_ext'
+require "active_support/core_ext"
 
 class Source
 
