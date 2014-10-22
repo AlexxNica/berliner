@@ -97,4 +97,4 @@ end
 
 # Supported Ruby Versions
 
-Berliner is tested on Ruby 2.1.0 and 2.1.2.
+Berliner requires Ruby 2.0.0 or great.  It is tested against Ruby 2.0.0, 2.1.1, and 2.1.2.
