@@ -1,9 +1,14 @@
 # Berliner
+
 [![Gem Version](https://badge.fury.io/rb/berliner.svg)](http://badge.fury.io/rb/berliner)
 [![Build Status](https://travis-ci.org/s3ththompson/berliner.svg?branch=master)](https://travis-ci.org/s3ththompson/berliner)
 [![Coverage Status](https://img.shields.io/coveralls/s3ththompson/berliner.svg)](https://coveralls.io/r/s3ththompson/berliner?branch=master)
 
-Berliner is a Ruby gem and CLI that compiles a daily digest of online news in a beautiful format.
+<img align="right" height="250" src="http://i.imgur.com/4BEEus9.png" alt="Berliner">
+
+> Daily digests of online news
+
+Berliner is a Ruby gem and UNIX-style CLI that compiles a daily digest of online news in a beautiful format. More than just another RSS reader, Berliner offers an elegant solution for pruning infinite streams of articles down to just the best content. Berliner scrapes each news item directly, and sends article compilations to a variety of renderers (PDF, HTML, Markdown, etc.). Don't like how your digest looks? Missing your favorite news source? Berliner is built to be hackable, extensible, and customizable.
 
 # Installation
 
