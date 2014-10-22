@@ -1,3 +1,4 @@
+require "fileutils"
 require "yaml"
 require "active_support"
 require "active_support/core_ext"
@@ -7,6 +8,7 @@ module Berliner
 
     def initialize
       begin
+        FileUtils.mkdir_p(File.dirname(Berliner::PROFILE_PATH))
         @profile = YAML.load_file(Berliner::PROFILE_PATH).with_indifferent_access
       rescue
         @profile = {

@@ -71,7 +71,7 @@ command :list do |c|
   c.summary = "List sources added to your Berliner"
   c.description = "List all sources currently added to your Berliner."
   c.action do |args, options|
-    raise OptionParser::InvalidArgument, args if args 
+    raise OptionParser::InvalidArgument, args unless args.empty?
     puts Berliner.list
   end
 end
