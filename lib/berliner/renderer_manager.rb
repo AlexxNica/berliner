@@ -1,12 +1,12 @@
 require "active_support"
 require "active_support/core_ext"
 
-module Broadsheet
+module Berliner
   class RendererManager
 
     def self.search
-      user_renderers = Dir["#{Dir.home}/.broadsheet/renderers/*"]
-      gem_renderers = Dir["#{LIB_PATH}/broadsheet/renderers/*"]
+      user_renderers = Dir["#{Dir.home}/.berliner/renderers/*"]
+      gem_renderers = Dir["#{LIB_PATH}/berliner/renderers/*"]
       renderer_slugs = (user_renderers + gem_renderers).map do |path|
         filename = File.basename(path, ".rb")
         filename.gsub(/_/, "-")
@@ -23,9 +23,9 @@ module Broadsheet
     def self.get_klass(slug)
       filename = slug.gsub(/-/, "_") + "_renderer"
       begin
-        require "#{Dir.home}/.broadsheet/renderers/#{filename}"
+        require "#{Dir.home}/.berliner/renderers/#{filename}"
       rescue LoadError
-        require "broadsheet/renderers/#{filename}"
+        require "berliner/renderers/#{filename}"
       rescue
       end
       begin

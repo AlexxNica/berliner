@@ -1,7 +1,7 @@
 require "feedjira"
 require "ruby-readability"
 require "open-uri"
-require "broadsheet/article"
+require "berliner/article"
 require "active_support"
 require "active_support/core_ext"
 

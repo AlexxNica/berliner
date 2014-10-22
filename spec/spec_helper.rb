@@ -1,4 +1,4 @@
 require "coveralls"
 Coveralls.wear!
 
-require "broadsheet"
+require "berliner"

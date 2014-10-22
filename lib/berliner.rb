@@ -1,4 +1,4 @@
-module Broadsheet
+module Berliner
   def self.read
     profile = Profile.new
     sources = SourceManager.load(profile.sources)
@@ -25,9 +25,9 @@ module Broadsheet
 
 end
 
-require "broadsheet/extend/module"
-require "broadsheet/config"
-require "broadsheet/version"
-require "broadsheet/source_manager"
-require "broadsheet/renderer_manager"
-require "broadsheet/profile"
+require "berliner/extend/module"
+require "berliner/config"
+require "berliner/version"
+require "berliner/source_manager"
+require "berliner/renderer_manager"
+require "berliner/profile"

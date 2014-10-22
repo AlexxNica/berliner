@@ -1,3 +1,3 @@
-module Broadsheet
+module Berliner
   VERSION = "0.0.2"
 end

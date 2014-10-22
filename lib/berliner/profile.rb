@@ -2,12 +2,12 @@ require "yaml"
 require "active_support"
 require "active_support/core_ext"
 
-module Broadsheet
+module Berliner
   class Profile
 
     def initialize
       begin
-        @profile = YAML.load_file(Broadsheet::PROFILE_PATH).with_indifferent_access
+        @profile = YAML.load_file(Berliner::PROFILE_PATH).with_indifferent_access
       rescue
         @profile = {
           sources: [],
@@ -49,7 +49,7 @@ module Broadsheet
     private
 
     def write
-      File.open(Broadsheet::PROFILE_PATH,"w") do |f| 
+      File.open(Berliner::PROFILE_PATH,"w") do |f| 
          f.write @profile.to_yaml
       end
     end

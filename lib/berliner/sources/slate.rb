@@ -1,4 +1,4 @@
-require "broadsheet/source"
+require "berliner/source"
 
 class Slate < Source
   feed "http://feeds.slate.com/slate"

@@ -1,10 +1,10 @@
-require "broadsheet/renderer"
+require "berliner/renderer"
 require "prawn"
 require "nokogiri"
 
 class PdfRenderer < Renderer
 
-  # Given an array of Article objects and a filename, outputs a PDF broadsheet
+  # Given an array of Article objects and a filename, outputs a PDF Berliner
   # for the articles to the specified filename
   def render(articles)
 
@@ -29,7 +29,7 @@ class PdfRenderer < Renderer
        })
 
       font "Chalet"
-      text "Broadsheet", size: 60, style: :bold_italic
+      text "Berliner", size: 60, style: :bold_italic
       move_down 6
       text Time.now.strftime("%B %-d, %Y"), size: 20, style: :italic
       move_down 4

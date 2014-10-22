@@ -1,4 +1,4 @@
-require "broadsheet/source"
+require "berliner/source"
 
 class FiveThirtyEight < Source
   feed "http://fivethirtyeight.com/features/feed/"

@@ -1,20 +1,20 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "broadsheet/version"
+require "berliner/version"
 
 Gem::Specification.new do |gem|
-  gem.name          = "broadsheet"
-  gem.version       = Broadsheet::VERSION
+  gem.name          = "berliner"
+  gem.version       = Berliner::VERSION
   gem.authors       = ["Seth Thompson", "Geoffrey Litt"]
   gem.email         = ["s3th.thompson@gmail.com", "gklitt@gmail.com"]
-  gem.description   = "Broadsheet is a Ruby gem and CLI that compiles a daily digest of online news in a beautiful format."
+  gem.description   = "Berliner is a Ruby gem and CLI that compiles a daily digest of online news in a beautiful format."
   gem.summary       = "Daily news digest."
-  gem.homepage      = "https://github.com/s3ththompson/broadsheet"
+  gem.homepage      = "https://github.com/s3ththompson/berliner"
   gem.licenses      = ["MIT"]
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = ["broadsheet"]
+  gem.executables   = ["berliner"]
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 

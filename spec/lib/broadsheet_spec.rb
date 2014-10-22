@@ -1,7 +1,7 @@
 require "spec_helper"
 
-describe Broadsheet do
+describe Berliner do
   it "should have a version" do
-    expect(Broadsheet::VERSION).not_to be_nil
+    expect(Berliner::VERSION).not_to be_nil
   end
 end

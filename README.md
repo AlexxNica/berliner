@@ -1,42 +1,42 @@
-# Broadsheet
-[![Gem Version](https://badge.fury.io/rb/broadsheet.svg)](http://badge.fury.io/rb/broadsheet)
-[![Build Status](https://travis-ci.org/s3ththompson/broadsheet.svg?branch=master)](https://travis-ci.org/s3ththompson/broadsheet)
-[![Coverage Status](https://img.shields.io/coveralls/s3ththompson/broadsheet.svg)](https://coveralls.io/r/s3ththompson/broadsheet?branch=master)
+# Berliner
+[![Gem Version](https://badge.fury.io/rb/berliner.svg)](http://badge.fury.io/rb/berliner)
+[![Build Status](https://travis-ci.org/s3ththompson/berliner.svg?branch=master)](https://travis-ci.org/s3ththompson/berliner)
+[![Coverage Status](https://img.shields.io/coveralls/s3ththompson/berliner.svg)](https://coveralls.io/r/s3ththompson/berliner?branch=master)
 
-Broadsheet is a Ruby gem and CLI that compiles a daily digest of online news in a beautiful format.
+Berliner is a Ruby gem and CLI that compiles a daily digest of online news in a beautiful format.
 
 # Installation
 
 ```sh
-$ gem install broadsheet
+$ gem install berliner
 ```
 
 # CLI Usage
 
 ```sh
 # list all sources
-$ broadsheet search
+$ berliner search
 
 # add your preferred sources
-$ broadsheet add new-york-times
-$ broadsheet add five-thirty-eight
+$ berliner add new-york-times
+$ berliner add five-thirty-eight
 
 # list your added sources
-$ broadsheet list
+$ berliner list
 
-# Read your daily Broadsheet
-$ broadsheet read
+# Read your daily Berliner
+$ berliner read
 # Or specify a renderer
-$ broadsheet read --console
+$ berliner read --console
 
 ```
 
 # Module Usage
 
-Build a profile of your favorite news sources and save it to `~/.broadsheet/profile.yml`.  For a list of supported sources, see [here](https://github.com/s3ththompson/broadsheet/tree/master/lib/broadsheet/sources).  Choose a renderer from the supported renderers [here](https://github.com/s3ththompson/broadsheet/tree/master/lib/broadsheet/renderers).
+Build a profile of your favorite news sources and save it to `~/.berliner/profile.yml`.  For a list of supported sources, see [here](https://github.com/s3ththompson/berliner/tree/master/lib/berliner/sources).  Choose a renderer from the supported renderers [here](https://github.com/s3ththompson/berliner/tree/master/lib/berliner/renderers).
 
 ``` yaml
-#  Example ~/.broadsheet/profile.yml
+#  Example ~/.berliner/profile.yml
 sources:
   - designo-daily
   - new-york-times
@@ -44,20 +44,20 @@ sources:
 renderer: pdf
 ```
 
-Build a Broadsheet from the sources in your profile.
+Build a Berliner from the sources in your profile.
 
 ``` ruby
-require "broadsheet"
-Broadsheet.read()
+require "berliner"
+Berliner.read()
 ```
 
 # Adding a Source
 
-All sources inherit from the base Broadsheet `Source` object.  Here are the methods and attributes a custom source can implement:
+All sources inherit from the base Berliner `Source` object.  Here are the methods and attributes a custom source can implement:
 
 ```ruby
-# lib/broadsheet/sources/my_source.rb
-require "broadsheet/source"
+# lib/berliner/sources/my_source.rb
+require "berliner/source"
 
 class MySource < Source
   # The feed string is passed to Feedjira to download entries
@@ -73,7 +73,7 @@ class MySource < Source
   # the `parse` method takes html and returns an Article object
   def parse(html)
     require "nokogiri"
-    require "broadsheet/article"
+    require "berliner/article"
 
     doc = Nokogiri::HTML(html)
 
@@ -92,4 +92,4 @@ end
 
 # Supported Ruby Versions
 
-Broadsheet is tested on Ruby 2.1.0 and 2.1.2.
+Berliner is tested on Ruby 2.1.0 and 2.1.2.

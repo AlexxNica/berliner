@@ -1,13 +1,13 @@
 require "active_support"
 require "active_support/core_ext"
-require "broadsheet/extend/string"
+require "berliner/extend/string"
 
-module Broadsheet
+module Berliner
   class SourceManager
 
     def self.search(foo=nil)
-      user_sources = Dir["#{Dir.home}/.broadsheet/sources/*"]
-      gem_sources = Dir["#{LIB_PATH}/broadsheet/sources/*"]
+      user_sources = Dir["#{Dir.home}/.berliner/sources/*"]
+      gem_sources = Dir["#{LIB_PATH}/berliner/sources/*"]
       source_slugs = (user_sources + gem_sources).map do |path|
         filename = File.basename(path, ".rb")
         filename.gsub(/_/, "-")
@@ -29,9 +29,9 @@ module Broadsheet
     def self.get_klass(slug)
       filename = slug.gsub(/-/, "_")
       begin
-        require "#{Dir.home}/.broadsheet/sources/#{filename}"
+        require "#{Dir.home}/.berliner/sources/#{filename}"
       rescue LoadError
-        require "broadsheet/sources/#{filename}"
+        require "berliner/sources/#{filename}"
       rescue
       end
       begin

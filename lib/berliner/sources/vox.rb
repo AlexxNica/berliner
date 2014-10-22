@@ -1,4 +1,4 @@
-require "broadsheet/source"
+require "berliner/source"
 
 class Vox < Source
   feed "http://www.vox.com/rss/index.xml"

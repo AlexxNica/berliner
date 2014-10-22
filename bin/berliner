@@ -1,34 +1,34 @@
 #!/usr/bin/env ruby
 
-require "broadsheet"
+require "berliner"
 
 require "rubygems"
 require "commander/import"
-require "broadsheet/extend/string"
+require "berliner/extend/string"
 require "optparse"
 
-program :name, "Broadsheet"
-program :version, Broadsheet::VERSION
-program :description, Broadsheet::DESCRIPTION
+program :name, "Berliner"
+program :version, Berliner::VERSION
+program :description, Berliner::DESCRIPTION
 
 default_command :help
 
 command :read do |c|
-  c.syntax = "broadsheet read [options]"
-  c.summary = "Read the current Broadsheet"
+  c.syntax = "berliner read [options]"
+  c.summary = "Read the current Berliner"
   c.description = <<-HERE.format_heredoc
-    Generate the current Broadsheet for reading.  If [-output PATH] is
+    Generate the current Berliner for reading.  If [-output PATH] is
     specified, saves the file to the given path, otherwise the file is
     saved to the current directory.
   HERE
   # c.option "-o", "--output PATH", "Output to a specific path"
   c.action do |args, options|
-    Broadsheet.read
+    Berliner.read
   end
 end
 
 command :search do |c|
-  c.syntax = "broadsheet search [FOO]"
+  c.syntax = "berliner search [FOO]"
   c.summary = "List all available sources or search for [FOO]"
   c.description = <<-HERE.format_heredoc
     Perform a substring search of formula names for [FOO].
@@ -38,40 +38,40 @@ command :search do |c|
   HERE
   c.action do |args, options|
     raise OptionParser::InvalidArgument, args.drop(1) if args.length > 1
-    puts Broadsheet.search(args.first) 
+    puts Berliner.search(args.first) 
   end
 end
 
 command :add do |c|
-  c.syntax = "broadsheet add SOURCE.."
-  c.summary = "Add a source to your Broadsheet"
+  c.syntax = "berliner add SOURCE.."
+  c.summary = "Add a source to your Berliner"
   c.description = <<-HERE.format_heredoc
-    Add a SOURCE to your Broadsheet. If more than one SOURCE is
+    Add a SOURCE to your Berliner. If more than one SOURCE is
     given, add all of them.
   HERE
   c.action do |args, options|
-    Broadsheet.add(args)
+    Berliner.add(args)
   end
 end
 
 command :remove do |c|
-  c.syntax = "broadsheet remove SOURCE.."
-  c.summary = "Remove a source from your Broadsheet"
+  c.syntax = "berliner remove SOURCE.."
+  c.summary = "Remove a source from your Berliner"
   c.description = <<-HERE.format_heredoc
-    Remove a SOURCE from your Broadsheet. If more than one SOURCE is
+    Remove a SOURCE from your Berliner. If more than one SOURCE is
     given, remove all of them.
   HERE
   c.action do |args, options|
-    Broadsheet.remove(args)
+    Berliner.remove(args)
   end
 end
 
 command :list do |c|
-  c.syntax = "broadsheet list"
-  c.summary = "List sources added to your Broadsheet"
-  c.description = "List all sources currently added to your Broadsheet."
+  c.syntax = "berliner list"
+  c.summary = "List sources added to your Berliner"
+  c.description = "List all sources currently added to your Berliner."
   c.action do |args, options|
     raise OptionParser::InvalidArgument, args if args 
-    puts Broadsheet.list
+    puts Berliner.list
   end
 end

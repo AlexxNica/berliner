@@ -10,5 +10,5 @@ task :default => :spec
 task :test => :spec
 
 task :console do
-  exec "irb -r broadsheet -I ./lib"
+  exec "irb -r berliner -I ./lib"
 end
