@@ -95,9 +95,9 @@ class MySource < Source
 end
 ```
 
-# Documentation
+# API Documentation
 
-[Berliner API Documentation](http://www.rubydoc.info/github/s3ththompson/berliner/) on RubyDoc.info
+[Berliner](http://www.rubydoc.info/github/s3ththompson/berliner/) on RubyDoc.info
 
 # Supported Ruby Versions
 
