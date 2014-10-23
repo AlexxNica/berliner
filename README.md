@@ -97,7 +97,7 @@ end
 
 # API Documentation
 
-[Berliner](http://www.rubydoc.info/github/s3ththompson/berliner/) on RubyDoc.info
+[Berliner](http://www.rubydoc.info/gems/berliner/) on RubyDoc.info
 
 # Supported Ruby Versions
 
