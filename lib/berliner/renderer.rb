@@ -1,15 +1,18 @@
-require "prawn"
-
+# The base object for a Berliner renderer.  Each renderer should inherit from
+# {Renderer} and reimplement {Renderer#render} as necessary.
+# @abstract
 class Renderer
 
+  # Create a new {Renderer} object
   def initialize(options = {})
     @options = options
   end
 
-  # The render function takes an array of Article objects and an options hash,
-  # which can be in an arbitrary format depending on the subclass.
-  #
-  # This is an example renderer which just prints the articles to the console.
+  # Render articles into a Berliner
+  # @note Renderers usually output the Berliner to a file, but this
+  #  behavior can be redefined in child classes
+  # @param [Array<Article>] articles an array of {Article} objects
+  # @return [void]
   def render(articles)
     articles.each do |article|
       puts "#{article.title} - #{article.author}"

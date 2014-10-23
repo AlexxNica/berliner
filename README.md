@@ -95,6 +95,10 @@ class MySource < Source
 end
 ```
 
+# Documentation
+
+[Berliner API Documentation](http://www.rubydoc.info/github/s3ththompson/berliner/) on RubyDoc.info
+
 # Supported Ruby Versions
 
 Berliner requires Ruby 2.0.0 or great.  It is tested against Ruby 2.0.0, 2.1.1, and 2.1.2.

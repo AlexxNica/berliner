@@ -12,6 +12,7 @@ program :version, Berliner::VERSION
 program :description, Berliner::DESCRIPTION
 
 default_command :help
+never_trace!
 
 command :read do |c|
   c.syntax = "berliner read [options]"
