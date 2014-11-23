@@ -13,7 +13,7 @@ module Berliner
       gem_renderers = Dir["#{LIB_PATH}/berliner/renderers/*"]
       renderer_slugs = (user_renderers + gem_renderers).map do |path|
         filename = File.basename(path, ".rb")
-        filename.gsub(/_/, "-")
+        filename.dasherize
       end
       renderer_slugs.uniq.sort
     end
@@ -42,7 +42,7 @@ module Berliner
       rescue
       end
       begin
-        klass = filename.classify.constantize
+        klass = "Berliner::#{filename.classify}".constantize
       rescue
         raise NameError,
           "The #{filename.classify} was not found. " \

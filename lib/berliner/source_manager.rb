@@ -14,7 +14,7 @@ module Berliner
       gem_sources = Dir["#{LIB_PATH}/berliner/sources/*"]
       source_slugs = (user_sources + gem_sources).map do |path|
         filename = File.basename(path, ".rb")
-        filename.gsub(/_/, "-")
+        filename.dasherize
       end
       results = source_slugs.uniq.sort
       results = results.grep(foo.query_regex) if foo
@@ -48,7 +48,7 @@ module Berliner
       rescue
       end
       begin
-        klass = filename.classify.constantize
+        klass = "Berliner::#{filename.classify}".constantize
       rescue
         raise NameError,
           "The #{filename.classify} source was not found. " \
