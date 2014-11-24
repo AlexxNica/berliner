@@ -5,7 +5,7 @@ shared_examples_for "a filter" do
   let(:input_articles) do
     articles = []
     3.times do
-      articles << Article.new(title: "Test", body: "Test")
+      articles << Berliner::Article.new(title: "Test", body: "Test")
     end
     articles
   end
@@ -17,14 +17,14 @@ shared_examples_for "a filter" do
   context "initialized with 3 articles" do
 
     it "stores the input articles correctly" do
-      filter.input.should eq(input_articles)
+      expect(filter.input).to eq(input_articles)
     end
 
     describe "#output_articles" do
       it "returns an array of 3 or less articles" do
-        filter.output.size.should be <= 3
+        expect(filter.output.size).to be <= 3
         filter.output.each do |item|
-          item.should be_a Article
+          expect(item).to be_a Berliner::Article
         end
       end
     end

@@ -54,3 +54,4 @@ end
 
 require "berliner/config"
 require "berliner/version"
+require "berliner/filter"
