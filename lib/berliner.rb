@@ -1,6 +1,8 @@
 require "berliner/source_manager"
 require "berliner/renderer_manager"
+require "berliner/filter_manager"
 require "berliner/profile"
+require "berliner/article"
 
 # Daily digest of online news in a beautiful format
 module Berliner
@@ -19,7 +21,11 @@ module Berliner
     def read
       sources = SourceManager.load(profile.sources)
       renderer = RendererManager.load(profile.renderer)
+      filters = FilterManager.load(profile.filters)
       articles = sources.map{ |source| source.articles }.flatten
+      articles = filters.inject(articles) do |updated_articles, filter|
+        filter.filter(updated_articles)
+      end
       renderer.render(articles)
     end
 
@@ -54,4 +60,3 @@ end
 
 require "berliner/config"
 require "berliner/version"
-require "berliner/filter"

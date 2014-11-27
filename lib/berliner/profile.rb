@@ -16,6 +16,7 @@ module Berliner
       rescue
         @profile = {
           sources: [],
+          filters: [],
           renderer: "default"
         }
       end
@@ -55,13 +56,19 @@ module Berliner
     # List the sources saved in the profile
     # @return [Array<String>] an array of source slugs
     def sources
-      profile[:sources]
+      profile[:sources] || []
     end
 
     # List the renderers saved in the profile
-    # @return [Array<String>] an array of renderer slugs
+    # @return [<String>] a renderer slug
     def renderer
-      profile[:renderer]
+      profile[:renderer] || "default"
+    end
+
+    # List the renderers saved in the profile
+    # @return [Array<String>] an array of filter slugs
+    def filters
+      @profile[:filters] || []
     end
 
     private
@@ -69,7 +76,7 @@ module Berliner
     # Write the profile to disk
     # @return [void]
     def write
-      File.open(Berliner::PROFILE_PATH,"w") do |f| 
+      File.open(Berliner::PROFILE_PATH,"w") do |f|
          f.write profile.to_hash.to_yaml
       end
     end

@@ -13,18 +13,16 @@ module Berliner
 
     # Create a new {Article} object
     def initialize(
-      title: nil,
-      body: nil,
+      title: title,
+      body: body,
       author: nil,
       date_published: nil,
       image: nil,
       location: nil,
       permalink: nil,
-      source: nil,
+      source: source,
       other: {}
-      )
-      raise ArgumentError, "title required" if title.nil?
-      raise ArgumentError, "body required" if body.nil?
+    )
       @title = title
       @body = body
       @author = author
