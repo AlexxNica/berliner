@@ -1,3 +1,5 @@
+require "erubis"
+
 module Berliner
   # The base object for a Berliner renderer.  Each renderer should inherit from
   # {Renderer} and reimplement {Renderer#render} as necessary.
@@ -15,11 +17,47 @@ module Berliner
     # @param [Array<Article>] articles an array of {Article} objects
     # @return [void]
     def render(articles)
-      articles.each do |article|
-        puts "#{article.title} - #{article.author}"
-      end
+      template = load(self.class.template)
+      html = Erubis::Eruby.new(template).result({
+        articles: articles
+        })
+      File.write("berliner.html", html)
+    end
 
-      return true # suppress printing articles array to console
+    def load(slug)
+      filename = "#{slug.gsub(/-/, '_')}.erb"
+      begin
+        template = File.read("#{Dir.home}/.berliner/templates/#{filename}")
+      rescue
+        begin
+          template = File.read("#{LIB_PATH}/berliner/templates/#{filename}")
+        rescue
+          raise NameError,
+            "The #{slug} template was not found. " \
+            "Make sure it is defined in templates/#{filename}"
+        end
+      end
+      template
+    end
+
+    class << self
+      # The ERB template to use to render articles
+      # @note This attribute is set using a DSL
+      # @example Define this attribute in child classes
+      #   template "default"
+      # @attribute [r]
+      # @scope class
+      # @return [String]
+      attr_rw :template
+
+      # The CSS style to apply to the Berliner html
+      # @note This attribute is set using a DSL
+      # @example Define this attribute in child classes
+      #   style "default"
+      # @attribute [r]
+      # @scope class
+      # @return [String]
+      attr_rw :style
     end
   end
 end

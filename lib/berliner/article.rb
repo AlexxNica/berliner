@@ -23,8 +23,8 @@ module Berliner
       source: nil,
       other: {}
       )
-      raise "title required" if title.nil?
-      raise "body required" if body.nil?
+      raise ArgumentError, "title required" if title.nil?
+      raise ArgumentError, "body required" if body.nil?
       @title = title
       @body = body
       @author = author

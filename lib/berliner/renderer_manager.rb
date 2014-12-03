@@ -33,18 +33,20 @@ module Berliner
     # @raise [NameError] if the renderer's class name can't be found 
     # @return [Source] an instance of the specified renderer
     def self.get_klass(slug)
-      filename = slug.gsub(/-/, "_") + "_renderer"
+      filename = slug.gsub(/-/, "_")
       begin
         require "#{Dir.home}/.berliner/renderers/#{filename}"
       rescue LoadError
-        require "berliner/renderers/#{filename}"
-      rescue
+        begin
+          require "berliner/renderers/#{filename}"
+        rescue LoadError
+        end
       end
       begin
         klass = "Berliner::#{filename.classify}".constantize
       rescue
         raise NameError,
-          "The #{filename.classify} was not found. " \
+          "The #{filename.classify} renderer was not found. " \
           "Make sure it is defined in renderers/#{filename}.rb"
       end
       klass.new

@@ -70,7 +70,7 @@ module Berliner
     # @return [void]
     def write
       File.open(Berliner::PROFILE_PATH,"w") do |f| 
-         f.write profile.to_yaml
+         f.write profile.to_hash.to_yaml
       end
     end
 

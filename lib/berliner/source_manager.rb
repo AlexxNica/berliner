@@ -44,8 +44,10 @@ module Berliner
       begin
         require "#{Dir.home}/.berliner/sources/#{filename}"
       rescue LoadError
-        require "berliner/sources/#{filename}"
-      rescue
+        begin
+          require "berliner/sources/#{filename}"
+        rescue LoadError
+        end
       end
       begin
         klass = "Berliner::#{filename.classify}".constantize

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Berliner</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+</head>
+<body style="padding: 10px 20px;">
+  <% articles.each do |article| %>
+    <article>
+      <a href="<%= article.permalink %>"><h1><%= article.title %></h1></a>
+      <h2><%= article.author %></h2>
+      <h3><%= article.source %></h3>
+      <%= article.body %>
+    </article>
+  <% end %>
+</body>
+</html>

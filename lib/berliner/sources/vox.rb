@@ -4,7 +4,6 @@ module Berliner
   class Vox < Source
     feed "http://www.vox.com/rss/index.xml"
     title "Vox"
-    style "vox"
 
     # Vox has full content in the rss feed so we don't have to scrape
     def articles
@@ -13,9 +12,8 @@ module Berliner
         Article.new(
           title: entry.title,
           author: entry.author,
-          content: entry.content,
-          source: "Vox",
-          style: "vox"
+          body: entry.content,
+          source: self.class.title
           )
       end
     end

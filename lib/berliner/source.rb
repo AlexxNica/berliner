@@ -1,6 +1,7 @@
 require "feedjira"
 require "ruby-readability"
 require "open-uri"
+require "open_uri_redirections"
 require "berliner/article"
 require "berliner/extend/string"
 require "berliner/extend/module"
@@ -32,14 +33,14 @@ module Berliner
     # @param [Object] entry a single Feddjira entry object
     # @return [Article] an {Article} instance
     def parse(entry)
-      html = open(entry.url).read
+      html = open(entry.url, :allow_redirections => :safe).read
       document = Readability::Document.new(html)
       Article.new(
-        title: document.title,
-        author: document.author,
-        content: document.content,
+        title: document.title || "Untitled",
+        author: document.author || "Unknown",
+        body: document.content || "",
         source: self.class.title,
-        style: self.class.style
+        permalink: entry.url
         )
     end
 

@@ -1,6 +1,7 @@
 --markup markdown
 --exclude lib/berliner/sources/*
 --exclude lib/berliner/renderers/*
+--exclude lib/berliner/templates/*
 lib/**/*.rb
 -
 *.md
