@@ -18,10 +18,9 @@ module Berliner
       renderer_slugs.uniq.sort
     end
 
-    # Load an instantiated {Renderer} object(s) given the renderer slug(s)
-    # @param [String, Array<String>] slug the renderer slug or an array of renderer slugs
-    # @return [Source, Array<Source>] an instance of the specified renderer or
-    #   an array of instances
+    # Load an instantiated {Renderer} object given the renderer slug
+    # @param [String] slug the renderer slug
+    # @return [Source] an instance of the specified renderer
     def self.load(slug)
       get_klass(slug)
     end

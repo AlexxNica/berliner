@@ -9,7 +9,7 @@ module Berliner
     attr_accessor :profile
 
     # Create a new {Profile} object
-    def initialize(verbose:)
+    def initialize(verbose: false)
       begin
         FileUtils.mkdir_p(File.dirname(Berliner::PROFILE_PATH))
         @profile = YAML.load_file(Berliner::PROFILE_PATH).with_indifferent_access

@@ -53,7 +53,7 @@ Build a Berliner from the sources in your profile.
 
 ``` ruby
 require "berliner"
-Berliner.read()
+Berliner::CLI.read()
 ```
 
 # Adding a Source

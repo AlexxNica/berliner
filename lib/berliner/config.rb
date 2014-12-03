@@ -4,5 +4,5 @@ module Berliner
   # Path to profile in user's home directory
   PROFILE_PATH = "#{Dir.home}/.berliner/profile.yml"
   # Path to gem lib/ folder
-  LIB_PATH = "#{File.expand_path('..', File.dirname(__FILE__))}"
+  LIB_PATH = "#{File.expand_path('..', __dir__)}"
 end
