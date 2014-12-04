@@ -17,14 +17,17 @@ module Berliner
     # @param [Array<Article>] articles an array of {Article} objects
     # @return [void]
     def render(articles)
-      template = load(self.class.template)
+      template = read_template(self.class.template)
       html = Erubis::Eruby.new(template).result({
         articles: articles
         })
       File.write("berliner.html", html)
     end
 
-    def load(slug)
+    # Read an ERB template given its slug
+    # @param [String] slug the template slug
+    # @return [String] the contents of the template file
+    def read_template(slug)
       filename = "#{slug.gsub(/-/, '_')}.erb"
       begin
         template = File.read("#{Dir.home}/.berliner/templates/#{filename}")

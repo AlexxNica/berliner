@@ -9,14 +9,14 @@ module Berliner
     attr_accessor :profile
 
     # Create a new {Profile} object
-    def initialize(verbose: false)
+    def initialize
       begin
         FileUtils.mkdir_p(File.dirname(Berliner::PROFILE_PATH))
         @profile = YAML.load_file(Berliner::PROFILE_PATH).with_indifferent_access
       rescue
         @profile = {
           sources: [],
-          renderer: "console"
+          renderer: "default"
         }
       end
     end

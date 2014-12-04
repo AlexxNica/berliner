@@ -46,7 +46,7 @@ sources:
   - designo-daily
   - new-york-times
   - new-yorker
-renderer: pdf
+renderer: default
 ```
 
 Build a Berliner from the sources in your profile.
@@ -75,11 +75,13 @@ class MySource < Source
   # a list of html pages.  By default each feed entry less than
   # a day old is downloaded.
 
-  # the `parse` method takes html and returns an Article object
-  def parse(html)
+  # the `parse` method takes an RSS entry and returns an Article object
+  def parse(entry)
     require "nokogiri"
     require "berliner/article"
+    require "open-uri"
 
+    html = open(entry.url).read
     doc = Nokogiri::HTML(html)
 
     Article.new(

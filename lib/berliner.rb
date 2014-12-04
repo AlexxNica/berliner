@@ -11,7 +11,7 @@ module Berliner
 
     # Create a new {CLI} object
     def initialize(verbose: false)
-      @profile = Profile.new(verbose: verbose)
+      @profile = Profile.new
     end
 
     # Generate and render a Berliner based on the profile
