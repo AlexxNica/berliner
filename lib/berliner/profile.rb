@@ -12,13 +12,10 @@ module Berliner
     def initialize
       begin
         FileUtils.mkdir_p(File.dirname(Berliner::PROFILE_PATH))
-        @profile = YAML.load_file(Berliner::PROFILE_PATH).with_indifferent_access
+        user_profile = YAML.load_file(Berliner::PROFILE_PATH).deep_symbolize_keys
+        @profile = default_profile.merge(user_profile)
       rescue
-        @profile = {
-          sources: [],
-          filters: [],
-          renderer: "default"
-        }
+        @profile = default_profile
       end
     end
 
@@ -56,22 +53,32 @@ module Berliner
     # List the sources saved in the profile
     # @return [Array<String>] an array of source slugs
     def sources
-      profile[:sources] || []
+      profile[:sources]
     end
 
     # List the renderers saved in the profile
     # @return [<String>] a renderer slug
     def renderer
-      profile[:renderer] || "default"
+      profile[:renderer]
     end
 
     # List the renderers saved in the profile
     # @return [Array<String>] an array of filter slugs
     def filters
-      @profile[:filters] || []
+      @profile[:filters]
     end
 
     private
+
+    # Default profile object
+    # @return [Hash] the default profile object
+    def default_profile
+      {
+        sources: [],
+        filters: [],
+        renderer: "default"
+      }
+    end
 
     # Write the profile to disk
     # @return [void]
