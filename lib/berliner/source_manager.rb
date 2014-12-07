@@ -10,8 +10,8 @@ module Berliner
     # @param [String, Regex, nil] foo the query term
     # @return [Array<String>] the slugs of all sources with foo in their slugs or all sources
     def self.search(foo=nil)
-      user_sources = Dir["#{Dir.home}/.berliner/sources/*"]
-      gem_sources = Dir["#{LIB_PATH}/berliner/sources/*"]
+      user_sources = Dir[File.join(Dir.home, ".berliner/sources/*")]
+      gem_sources = Dir[File.join(LIB_PATH, "berliner/sources/*")]
       source_slugs = (user_sources + gem_sources).map do |path|
         filename = File.basename(path, ".rb")
         filename.dasherize
@@ -42,10 +42,10 @@ module Berliner
     def self.get_klass(slug)
       filename = slug.gsub(/-/, "_")
       begin
-        require "#{Dir.home}/.berliner/sources/#{filename}"
+        require File.join(Dir.home, ".berliner/sources", filename)
       rescue LoadError
         begin
-          require "berliner/sources/#{filename}"
+          require File.join("berliner/sources", filename)
         rescue LoadError
         end
       end

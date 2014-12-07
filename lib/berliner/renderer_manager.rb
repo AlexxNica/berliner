@@ -9,8 +9,8 @@ module Berliner
     #   a query argument (as there are many less total renderers).
     # @return [Array<String>] the slugs of all renderers
     def self.search
-      user_renderers = Dir["#{Dir.home}/.berliner/renderers/*"]
-      gem_renderers = Dir["#{LIB_PATH}/berliner/renderers/*"]
+      user_renderers = Dir[File.join(Dir.home, ".berliner/renderers/*")]
+      gem_renderers = Dir[File.join(LIB_PATH, "berliner/renderers/*")]
       renderer_slugs = (user_renderers + gem_renderers).map do |path|
         filename = File.basename(path, ".rb")
         filename.dasherize
@@ -35,10 +35,10 @@ module Berliner
     def self.get_klass(slug)
       filename = slug.gsub(/-/, "_")
       begin
-        require "#{Dir.home}/.berliner/renderers/#{filename}"
+        require File.join(Dir.home, ".berliner/renderers", filename)
       rescue LoadError
         begin
-          require "berliner/renderers/#{filename}"
+          require File.join("berliner/renderers", filename)
         rescue LoadError
         end
       end

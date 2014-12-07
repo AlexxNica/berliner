@@ -30,10 +30,10 @@ module Berliner
     def read_template(slug)
       filename = "#{slug.gsub(/-/, '_')}.erb"
       begin
-        template = File.read("#{Dir.home}/.berliner/templates/#{filename}")
+        template = File.read(File.join(Dir.home, ".berliner/templates", filename))
       rescue
         begin
-          template = File.read("#{LIB_PATH}/berliner/templates/#{filename}")
+          template = File.read(File.join(LIB_PATH, "berliner/templates", filename))
         rescue
           raise NameError,
             "The #{slug} template was not found. " \

@@ -9,8 +9,8 @@ module Berliner
     #   a query argument (as there are many less total filters).
     # @return [Array<String>] the slugs of all filters
     def self.search
-      user_filters = Dir["#{Dir.home}/.berliner/filters/*"]
-      gem_filters = Dir["#{LIB_PATH}/berliner/filters/*"]
+      user_filters = Dir[File.join(Dir.home, ".berliner/filters/*")]
+      gem_filters = Dir[File.join(LIB_PATH, "berliner/filters/*")]
       filter_slugs = (user_filters + gem_filters).map do |path|
         filename = File.basename(path, ".rb")
         filename.gsub(/_/, "-")
@@ -39,10 +39,12 @@ module Berliner
     def self.get_klass(slug)
       filename = slug.gsub(/-/, "_") + "_filter"
       begin
-        require "#{Dir.home}/.berliner/filters/#{filename}"
+        require File.join(Dir.home, ".berliner/filters", filename)
       rescue LoadError
-        require "berliner/filters/#{filename}"
-      rescue
+        begin
+          require File.join("berliner/filters", filename)
+        rescue LoadError
+        end
       end
       begin
         klass = "Berliner::#{filename.classify}".constantize
