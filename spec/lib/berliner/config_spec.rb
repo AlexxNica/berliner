@@ -1,0 +1,15 @@
+require "spec_helper"
+
+describe Berliner do
+  it "should have a description" do
+    expect(Berliner::DESCRIPTION).not_to be_nil
+  end
+
+  it "should have a profile path" do
+    expect(Berliner::PROFILE_PATH).not_to be_nil
+  end
+
+  it "should have a lib path" do
+    expect(Berliner::LIB_PATH).not_to be_nil
+  end
+end

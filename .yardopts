@@ -2,6 +2,7 @@
 --exclude lib/berliner/sources/*
 --exclude lib/berliner/renderers/*
 --exclude lib/berliner/templates/*
+--exclude lib/berliner/filters/*
 lib/**/*.rb
 -
 *.md
