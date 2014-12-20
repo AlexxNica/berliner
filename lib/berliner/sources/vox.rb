@@ -4,6 +4,7 @@ module Berliner
   class Vox < Source
     feed "http://www.vox.com/rss/index.xml"
     title "Vox"
+    homepage "http://www.vox.com/"
 
     # Vox has full content in the rss feed so we don't have to scrape
     def articles

@@ -1,6 +1,7 @@
 require "active_support"
 require "active_support/core_ext"
 require "berliner/extend/string"
+require "berliner/source"
 
 module Berliner
   # Manages all Berliner sources
@@ -32,6 +33,17 @@ module Berliner
       get_klass(slug)
     end
 
+    # Load an instantiated {Source} object(s) given an article permalink(s)
+    # @param [String, Array<String>] permalink the article permalink or an array of permalinks
+    # @return [Source, Array<Source>] an instance of the specified source or
+    #   an array of instances
+    def self.load_from_url(permalink)
+      if permalink.is_a?(Array)
+        return permalink.map{ |s| get_klass_from_url(s)}
+      end
+      get_klass_from_url(permalink)
+    end
+
     private
 
     # Return an instantiated {Source} object given the source slug
@@ -40,6 +52,11 @@ module Berliner
     # @raise [NameError] if the source's class name can't be found 
     # @return [Source] an instance of the specified source
     def self.get_klass(slug)
+      if @all_klasses
+        found = @all_klasses.find{|source| slug == source.class.title}
+        return found if found
+      end
+
       filename = slug.gsub(/-/, "_")
       begin
         require File.join(Dir.home, ".berliner/sources", filename)
@@ -57,6 +74,26 @@ module Berliner
           "Make sure it is defined in sources/#{filename}.rb"
       end
       klass.new
+    end
+
+    # Return an instantiated {Source} object given an article permalink
+    # @param [String] permalink the article permalink
+    # @return [Source, DefaultSource] an instance of the recognized source or the default source
+    def self.get_klass_from_url(permalink)
+      found = self.get_all_klasses().find{|source| source.recognize?(permalink)}
+      return found || DefaultSource.new
+    end
+
+    # Return all instantiated {Source} objects (memoized)
+    # @return [Array<Source>] instances of all sources
+    def self.get_all_klasses()
+      @all_klasses ||= self.expensive_all_klasses()
+    end
+
+    # Return all instantiated {Source} objects
+    # @return [Array<Source>] instances of all sources
+    def self.expensive_all_klasses()
+      self.search().map{ |s| get_klass(s) }
     end
 
   end

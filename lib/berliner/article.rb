@@ -9,6 +9,7 @@ module Berliner
       :location,
       :permalink,
       :source,
+      :via,
       :other
 
     # Create a new {Article} object
@@ -21,6 +22,7 @@ module Berliner
       location: nil,
       permalink: nil,
       source: source,
+      via: nil,
       other: {}
     )
       @title = title
@@ -31,6 +33,7 @@ module Berliner
       @location = location
       @permalink = permalink
       @source = source
+      @via = via
       @other = other
     end
   end

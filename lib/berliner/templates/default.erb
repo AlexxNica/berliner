@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <title>Berliner</title>
   <style type="text/css">
-  <%= style%>
+  <%= style %>
   </style>
 </head>
 <body style="padding: 10px 20px;">
   <% articles.each do |article| %>
     <article>
-      <a href="<%= article.permalink %>"><h1><%= article.title %></h1></a>
-      <h2><%= article.author %></h2>
-      <h3><%= article.source %></h3>
-      <%= article.body %>
+      <a href="<%= article.permalink  rescue "Error" %>"><h1><%= article.title rescue "Error" %></h1></a>
+      <h2><%= article.author rescue "Error"%></h2>
+      <h3><%= article.source rescue "Error"%></h3>
+      <%= article.body rescue "Error" %>
     </article>
   <% end %>
 </body>

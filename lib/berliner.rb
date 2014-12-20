@@ -22,10 +22,11 @@ module Berliner
       sources = SourceManager.load(profile.sources)
       renderer = RendererManager.load(profile.renderer)
       filters = FilterManager.load(profile.filters)
-      articles = sources.map{ |source| source.articles }.flatten
-      articles = filters.inject(articles) do |updated_articles, filter|
-        filter.filter(updated_articles)
-      end
+      feed = Feed.new(sources).lazy
+      # articles = filters.inject(feed) do |feed, filter|
+      #   filter.filter(feed)
+      # end.to_a
+      articles = feed.to_a
       renderer.render(articles)
     end
 

@@ -5,8 +5,10 @@ require "open_uri_redirections"
 require "berliner/article"
 require "berliner/extend/string"
 require "berliner/extend/module"
+require "berliner/feed"
 require "active_support"
 require "active_support/core_ext"
+require 'uri'
 
 module Berliner
   # The base object for a Berliner source.  Each source should inherit from
@@ -20,17 +22,15 @@ module Berliner
     end
 
     # Fetch recent entries from the source's feed
-    # @return [Array<Object>] an array of recent Feedjira entry object
+    # @return [Array<Object>] an array of {Feed::FeedEntry} objects
     def fetch
-      entries = Feedjira::Feed.fetch_and_parse(self.class.feed).entries
-
-      # For now, take articles published in the last 3 days, up to a max of 3 articles
-      entries.reject{ |entry| entry.published < (Time.now - 3.days) }.take(3)
+      feedjira_entries = Feedjira::Feed.fetch_and_parse(self.class.feed).entries
+      feedjira_entries.map{ |e| Feed::FeedEntry.new(e.url, self.class.title) }
     end
 
-    # Create an {Article} object from a Feedjira entry
+    # Create an {Article} object from a {Feed::FeedEntry}
     # 
-    # @param [Object] entry a single Feddjira entry object
+    # @param [Feed::FeedEntry] entry a single feed entry
     # @return [Article] an {Article} instance
     def parse(entry)
       html = open(entry.url, :allow_redirections => :safe).read
@@ -40,18 +40,17 @@ module Berliner
         author: document.author || "Unknown",
         body: document.content || "",
         source: self.class.title,
+        via: entry.via,
         permalink: entry.url
         )
     end
 
-    # Get all the articles for a given source
-    # @note This method simply maps the entries returned by {#fetch} through {#parse}
-    # @return [Array<Article>] the source's articles
-    def articles
-      @entries = fetch
-      articles = @entries.map do |entry|
-        parse(entry)
-      end
+    # Recognizes a source from an article permalink
+    #
+    # @param [String] permalink an article permalink
+    # @return [Boolean] whether the article is recognized
+    def recognize?(permalink)
+      (URI(permalink).host == URI(self.class.homepage).host)
     end
 
     class << self
@@ -81,7 +80,33 @@ module Berliner
       # @scope class
       # @return [String]
       attr_rw :feed
+
+      # The homepage source
+      # @note This attribute is set using a DSL
+      # @example Define this attribute in child classes
+      #   homepage "http://mysource.com"
+      # @attribute [r]
+      # @scope class
+      # @return [String]
+      attr_rw :homepage
     end
 
   end
+
+  # The default source class for unrecognized articles
+  class DefaultSource < Source
+    def parse(entry)
+      html = open(entry.url, :allow_redirections => :safe).read
+      document = Readability::Document.new(html)
+      Article.new(
+        title: document.title || "Untitled",
+        author: document.author || "Unknown",
+        body: document.content || "",
+        source: URI(entry.url).host,
+        via: entry.via,
+        permalink: entry.url
+        )
+    end
+  end
+
 end
