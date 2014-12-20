@@ -100,10 +100,6 @@ module Berliner
       uri.host + uri.path
     end
 
-    def sanitize(html)
-      Sanitize.document(html, Sanitize::Config::RELAXED)
-    end
-
     def readability(html)
       document = Readability::Document.new(html)
       title = Sanitize.fragment(document.title, Sanitize::Config::RESTRICTED)
