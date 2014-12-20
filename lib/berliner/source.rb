@@ -51,7 +51,8 @@ module Berliner
     # @param [String] permalink an article permalink
     # @return [Boolean] whether the article is recognized
     def recognize?(permalink)
-      (URI(permalink).host == URI(self.class.homepage).host)
+      return false if !self.class.homepage
+      host_and_path(permalink).start_with?(host_and_path(self.class.homepage))
     end
 
     class << self
@@ -93,6 +94,11 @@ module Berliner
     end
 
     private
+
+    def host_and_path(uri_string)
+      uri = URI(uri_string)
+      uri.host + uri.path
+    end
 
     def sanitize(html)
       Sanitize.document(html, Sanitize::Config::RELAXED)
