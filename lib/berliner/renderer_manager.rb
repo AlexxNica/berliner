@@ -10,7 +10,7 @@ module Berliner
     # @return [Array<String>] the slugs of all renderers
     def self.search
       user_renderers = Dir[File.join(Dir.home, ".berliner/renderers/*")]
-      gem_renderers = Dir[File.join(LIB_PATH, "berliner/renderers/*")]
+      gem_renderers = Dir[File.join(LIB_DIR, "berliner/renderers/*")]
       renderer_slugs = (user_renderers + gem_renderers).map do |path|
         filename = File.basename(path, ".rb")
         filename.dasherize

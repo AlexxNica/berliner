@@ -18,10 +18,36 @@ module Berliner
     # @return [void]
     def render(articles)
       template = read_template(self.class.template)
+      style = read_style(self.class.style)
       html = Erubis::Eruby.new(template).result({
-        articles: articles
+        articles: articles,
+        style: style
         })
-      File.write("berliner.html", html)
+      html_path = File.join(CONFIG_DIR, "berliner.html")
+      File.write(html_path, html)
+      begin
+        system %{open "#{html_path}"}
+      rescue
+      end
+    end
+
+    # Read a CSS style file given its slug
+    # @param [String] slug the style slug
+    # @return [String] the contents of the style file
+    def read_style(slug)
+      filename = "#{slug.gsub(/-/, '_')}.css"
+      begin
+        template = File.read(File.join(Dir.home, ".berliner/styles", filename))
+      rescue
+        begin
+          template = File.read(File.join(LIB_DIR, "berliner/styles", filename))
+        rescue
+          raise NameError,
+            "The #{slug} CSS file was not found. " \
+            "Make sure it is defined in styles/#{filename}"
+        end
+      end
+      template
     end
 
     # Read an ERB template given its slug
@@ -33,7 +59,7 @@ module Berliner
         template = File.read(File.join(Dir.home, ".berliner/templates", filename))
       rescue
         begin
-          template = File.read(File.join(LIB_PATH, "berliner/templates", filename))
+          template = File.read(File.join(LIB_DIR, "berliner/templates", filename))
         rescue
           raise NameError,
             "The #{slug} template was not found. " \

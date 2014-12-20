@@ -10,6 +10,6 @@ describe Berliner do
   end
 
   it "should have a lib path" do
-    expect(Berliner::LIB_PATH).not_to be_nil
+    expect(Berliner::LIB_DIR).not_to be_nil
   end
 end

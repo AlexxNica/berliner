@@ -10,7 +10,7 @@ module Berliner
     # @return [Array<String>] the slugs of all filters
     def self.search
       user_filters = Dir[File.join(Dir.home, ".berliner/filters/*")]
-      gem_filters = Dir[File.join(LIB_PATH, "berliner/filters/*")]
+      gem_filters = Dir[File.join(LIB_DIR, "berliner/filters/*")]
       filter_slugs = (user_filters + gem_filters).map do |path|
         filename = File.basename(path, ".rb")
         filename.gsub(/_/, "-")

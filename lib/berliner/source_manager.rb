@@ -11,7 +11,7 @@ module Berliner
     # @return [Array<String>] the slugs of all sources with foo in their slugs or all sources
     def self.search(foo=nil)
       user_sources = Dir[File.join(Dir.home, ".berliner/sources/*")]
-      gem_sources = Dir[File.join(LIB_PATH, "berliner/sources/*")]
+      gem_sources = Dir[File.join(LIB_DIR, "berliner/sources/*")]
       source_slugs = (user_sources + gem_sources).map do |path|
         filename = File.basename(path, ".rb")
         filename.dasherize
