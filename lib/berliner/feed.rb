@@ -18,6 +18,7 @@ module Berliner
     # @yield [Article] Gives the next {Article} in the feed to the block
     def each
       entries = Parallel.map(sources, :in_threads=>10){|source| source.fetch }
+      # interleave source entries
       first, *rest = *entries
       entries = first.zip(*rest).flatten.compact
       Parallel.each(entries, :in_threads=>10){ |entry| yield parse(entry) }

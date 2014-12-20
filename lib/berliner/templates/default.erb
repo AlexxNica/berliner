@@ -10,10 +10,14 @@
 <body style="padding: 10px 20px;">
   <% articles.each do |article| %>
     <article>
-      <a href="<%= article.permalink  rescue "Error" %>"><h1><%= article.title rescue "Error" %></h1></a>
-      <h2><%= article.author rescue "Error"%></h2>
-      <h3><%= article.source rescue "Error"%></h3>
-      <%= article.body rescue "Error" %>
+      <a href="<%= article.permalink %>"><h1><%= article.title %></h1></a>
+      <h2><%= article.author %></h2>
+      <% if article.source != article.via %>
+        <h3><%= article.source %> via <%= article.via %></h3>
+      <% else %>
+        <h3><%= article.source %></h3>
+      <% end %>
+      <%= article.body %>
     </article>
   <% end %>
 </body>
