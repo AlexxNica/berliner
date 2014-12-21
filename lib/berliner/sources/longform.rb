@@ -20,8 +20,7 @@ module Berliner
     def find_url(content)
       doc = Nokogiri::HTML(content)
       link = doc.search('a').text_includes('Full Story').first
-      return link['href'] if link
-      return false
+      return link ? link['href'] : false
     end
   end
 end
