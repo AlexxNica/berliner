@@ -34,4 +34,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "open_uri_redirections", ["= 0.2.1"]
   gem.add_runtime_dependency "parallel", ["= 1.3.3"]
   gem.add_runtime_dependency "sanitize", ["= 3.0.4"]
+  gem.add_runtime_dependency "nikkou", ["= 0.0.4"]
 end

@@ -18,7 +18,12 @@ module Berliner
     # @yield [Article] Gives the next {Article} in the feed to the block
     def each
       entries = Parallel.map(sources, :in_threads=>10){|source| source.fetch }.flatten.compact
-      Parallel.each(entries, :in_threads=>10){ |entry| yield parse(entry) }
+      Parallel.each(entries, :in_threads=>10) do |entry|
+        begin
+          yield parse(entry)
+        rescue
+        end
+      end
     end
 
     private
