@@ -22,12 +22,10 @@ module Berliner
       sources = SourceManager.load(profile.sources)
       renderer = RendererManager.load(profile.renderer)
       filters = FilterManager.load(profile.filters)
-      feed = Feed.new(sources).lazy
-      # articles = filters.inject(feed) do |feed, filter|
-      #   filter.filter(feed)
-      # end.to_a
-      articles = feed.to_a
-      renderer.render(articles)
+      feed = filters.inject(Feed.new(sources)) do |feed, filter|
+        filter.filter(feed)
+      end
+      renderer.render(feed.articles)
     end
 
     # Search all sources for query term or list all sources if no query is given

@@ -26,11 +26,16 @@ module Berliner
     # @return [Array<Object>] an array of {Feed::FeedEntry} objects
     def fetch
       feedjira_entries = Feedjira::Feed.fetch_and_parse(self.class.feed).entries
-      feedjira_entries.map{ |e| Feed::FeedEntry.new(e.url, self.class.title) }
+      feedjira_entries.map do |e|
+        Feed::FeedEntry.new(
+          e.url,
+          self.class.title
+        )
+      end
     end
 
     # Create an {Article} object from a {Feed::FeedEntry}
-    # 
+    #
     # @param [Feed::FeedEntry] entry a single feed entry
     # @return [Article] an {Article} instance
     def parse(entry)
