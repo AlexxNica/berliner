@@ -1,5 +1,6 @@
 # Berliner
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/s3ththompson/berliner)
 [![Gem Version](https://badge.fury.io/rb/berliner.svg)](http://badge.fury.io/rb/berliner)
 [![Build Status](https://travis-ci.org/s3ththompson/berliner.svg?branch=master)](https://travis-ci.org/s3ththompson/berliner)
 [![Coverage Status](https://img.shields.io/coveralls/s3ththompson/berliner.svg)](https://coveralls.io/r/s3ththompson/berliner?branch=master)
