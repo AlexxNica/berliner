@@ -1,3 +1,5 @@
+require "sanitize"
+
 module Berliner
   # A Berliner article. The base object for every news feed item
   class Article
@@ -25,16 +27,23 @@ module Berliner
       via: nil,
       other: {}
     )
-      @title = title
-      @body = body
-      @author = author
-      @date_published = date_published
-      @image = image
-      @location = location
-      @permalink = permalink
-      @source = source
-      @via = via
+      @title = sanitize(title)
+      @body = sanitize(body, Sanitize::Config::BASIC)
+      @author = sanitize(author)
+      @date_published = sanitize(date_published)
+      @image = sanitize(image)
+      @location = sanitize(location)
+      @permalink = sanitize(permalink)
+      @source = sanitize(source)
+      @via = sanitize(via)
       @other = other
+    end
+
+    private
+
+    def sanitize(fragment, config = Sanitize::Config::RESTRICTED)
+      return nil unless fragment
+      Sanitize.fragment(fragment, config)
     end
   end
 end

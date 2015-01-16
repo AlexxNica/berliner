@@ -27,6 +27,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "yard", ["= 0.8.7.4"]
 
   gem.add_runtime_dependency "feedjira", ["= 1.1.0"]
+  gem.add_runtime_dependency "fastimage", ["= 1.6.6"]
   gem.add_runtime_dependency "ruby-readability", ["= 0.7.0"]
   gem.add_runtime_dependency "activesupport", ["= 4.1.6"]
   gem.add_runtime_dependency "commander", ["= 4.2.1"]

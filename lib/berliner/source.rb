@@ -9,7 +9,6 @@ require "berliner/feed"
 require "active_support"
 require "active_support/core_ext"
 require "uri"
-require "sanitize"
 
 module Berliner
   # The base object for a Berliner source.  Each source should inherit from
@@ -40,11 +39,14 @@ module Berliner
     # @return [Article] an {Article} instance
     def parse(entry)
       html = open(entry.url, :allow_redirections => :safe).read
+      document = Readability::Document.new(html)
       document = readability(html)
+      image = document.images.empty? ? nil : document.images.first
       Article.new(
-        title: document[:title],
-        author: document[:author],
-        body: document[:content],
+        title: document.title,
+        author: document.author,
+        body: document.content,
+        image: image,
         source: self.class.title,
         via: entry.via,
         permalink: entry.url
@@ -103,18 +105,6 @@ module Berliner
     def host_and_path(uri_string)
       uri = URI(uri_string)
       uri.host + uri.path
-    end
-
-    def readability(html)
-      document = Readability::Document.new(html)
-      title = Sanitize.fragment(document.title, Sanitize::Config::RESTRICTED)
-      author = Sanitize.fragment(document.author, Sanitize::Config::RESTRICTED)
-      content = Sanitize.fragment(document.content, Sanitize::Config::BASIC)
-      return {
-        title: title,
-        author: author,
-        content: content
-      }
     end
 
   end

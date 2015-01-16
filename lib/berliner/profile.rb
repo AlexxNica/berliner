@@ -56,16 +56,16 @@ module Berliner
       profile[:sources]
     end
 
-    # List the renderers saved in the profile
+    # List the renderer saved in the profile
     # @return [<String>] a renderer slug
     def renderer
-      profile[:renderer]
+      profile[:renderer] || "default"
     end
 
     # List the renderers saved in the profile
     # @return [Array<String>] an array of filter slugs
     def filters
-      @profile[:filters]
+      profile[:filters]
     end
 
     private

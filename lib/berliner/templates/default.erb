@@ -17,6 +17,9 @@
       <% else %>
         <h3><%= article.source %></h3>
       <% end %>
+      <% if article.image %>
+        <p><img src="<%= article.image%>"></p>
+      <% end %>
       <%= article.body %>
     </article>
   <% end %>

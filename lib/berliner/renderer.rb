@@ -1,10 +1,17 @@
 require "erubis"
+require "fileutils"
+require "uri"
+require "pathname"
+require "parallel"
+require "timeout"
 
 module Berliner
   # The base object for a Berliner renderer.  Each renderer should inherit from
   # {Renderer} and reimplement {Renderer#render} as necessary.
   # @abstract
   class Renderer
+
+    # TODO: move file locations to constants
 
     # Create a new {Renderer} object
     def initialize(options = {})
@@ -17,8 +24,10 @@ module Berliner
     # @param [Array<Article>] articles an array of {Article} objects
     # @return [void]
     def render(articles)
+      clean_up()
       template = read_template(self.class.template)
       style = read_style(self.class.style)
+      articles = save_images(articles)
       html = Erubis::Eruby.new(template).result({
         articles: articles,
         style: style
@@ -29,6 +38,13 @@ module Berliner
         system %{open "#{html_path}"}
       rescue
       end
+    end
+
+    # Clean up old berliner.html and berliner_files folder
+    # @return [void]
+    def clean_up
+      FileUtils.rm_rf(File.join(CONFIG_DIR, "berliner_files"))
+      FileUtils.rm_rf(File.join(CONFIG_DIR, "berliner.html"))
     end
 
     # Read a CSS style file given its slug
@@ -69,6 +85,16 @@ module Berliner
       template
     end
 
+    # Save all images in articles to disk and replace URL with relative filename
+    # @param [Array<Article>] articles an array of {Article} objects
+    # @return [Array<Article>] an array of {Article} objects with image attribute altered
+    def save_images(articles)
+      Parallel.map(articles, :in_threads=>10) do |article|
+        article.image = save_image(article.image)
+        article
+      end
+    end
+
     class << self
       # The ERB template to use to render articles
       # @note This attribute is set using a DSL
@@ -88,5 +114,31 @@ module Berliner
       # @return [String]
       attr_rw :style
     end
+
+    private
+
+    # Download an image given its url, save to disk, and return relative file location
+    # @param [String, nil] url the image url
+    # @return [String, nil] relative file location of image on disk, or nil if no image
+    def save_image(url)
+      return nil unless url
+      uri = URI.parse(url)
+      files_dir = File.join(CONFIG_DIR, "berliner_files")
+      unless File.directory?(files_dir)
+        FileUtils.mkdir_p(files_dir)
+      end
+      basename = File.basename(uri.path)
+      file = File.join(CONFIG_DIR, "berliner_files", basename)
+      begin
+        Timeout::timeout(10) {
+          File.open(file, 'wb') {|f| f.write(open(uri).read)}
+        }
+        relative = Pathname.new(file).relative_path_from(Pathname.new(CONFIG_DIR)).to_s
+        return relative
+      rescue
+        return nil
+      end
+    end
+
   end
 end
