@@ -23,7 +23,7 @@ module Berliner
 
     def default_options
       {
-        limit: 2
+        limit: 1
       }
     end
 

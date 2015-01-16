@@ -11,11 +11,16 @@ module Berliner
   # @abstract
   class Renderer
 
+    BERLINER_HTML = File.join(CONFIG_DIR, "berliner.html")
+    BERLINER_HTML_FILES = File.join(CONFIG_DIR, "berliner_files")
+
     # TODO: move file locations to constants
 
     # Create a new {Renderer} object
     def initialize(options = {})
       @options = options
+      clean_up()
+      make_files_dir()
     end
 
     # Render articles into a Berliner
@@ -24,7 +29,6 @@ module Berliner
     # @param [Array<Article>] articles an array of {Article} objects
     # @return [void]
     def render(articles)
-      clean_up()
       template = read_template(self.class.template)
       style = read_style(self.class.style)
       articles = save_images(articles)
@@ -32,19 +36,11 @@ module Berliner
         articles: articles,
         style: style
         })
-      html_path = File.join(CONFIG_DIR, "berliner.html")
-      File.write(html_path, html)
+      File.write(BERLINER_HTML, html)
       begin
-        system %{open "#{html_path}"}
+        system %{open "#{BERLINER_HTML}"}
       rescue
       end
-    end
-
-    # Clean up old berliner.html and berliner_files folder
-    # @return [void]
-    def clean_up
-      FileUtils.rm_rf(File.join(CONFIG_DIR, "berliner_files"))
-      FileUtils.rm_rf(File.join(CONFIG_DIR, "berliner.html"))
     end
 
     # Read a CSS style file given its slug
@@ -117,19 +113,31 @@ module Berliner
 
     private
 
+    # Clean up old berliner.html and berliner_files folder
+    # @return [void]
+    def clean_up
+      FileUtils.rm_rf(BERLINER_HTML_FILES)
+      FileUtils.rm_rf(BERLINER_HTML)
+    end
+
+    # Create a 'berliner_files' directory in the config dir
+    # @return [void]
+    def make_files_dir
+      unless File.directory?(BERLINER_HTML_FILES)
+        FileUtils.mkdir_p(BERLINER_HTML_FILES)
+      end
+    end
+
     # Download an image given its url, save to disk, and return relative file location
     # @param [String, nil] url the image url
     # @return [String, nil] relative file location of image on disk, or nil if no image
     def save_image(url)
       return nil unless url
       uri = URI.parse(url)
-      files_dir = File.join(CONFIG_DIR, "berliner_files")
-      unless File.directory?(files_dir)
-        FileUtils.mkdir_p(files_dir)
-      end
       basename = File.basename(uri.path)
-      file = File.join(CONFIG_DIR, "berliner_files", basename)
+      file = File.join(BERLINER_HTML_FILES, basename)
       begin
+        # Timeout image download after 10 seconds
         Timeout::timeout(10) {
           File.open(file, 'wb') {|f| f.write(open(uri).read)}
         }
