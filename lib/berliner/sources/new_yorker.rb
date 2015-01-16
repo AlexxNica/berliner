@@ -10,20 +10,6 @@ module Berliner
 
     def parse(entry)
       html = open(entry.url, :allow_redirections => :safe).read
-      document = readability(html)
-      Article.new(
-        title: document[:title],
-        author: document[:author],
-        body: document[:content],
-        image: document[:image],
-        source: self.class.title,
-        via: entry.via,
-        permalink: entry.url
-        )
-    end
-
-    def parse(entry)
-      html = open(entry.url, :allow_redirections => :safe).read
       doc = Nokogiri::HTML(html)
       title = doc.at_css("hgroup h1").content || ""
       author = doc.attr_equals("itemprop", "name author").first.content || ""
