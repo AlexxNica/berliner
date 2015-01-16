@@ -1,22 +1,35 @@
 require "spec_helper"
+require "berliner/feed"
 require "berliner/filters/per_source_limit_filter"
 
 describe Berliner::PerSourceLimitFilter do
   it_behaves_like "a filter"
 
-  let(:input_articles) do
-    articles = []
-    3.times do |source_number|
-      3.times do |article_number|
-        articles << Berliner::Article.new(
-          title: "Test #{article_number}",
-          body: "Test",
-          source: "Source #{source_number}"
+  let(:input_feed) do
+    feed = Berliner::Feed.new([])
+    feed.entries = [
+      Berliner::Feed::FeedEntry.new(
+        "",
+        "Source 1",
+        ""
+        ),
+      Berliner::Feed::FeedEntry.new(
+        "",
+        "Source 1",
+        ""
+        ),
+      Berliner::Feed::FeedEntry.new(
+        "",
+        "Source 1",
+        ""
+        ),
+      Berliner::Feed::FeedEntry.new(
+        "",
+        "Source 2",
+        ""
         )
-      end
-    end
-
-    articles
+    ]
+    feed
   end
 
   let(:filter) do
@@ -25,16 +38,16 @@ describe Berliner::PerSourceLimitFilter do
 
   describe "#filter" do
     it "should filter number of articles in each source to specified limit" do
-      output = filter.filter(input_articles, {limit: 2})
-      expect(output.size).to eq(6)
-      expect(output.select{ |art| art.source == "Source 1" }.size).to eq(2)
+      output = filter.filter(input_feed, {limit: 2})
+      expect(output.entries.select{ |entry| entry.via == "Source 1" }.size).to eq(2)
+      expect(output.entries.select{ |entry| entry.via == "Source 2" }.size).to eq(1)
     end
 
     it "should default to limiting to 1 article per source if no limit is" \
        "specified" do
-      output = filter.filter(input_articles)
-      expect(output.size).to eq(3)
-      expect(output.select{ |art| art.source == "Source 1" }.size).to eq(1)
+      output = filter.filter(input_feed)
+      expect(output.entries.select{ |entry| entry.via == "Source 1" }.size).to eq(1)
+      expect(output.entries.select{ |entry| entry.via == "Source 2" }.size).to eq(1)
     end
   end
 end

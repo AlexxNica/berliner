@@ -49,7 +49,7 @@ module Berliner
     # Return an instantiated {Source} object given the source slug
     # @param [String] slug the source slug
     # @raise [LoadError] if the source can't be loaded
-    # @raise [NameError] if the source's class name can't be found 
+    # @raise [NameError] if the source's class name can't be found
     # @return [Source] an instance of the specified source
     def self.get_klass(slug)
       if @all_klasses

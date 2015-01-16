@@ -1,18 +1,9 @@
 require "spec_helper"
+require "berliner/feed"
 
 shared_examples_for "a filter" do
 
-  let(:input_articles) do
-    articles = []
-    3.times do
-      articles << Berliner::Article.new(
-        title: "Test",
-        body: "Test",
-        source: "Test Source"
-      )
-    end
-    articles
-  end
+  let(:input_feed) { Berliner::Feed.new([]) }
 
   let(:filter) do
     described_class.new
@@ -23,13 +14,16 @@ shared_examples_for "a filter" do
       expect(filter.respond_to?(:filter)).to be true
     end
 
-    it "should take an array of articles and an options hash, and return an" \
-       "array of articles" do
-      output = filter.filter(input_articles, {})
-      expect(output).to be_an Array
-      output.each do |article|
-        expect(article).to be_a Berliner::Article
+    it "should take a feed and an options hash, and return a new feed" do
+      output = filter.filter(input_feed, {})
+      expect(output).to be_a Berliner::Feed
+      expect(output.sources).to eq(input_feed.sources)
+
+      # Output entries should be a subset of input entries
+      output.entries.each do |entry|
+        expect(entry).to be_in(input_feed.entries)
       end
     end
+
   end
 end
