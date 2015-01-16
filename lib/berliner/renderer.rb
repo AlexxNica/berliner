@@ -139,7 +139,7 @@ module Berliner
       begin
         # Timeout image download after 10 seconds
         Timeout::timeout(10) {
-          File.open(file, 'wb') {|f| f.write(open(uri).read)}
+          File.open(file, "wb") {|f| f.write(open(uri).read)}
         }
         relative = Pathname.new(file).relative_path_from(Pathname.new(CONFIG_DIR)).to_s
         return relative

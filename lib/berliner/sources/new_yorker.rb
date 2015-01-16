@@ -27,7 +27,7 @@ module Berliner
       doc = Nokogiri::HTML(html)
       title = doc.at_css("hgroup h1").content || ""
       author = doc.attr_equals("itemprop", "name author").first.content || ""
-      image = doc.at_css("#articleBody figure img").attribute('data-src').content || nil
+      image = doc.at_css("#articleBody figure img").attribute("data-src").content || nil
       body_node = doc.at_css("#articleBody")
       body_node.css("figure").remove
       body_node.css(".content-ad-wrapper").remove

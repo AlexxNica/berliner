@@ -8,5 +8,5 @@ module Berliner
   # Path to the profile in the config directory
   PROFILE_PATH = File.join(CONFIG_DIR, "profile.yml")
   # Path to gem lib/ folder
-  LIB_DIR = File.expand_path('..', __dir__)
+  LIB_DIR = File.expand_path("..", __dir__)
 end

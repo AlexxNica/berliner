@@ -1,5 +1,5 @@
-require 'parallel'
-require 'berliner/source_manager'
+require "parallel"
+require "berliner/source_manager"
 
 module Berliner
   # An Enumerable object which represents the collective feed of all given sources
