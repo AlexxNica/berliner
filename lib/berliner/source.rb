@@ -40,7 +40,6 @@ module Berliner
     def parse(entry)
       html = open(entry.url, :allow_redirections => :safe).read
       document = Readability::Document.new(html)
-      document = readability(html)
       image = document.images.empty? ? nil : document.images.first
       Article.new(
         title: document.title,
@@ -113,11 +112,13 @@ module Berliner
   class DefaultSource < Source
     def parse(entry)
       html = open(entry.url, :allow_redirections => :safe).read
-      document = readability(html)
+      document = Readability::Document.new(html)
+      image = document.images.empty? ? nil : document.images.first
       Article.new(
-        title: document[:title],
-        author: document[:author],
-        body: document[:content],
+        title: document.title,
+        author: document.author,
+        body: document.content,
+        image: image,
         source: URI(entry.url).host,
         via: entry.via,
         permalink: entry.url
