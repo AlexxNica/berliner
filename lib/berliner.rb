@@ -1,3 +1,5 @@
+require "berliner/config"
+require "berliner/version"
 require "berliner/source_manager"
 require "berliner/renderer_manager"
 require "berliner/filter_manager"
@@ -56,6 +58,3 @@ module Berliner
     end
   end
 end
-
-require "berliner/config"
-require "berliner/version"

@@ -10,16 +10,20 @@
 <body>
   <% articles.each do |article| %>
     <article>
-      <a href="<%= article.permalink %>"><h1><%= article.title %></h1></a>
-      <h2><%= article.author %></h2>
-      <% if article.source != article.via %>
-        <h3><%= article.source %> via <%= article.via %></h3>
-      <% else %>
-        <h3><%= article.source %></h3>
-      <% end %>
-      <% if article.image %>
-        <p><img src="<%= article.image%>"></p>
-      <% end %>
+      <p>
+        <a href="<%= article.permalink %>">
+          <h1><%= article.title %></h1>
+        </a>
+        <h2><%= article.author %></h2>
+        <% if article.source != article.via %>
+          <h3><%= article.source %> via <%= article.via %></h3>
+        <% else %>
+          <h3><%= article.source %></h3>
+        <% end %>
+        <% if article.image %>
+          <p><img src="<%= article.image%>"></p>
+        <% end %>
+      </p>
       <%= article.body %>
     </article>
   <% end %>

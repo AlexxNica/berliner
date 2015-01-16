@@ -5,10 +5,6 @@ describe Berliner do
     expect(Berliner::DESCRIPTION).not_to be_nil
   end
 
-  it "should have a profile path" do
-    expect(Berliner::PROFILE_PATH).not_to be_nil
-  end
-
   it "should have a lib path" do
     expect(Berliner::LIB_DIR).not_to be_nil
   end

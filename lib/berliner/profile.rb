@@ -8,11 +8,13 @@ module Berliner
   class Profile
     attr_accessor :profile
 
+    PROFILE_PATH = File.join(CONFIG_DIR, "profile.yml")
+
     # Create a new {Profile} object
     def initialize
       begin
-        FileUtils.mkdir_p(File.dirname(Berliner::PROFILE_PATH))
-        user_profile = YAML.load_file(Berliner::PROFILE_PATH).deep_symbolize_keys
+        FileUtils.mkdir_p(File.dirname(PROFILE_PATH))
+        user_profile = YAML.load_file(PROFILE_PATH).deep_symbolize_keys
         @profile = default_profile.merge(user_profile)
       rescue
         @profile = default_profile
@@ -83,7 +85,7 @@ module Berliner
     # Write the profile to disk
     # @return [void]
     def write
-      File.open(Berliner::PROFILE_PATH,"w") do |f|
+      File.open(PROFILE_PATH,"w") do |f|
          f.write profile.to_hash.to_yaml
       end
     end
