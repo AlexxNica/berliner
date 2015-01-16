@@ -134,7 +134,7 @@ module Berliner
     def save_image(url)
       return nil unless url
       uri = URI.parse(url)
-      basename = File.basename(uri.path)
+      basename = File.basename(URI.unescape(uri.path))
       file = File.join(BERLINER_HTML_FILES, basename)
       begin
         # Timeout image download after 10 seconds
