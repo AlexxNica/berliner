@@ -19,24 +19,26 @@ module Berliner
     end
 
     # Load an instantiated {Source} object(s) given the source slug(s)
-    # @param [String, Array<String>] slug the source slug or an array of source slugs
+    # @param [String, Array<String>] argv the source slug or an array of source slugs
     # @return [Source, Array<Source>] an instance of the specified source or
     #   an array of instances
-    def self.load(slug)
-      if slug.is_a?(Array)
-        return slug.map{ |s| get_klass(s)}
+    def self.load(argv)
+      if argv.is_a?(Array)
+        return argv.map{ |s| get_klass(s)}
       end
-      get_klass(slug)
+      get_klass(argv)
     end
 
     private
 
     # Return an instantiated {filter} object given the filter slug
-    # @param [String] slug the filter slug
+    # @param [String] argv the filter slug
     # @raise [LoadError] if the filter can't be loaded
     # @raise [NameError] if the filter's class name can't be found
     # @return [Source] an instance of the specified filter
-    def self.get_klass(slug)
+    def self.get_klass(argv)
+      args = argv.split(" ")
+      slug = args.shift
       filename = slug.gsub(/-/, "_") + "_filter"
       begin
         require File.join(Dir.home, ".berliner/filters", filename)
@@ -53,7 +55,7 @@ module Berliner
           "The #{filename.classify} was not found. " \
           "Make sure it is defined in filters/#{filename}.rb"
       end
-      klass.new
+      klass.new(args)
     end
 
   end

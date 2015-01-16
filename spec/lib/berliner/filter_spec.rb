@@ -14,8 +14,8 @@ shared_examples_for "a filter" do
       expect(filter.respond_to?(:filter)).to be true
     end
 
-    it "should take a feed and an options hash, and return a new feed" do
-      output = filter.filter(input_feed, {})
+    it "should take a feed, and return a new feed" do
+      output = filter.filter(input_feed)
       expect(output).to be_a Berliner::Feed
       expect(output.sources).to eq(input_feed.sources)
 

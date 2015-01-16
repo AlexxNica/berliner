@@ -14,7 +14,7 @@ module Berliner
     def initialize
       begin
         FileUtils.mkdir_p(File.dirname(PROFILE_PATH))
-        user_profile = YAML.load_file(PROFILE_PATH).deep_symbolize_keys
+        user_profile = YAML.load_file(PROFILE_PATH)
         @profile = default_profile.merge(user_profile)
       rescue
         @profile = default_profile
@@ -32,7 +32,7 @@ module Berliner
         return true
       end
       if SourceManager.search.include?(source)
-        profile[:sources] |= [source]
+        profile["sources"] |= [source]
       else
         raise NameError, "Source #{source} not found"
       end
@@ -48,26 +48,26 @@ module Berliner
         source.each{ |s| remove(s)}
         return true
       end
-      profile[:sources] -= [source]
+      profile["sources"] -= [source]
       write
     end
 
     # List the sources saved in the profile
     # @return [Array<String>] an array of source slugs
     def sources
-      profile[:sources]
+      profile["sources"]
     end
 
     # List the renderer saved in the profile
     # @return [<String>] a renderer slug
     def renderer
-      profile[:renderer] || "default"
+      profile["renderer"] || "default"
     end
 
-    # List the renderers saved in the profile
+    # List the filters saved in the profile
     # @return [Array<String>] an array of filter slugs
     def filters
-      profile[:filters]
+      profile["filters"]
     end
 
     private
@@ -76,9 +76,9 @@ module Berliner
     # @return [Hash] the default profile object
     def default_profile
       {
-        sources: [],
-        filters: [],
-        renderer: "default"
+        "sources" => [],
+        "filters" => [],
+        "renderer" => "default"
       }
     end
 

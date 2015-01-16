@@ -14,8 +14,6 @@ module Berliner
     BERLINER_HTML = File.join(CONFIG_DIR, "berliner.html")
     BERLINER_HTML_FILES = File.join(CONFIG_DIR, "berliner_files")
 
-    # TODO: move file locations to constants
-
     # Create a new {Renderer} object
     def initialize(options = {})
       @options = options
