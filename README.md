@@ -24,7 +24,7 @@ $ gem install berliner
 $ berliner search
 
 # add your preferred sources
-$ berliner add new-york-times
+$ berliner add new-yorker-books
 $ berliner add five-thirty-eight
 
 # list your added sources
@@ -32,14 +32,11 @@ $ berliner list
 
 # Read your daily Berliner
 $ berliner read
-# Or specify a renderer
-$ berliner read --console
-
 ```
 
-# Module Usage
+# Advanced Usage
 
-Build a profile of your favorite news sources and save it to `~/.berliner/profile.yml`.  For a list of supported sources, see [here](https://github.com/s3ththompson/berliner/tree/master/lib/berliner/sources).  Choose a renderer from the supported renderers [here](https://github.com/s3ththompson/berliner/tree/master/lib/berliner/renderers).
+Build a profile of your favorite news sources and save it to `~/.berliner/profile.yml`.  For a list of supported sources, see [here](https://github.com/s3ththompson/berliner/tree/master/lib/berliner/sources).  Choose a renderer from the supported renderers [here](https://github.com/s3ththompson/berliner/tree/master/lib/berliner/renderers).  Add any number of filters from the supported filters [here](https://github.com/s3ththompson/berliner/tree/master/lib/berliner/filters).
 
 ``` yaml
 #  Example ~/.berliner/profile.yml
@@ -47,14 +44,15 @@ sources:
   - designo-daily
   - new-york-times
   - new-yorker
-renderer: default
+filters:
+  - per-source-limit
+renderer: utilitarian
 ```
 
-Build a Berliner from the sources in your profile.
+Build a Berliner from the config settings in your profile.
 
-``` ruby
-require "berliner"
-Berliner::CLI.read()
+```sh
+$ berliner read
 ```
 
 # Adding a Source
@@ -69,14 +67,12 @@ class MySource < Source
   # The feed string is passed to Feedjira to download entries
   feed "http://feeds.feedburner.com/<my-source>"
   title "My Source"
-  # Specify a custom stylesheet for formatting
-  style "source"
+  homepage "http://www.my-source.com/"
 
   # define `fetch` to specify how the feed string returns
-  # a list of html pages.  By default each feed entry less than
-  # a day old is downloaded.
+  # a list of html pages.
 
-  # the `parse` method takes an RSS entry and returns an Article object
+  # the `parse` method takes a Berliner::Feed::FeedEntry object and returns an Article object
   def parse(entry)
     require "nokogiri"
     require "berliner/article"
@@ -86,13 +82,13 @@ class MySource < Source
     doc = Nokogiri::HTML(html)
 
     Article.new(
-      title: doc.css("title"),
+      title: doc.at_css("title").content,
       author: doc.at("meta[name='author']")["content"],
-      content: doc.css("article"),
-      published: doc.css("date-published"),
-      url: doc.css("permalink"),
+      content: doc.at_css("article").to_s,
+      published: doc.at_css(".date-published").content,
+      url: doc.at_css("#permalink").content,
       source: self.class.title,
-      style: self.class.style
+      via: entry.via
       )
   end
 end
@@ -104,4 +100,4 @@ end
 
 # Supported Ruby Versions
 
-Berliner requires Ruby 2.0.0 or great.  It is tested against Ruby 2.0.0, 2.1.1, and 2.1.2.
+Berliner requires Ruby 2.0.0 or greater.  It is tested against Ruby 2.0.0, 2.1.1, and 2.1.2.
