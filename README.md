@@ -1,5 +1,9 @@
 # Berliner
 
+> WARNING: Berliner is experimental software under active development.  There are few tests. The CLI commands, architecture, APIs, and source code layout may change at any moment.
+
+> **Berliner will be fit for public use at v0.1.0** (follow progress [here](https://github.com/s3ththompson/berliner/issues/10) and [here](https://github.com/s3ththompson/berliner/issues/11).)
+
 [![Gitter](https://img.shields.io/badge/GITTER-JOIN%20CHAT%20%E2%86%92-brightgreen.svg?style=flat)](https://gitter.im/s3ththompson/berliner)
 [![Gem Version](https://badge.fury.io/rb/berliner.svg)](http://badge.fury.io/rb/berliner)
 [![Build Status](https://travis-ci.org/s3ththompson/berliner.svg?branch=master)](https://travis-ci.org/s3ththompson/berliner)
