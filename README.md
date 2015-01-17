@@ -1,9 +1,10 @@
 # Berliner
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/s3ththompson/berliner)
+[![Gitter](https://img.shields.io/badge/GITTER-JOIN%20CHAT%20%E2%86%92-brightgreen.svg?style=flat)](https://gitter.im/s3ththompson/berliner)
 [![Gem Version](https://badge.fury.io/rb/berliner.svg)](http://badge.fury.io/rb/berliner)
 [![Build Status](https://travis-ci.org/s3ththompson/berliner.svg?branch=master)](https://travis-ci.org/s3ththompson/berliner)
-[![Coverage Status](https://img.shields.io/coveralls/s3ththompson/berliner.svg)](https://coveralls.io/r/s3ththompson/berliner?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/s3ththompson/berliner.svg?style=flat)](https://coveralls.io/r/s3ththompson/berliner?branch=master)
+[![Inline docs](http://inch-ci.org/github/s3ththompson/berliner.svg?branch=master)](http://inch-ci.org/github/s3ththompson/berliner)
 
 <img align="right" height="250" src="http://i.imgur.com/4BEEus9.png" alt="Berliner">
 
