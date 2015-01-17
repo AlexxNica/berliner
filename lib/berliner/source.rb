@@ -15,10 +15,20 @@ module Berliner
   # {Source} and reimplement {Source#fetch} and {Source#parse} if necessary.
   # @abstract
   class Source
+    attr_accessor :credentials, :authenticated
 
     # Create a new {Source} object
-    def initialize(options = {})
-      @options = options
+    def initialize(creds: nil)
+      @credentials = creds
+      if credentials
+        @authenticated = auth
+      else
+        @authenticated = false
+      end
+    end
+
+    def auth
+      return false
     end
 
     # Fetch recent entries from the source's feed
@@ -50,15 +60,6 @@ module Berliner
         via: entry.via,
         permalink: entry.url
         )
-    end
-
-    # Recognizes a source from an article permalink
-    #
-    # @param [String] permalink an article permalink
-    # @return [Boolean] whether the article is recognized
-    def recognize?(permalink)
-      return false if !self.class.homepage
-      host_and_path(permalink).start_with?(host_and_path(self.class.homepage))
     end
 
     class << self
@@ -102,7 +103,7 @@ module Berliner
     private
 
     def host_and_path(uri_string)
-      uri = URI(uri_string)
+      uri = URI.parse(uri_string)
       uri.host + uri.path
     end
 

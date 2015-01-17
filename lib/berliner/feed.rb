@@ -1,4 +1,5 @@
 require "parallel"
+require "httpclient"
 require "berliner/source_manager"
 
 module Berliner
@@ -40,8 +41,8 @@ module Berliner
       attr_accessor :url, :via, :source
 
       # Create a new {Feed::FeedEntry} object
-      def initialize(url, via, source = nil)
-        @url = url
+      def initialize(rss_url, via, source = nil)
+        @url = follow_url(rss_url)
         @via = via
         @source = source || SourceManager.load_from_url(url)
       end
@@ -52,6 +53,18 @@ module Berliner
       end
 
       private
+
+      def follow_url(rss_url)
+        begin
+          httpc = HTTPClient.new
+          resp = httpc.get(rss_url)
+          location = resp.header['Location'] || rss_url
+          location = location.shift if location.is_a?(Array)
+          (location && !location.empty?) ? location : rss_url
+        rescue
+          nil
+        end
+      end
 
       def get_article
         begin

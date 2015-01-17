@@ -21,7 +21,9 @@ module Berliner
     # Generate and render a Berliner based on the profile
     # @return [void]
     def read
-      sources = SourceManager.load(profile.sources)
+      sources = SourceManager.load(profile.sources,
+        all_credentials: profile.credentials
+        )
       renderer = RendererManager.load(profile.renderer)
       filters = FilterManager.load(profile.filters)
       feed = filters.inject(Feed.new(sources)) do |feed, filter|

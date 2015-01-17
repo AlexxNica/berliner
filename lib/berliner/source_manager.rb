@@ -2,10 +2,15 @@ require "active_support"
 require "active_support/core_ext"
 require "berliner/extend/string"
 require "berliner/source"
+require "berliner/source_registry"
 
 module Berliner
   # Manages all Berliner sources
   class SourceManager
+
+    @instances = {}
+    @all_credentials = {}
+
     # Search user-defined sources and packaged sources for a query term foo
     # or list all sources if foo is nil.
     # @param [String, Regex, nil] foo the query term
@@ -26,11 +31,14 @@ module Berliner
     # @param [String, Array<String>] slug the source slug or an array of source slugs
     # @return [Source, Array<Source>] an instance of the specified source or
     #   an array of instances
-    def self.load(slug)
+    def self.load(slug, all_credentials: {})
+      @all_credentials = @all_credentials.merge(all_credentials)
       if slug.is_a?(Array)
-        return slug.map{ |s| get_klass(s)}
+        return slug.map do |s|
+          get_klass(s, credentials: @all_credentials[s] || nil)
+        end
       end
-      get_klass(slug)
+      get_klass(slug, credentials: @all_credentials[s] || nil)
     end
 
     # Load an instantiated {Source} object(s) given an article permalink(s)
@@ -51,12 +59,8 @@ module Berliner
     # @raise [LoadError] if the source can't be loaded
     # @raise [NameError] if the source's class name can't be found
     # @return [Source] an instance of the specified source
-    def self.get_klass(slug)
-      if @all_klasses
-        found = @all_klasses.find{|source| slug == source.class.title}
-        return found if found
-      end
-
+    def self.get_klass(slug, credentials: nil)
+      return @instances[slug] if @instances.has_key?(slug)
       filename = slug.gsub(/-/, "_")
       begin
         require File.join(Dir.home, ".berliner/sources", filename)
@@ -67,33 +71,31 @@ module Berliner
         end
       end
       begin
-        klass = "Berliner::#{filename.classify}".constantize
+        klass = "Berliner::#{self.classify(filename)}".constantize
       rescue
         raise NameError,
-          "The #{filename.classify} source was not found. " \
+          "The #{self.classify(filename)} source was not found. " \
           "Make sure it is defined in sources/#{filename}.rb"
       end
-      klass.new
+      k = credentials ? klass.new(creds: credentials) : klass.new
+      @instances[slug] = k
+      return k
     end
 
     # Return an instantiated {Source} object given an article permalink
     # @param [String] permalink the article permalink
     # @return [Source, DefaultSource] an instance of the recognized source or the default source
     def self.get_klass_from_url(permalink)
-      found = self.get_all_klasses().find{|source| source.recognize?(permalink)}
-      return found || DefaultSource.new
+      slug = SourceRegistry.get_classname(permalink)
+      if slug
+        return self.get_klass(slug, credentials: @all_credentials[slug] || nil)
+      else
+        return DefaultSource.new
+      end
     end
 
-    # Return all instantiated {Source} objects (memoized)
-    # @return [Array<Source>] instances of all sources
-    def self.get_all_klasses()
-      @all_klasses ||= self.expensive_all_klasses()
-    end
-
-    # Return all instantiated {Source} objects
-    # @return [Array<Source>] instances of all sources
-    def self.expensive_all_klasses()
-      self.search().map{ |s| get_klass(s) }
+    def self.classify(table_name)
+      table_name.to_s.sub(/.*\./, '').camelize
     end
 
   end

@@ -70,6 +70,10 @@ module Berliner
       profile["filters"]
     end
 
+    def credentials
+      profile["credentials"] || {}
+    end
+
     private
 
     # Default profile object
@@ -78,6 +82,7 @@ module Berliner
       {
         "sources" => [],
         "filters" => [],
+        "credentials" => {},
         "renderer" => "default"
       }
     end
