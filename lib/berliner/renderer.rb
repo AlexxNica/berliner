@@ -114,8 +114,8 @@ module Berliner
     # Clean up old berliner.html and berliner_files folder
     # @return [void]
     def clean_up
-      FileUtils.rm_rf(BERLINER_HTML_FILES)
-      FileUtils.rm_rf(BERLINER_HTML)
+      FileUtils.remove_entry_secure(BERLINER_HTML_FILES)
+      FileUtils.remove_entry_secure(BERLINER_HTML)
     end
 
     # Create a 'berliner_files' directory in the config dir
