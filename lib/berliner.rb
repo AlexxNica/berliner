@@ -21,12 +21,10 @@ module Berliner
     # Generate and render a Berliner based on the profile
     # @return [void]
     def read
-      sources = SourceManager.load(profile.sources,
-        all_credentials: profile.credentials
-        )
-      renderer = RendererManager.load(profile.renderer)
-      filters = FilterManager.load(profile.filters)
-      feed = filters.inject(Feed.new(sources)) do |feed, filter|
+      feed = Feed.new(profile.sources, profile.credentials)
+      renderer = RendererManager.new.load(profile.renderer)
+      filters = FilterManager.new.load(profile.filters)
+      feed = filters.inject(feed) do |feed, filter|
         filter.filter(feed)
       end
       renderer.render(feed.articles)
@@ -36,7 +34,7 @@ module Berliner
     # @param [String, Regexp, nil] foo the search term
     # @return [Array<String>] the sources with foo in their slugs or all sources
     def search(foo)
-      SourceManager.search(foo)
+      SourceManager.new.search(foo)
     end
 
     # Add a source or sources to the profile if valid

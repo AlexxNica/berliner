@@ -15,4 +15,16 @@ class String
       else /.*#{Regexp.escape(self)}.*/i
     end
   end
+
+  # Turn a filename into a slug
+  # @return [String] a dashed slug
+  def slugify
+    self.gsub(/_/, "-")
+  end
+
+  # Turn a slug into an filename
+  # @return [Regexp] an underscored filename
+  def deslugify
+    self.gsub(/-/, "_")
+  end
 end

@@ -15,32 +15,27 @@ module Berliner
   # {Source} and reimplement {Source#fetch} and {Source#parse} if necessary.
   # @abstract
   class Source
-    attr_accessor :credentials, :authenticated
+    attr_accessor :creds, :authenticated
 
     # Create a new {Source} object
-    def initialize(creds: nil)
-      @credentials = creds
-      if credentials
-        @authenticated = auth
-      else
-        @authenticated = false
-      end
+    # @note See {SourceManager#initialize} for the difference between
+    #   "credentials" and "creds"
+    def initialize(creds=nil)
+      @creds = creds
+      @authenticated = creds ? auth : false
     end
 
+    # Perform source-related authorization based on available credentials
+    # @return [Boolean] whether the authorization was successful or not
     def auth
       return false
     end
 
     # Fetch recent entries from the source's feed
-    # @return [Array<Object>] an array of {Feed::FeedEntry} objects
+    # @return [Array<String>] an array of article permalinks
     def fetch
       feedjira_entries = Feedjira::Feed.fetch_and_parse(self.class.feed).entries
-      feedjira_entries.map do |e|
-        Feed::FeedEntry.new(
-          e.url,
-          self.class.title
-        )
-      end
+      feedjira_entries.map{ |e| e.url }
     end
 
     # Create an {Article} object from a {Feed::FeedEntry}
@@ -99,14 +94,6 @@ module Berliner
       # @return [String]
       attr_rw :homepage
     end
-
-    private
-
-    def host_and_path(uri_string)
-      uri = URI.parse(uri_string)
-      uri.host + uri.path
-    end
-
   end
 
   # The default source class for unrecognized articles

@@ -10,13 +10,13 @@ module Berliner
     homepage "http://www.nytimes.com/"
 
     def auth
-      return false unless (credentials["username"] && credentials["password"])
+      return false unless (creds["username"] && creds["password"])
       @mech = Mechanize.new
       page = @mech.get('https://myaccount.nytimes.com/auth/login')
       form = page.forms.first
       form.set_fields(
-        userid: credentials["username"],
-        password: credentials["password"]
+        userid: creds["username"],
+        password: creds["password"]
         )
       form.click_button
       return true
@@ -27,8 +27,8 @@ module Berliner
         page = @mech.get(entry.url)
         doc = page.parser
       else
-        html = open(entry.url, :allow_redirections => :safe).read
-        doc = Nokogiri::HTML(html)
+        # TODO: Recognize the NYT paywall instead of assuming we hit it.
+        return nil
       end
       title = doc.at("meta[name='hdl']")["content"] || ""
       author = doc.at("meta[name='author']")["content"] || ""

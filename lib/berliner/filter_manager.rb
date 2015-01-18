@@ -8,7 +8,7 @@ module Berliner
     # @note Unlike {SourceManager.search}, {search} does not take
     #   a query argument (as there are many less total filters).
     # @return [Array<String>] the slugs of all filters
-    def self.search
+    def search
       user_filters = Dir[File.join(Dir.home, ".berliner/filters/*")]
       gem_filters = Dir[File.join(LIB_DIR, "berliner/filters/*")]
       filter_slugs = (user_filters + gem_filters).map do |path|
@@ -22,7 +22,7 @@ module Berliner
     # @param [String, Array<String>] argv the source slug or an array of source slugs
     # @return [Source, Array<Source>] an instance of the specified source or
     #   an array of instances
-    def self.load(argv)
+    def load(argv)
       if argv.is_a?(Array)
         return argv.map{ |s| get_klass(s)}
       end
@@ -36,10 +36,10 @@ module Berliner
     # @raise [LoadError] if the filter can't be loaded
     # @raise [NameError] if the filter's class name can't be found
     # @return [Source] an instance of the specified filter
-    def self.get_klass(argv)
+    def get_klass(argv)
       args = argv.split(" ")
       slug = args.shift
-      filename = slug.gsub(/-/, "_") + "_filter"
+      filename = slug.deslugify + "_filter"
       begin
         require File.join(Dir.home, ".berliner/filters", filename)
       rescue LoadError
@@ -49,10 +49,10 @@ module Berliner
         end
       end
       begin
-        klass = "Berliner::#{filename.classify}".constantize
+        klass = "Berliner::#{filename.camelize}".constantize
       rescue
         raise NameError,
-          "The #{filename.classify} was not found. " \
+          "The #{filename.camelize} was not found. " \
           "Make sure it is defined in filters/#{filename}.rb"
       end
       klass.new(args)

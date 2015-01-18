@@ -2,6 +2,7 @@ require "fileutils"
 require "yaml"
 require "active_support"
 require "active_support/core_ext"
+require "berliner/source_manager"
 
 module Berliner
   # A Berliner profile stores per-user preferences and configuration
@@ -29,9 +30,8 @@ module Berliner
     def add(source)
       if source.is_a?(Array)
         source.each{ |s| add(s)}
-        return true
       end
-      if SourceManager.search.include?(source)
+      if SourceManager.new.search.include?(source)
         profile["sources"] |= [source]
       else
         raise NameError, "Source #{source} not found"
@@ -46,7 +46,6 @@ module Berliner
     def remove(source)
       if source.is_a?(Array)
         source.each{ |s| remove(s)}
-        return true
       end
       profile["sources"] -= [source]
       write
