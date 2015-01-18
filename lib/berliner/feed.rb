@@ -12,7 +12,7 @@ module Berliner
     # entries list, which is only fetched once and then afterwards served from
     # cache. (A more sophisticated caching mechanism could allow the
     # modification of sources post-init, but seems not particularly useful ATM.)
-    def initialize(slugs, credentials)
+    def initialize(slugs, credentials = {})
       @s_manager = SourceManager.new(credentials)
       @sources = s_manager.load(slugs)
       @entries = get_entries()
