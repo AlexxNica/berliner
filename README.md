@@ -9,6 +9,7 @@
 [![Build Status](https://travis-ci.org/s3ththompson/berliner.svg?branch=master)](https://travis-ci.org/s3ththompson/berliner)
 [![Coverage Status](https://img.shields.io/coveralls/s3ththompson/berliner.svg?style=flat)](https://coveralls.io/r/s3ththompson/berliner?branch=master)
 [![Inline docs](http://inch-ci.org/github/s3ththompson/berliner.svg?branch=master)](http://inch-ci.org/github/s3ththompson/berliner)
+[![Code Climate](https://codeclimate.com/github/s3ththompson/berliner/badges/gpa.svg)](https://codeclimate.com/github/s3ththompson/berliner)
 
 <img align="right" height="250" src="http://i.imgur.com/4BEEus9.png" alt="Berliner">
 
