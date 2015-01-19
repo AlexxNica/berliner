@@ -11,7 +11,7 @@ class String
   # @return [Regexp] query regex
   def query_regex
     case self
-      when %r{^/(.*)/$} then Regexp.new($1)
+      when %r{^/(.*)/$} then Regexp.new(Regexp.last_match[1])
       else /.*#{Regexp.escape(self)}.*/i
     end
   end
@@ -19,12 +19,12 @@ class String
   # Turn a filename into a slug
   # @return [String] a dashed slug
   def slugify
-    self.gsub(/_/, "-")
+    gsub(/_/, "-")
   end
 
   # Turn a slug into an filename
   # @return [Regexp] an underscored filename
   def deslugify
-    self.gsub(/-/, "_")
+    gsub(/-/, "_")
   end
 end

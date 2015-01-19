@@ -11,7 +11,7 @@ program :name, "Berliner"
 program :version, Berliner::VERSION
 program :description, Berliner::DESCRIPTION
 
-global_option '--verbose'
+global_option "--verbose"
 default_command :help
 never_trace!
 
@@ -25,7 +25,7 @@ command :read do |c|
   HERE
   # c.option "-o", "--output PATH", "Output to a specific path"
   c.action do |args, options|
-    raise OptionParser::InvalidArgument, args unless args.empty?
+    fail OptionParser::InvalidArgument, args unless args.empty?
     Berliner::CLI.new(verbose: options.verbose).read
   end
 end
@@ -40,7 +40,7 @@ command :search do |c|
     given, all available sources are listed.
   HERE
   c.action do |args, options|
-    raise OptionParser::InvalidArgument, args.drop(1) if args.length > 1
+    fail OptionParser::InvalidArgument, args.drop(1) if args.length > 1
     puts Berliner::CLI.new(verbose: options.verbose).search(args.first)
   end
 end
@@ -74,7 +74,7 @@ command :list do |c|
   c.summary = "List sources added to your Berliner"
   c.description = "List all sources currently added to your Berliner."
   c.action do |args, options|
-    raise OptionParser::InvalidArgument, args unless args.empty?
+    fail OptionParser::InvalidArgument, args unless args.empty?
     puts Berliner::CLI.new(verbose: options.verbose).list
   end
 end

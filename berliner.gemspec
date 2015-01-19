@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/s3ththompson/berliner"
   gem.licenses      = ["MIT"]
 
-  gem.files         = `git ls-files`.split($/)
+  gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   gem.executables   = ["berliner"]
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]

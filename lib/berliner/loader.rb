@@ -4,7 +4,6 @@ require "active_support/core_ext"
 module Berliner
   # Lazily load Berliner classes
   class Loader
-
     # Read the contents of a file (checking in the user config folder first,
     # then the gem lib)
     # @param [String] path a relative pathname, with extension,
@@ -12,7 +11,7 @@ module Berliner
     # @return [String] the requested class object
     # @raise [NameError] if the class can't be found
     def self.read_file(path)
-      user_path, gem_path = self.user_gem_paths(path)
+      user_path, gem_path = user_gem_paths(path)
       begin
         contents = File.read(user_path)
       rescue
@@ -31,11 +30,11 @@ module Berliner
     # @return [Object] the requested class object
     # @raise [NameError] if the class can't be found
     def self.read_klass(path)
-      p = self.normalize_path(path)
-      self.load_klass(p)
+      p = normalize_path(path)
+      load_klass(p)
       filename = File.basename(p, ".rb")
       begin
-        klass = self.constantize(filename)
+        klass = constantize(filename)
       rescue
         raise NameError
       end
@@ -48,8 +47,8 @@ module Berliner
     #   the first element in the tuple is the array of filepaths from the user's config
     #   dir, and the second element in the tuple is that of the gem lib
     def self.list_files(path)
-      user_path, gem_path = self.user_gem_paths(File.join(path, "*"))
-      return Dir[user_path], Dir[gem_path]
+      user_path, gem_path = user_gem_paths(File.join(path, "*"))
+      [Dir[user_path], Dir[gem_path]]
     end
 
     private
@@ -78,14 +77,14 @@ module Berliner
       parts.shift
       user_path = File.join(CONFIG_DIR, parts)
       gem_path = File.join(LIB_DIR, "berliner", parts)
-      return user_path, gem_path
+      [user_path, gem_path]
     end
 
     # Require the klass file at the specified path
     # @param [string] p a normalized relative path, ex: "berliner/sources/new_york_times"
     # @return [void]
     def self.load_klass(p)
-      user_path, gem_path = self.user_gem_paths(p)
+      user_path, gem_path = user_gem_paths(p)
       begin
         require user_path
       rescue LoadError

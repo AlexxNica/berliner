@@ -7,7 +7,6 @@ module Berliner
   #   (an incredibly expensive operation) in order to recognize the correct
   #   source from an article URL.
   class SourceRegistry
-
     # A manually updated dictionary mapping
     # URL fragments to canonical source slugs
     REGISTRY = {
@@ -33,7 +32,7 @@ module Berliner
       rescue
         return nil
       end
-      return nil
+      nil
     end
   end
 end

@@ -2,7 +2,6 @@ require "spec_helper"
 require "berliner/feed"
 
 shared_examples_for "a filter" do
-
   let(:input_feed) { Berliner::Feed.new([]) }
 
   let(:filter) do
@@ -24,6 +23,5 @@ shared_examples_for "a filter" do
         expect(entry).to be_in(input_feed.entries)
       end
     end
-
   end
 end

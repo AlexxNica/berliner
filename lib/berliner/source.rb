@@ -20,7 +20,7 @@ module Berliner
     # Create a new {Source} object
     # @note See {SourceManager#initialize} for the difference between
     #   "credentials" and "creds"
-    def initialize(creds=nil)
+    def initialize(creds = nil)
       @creds = creds
       @authenticated = creds ? auth : false
     end
@@ -28,14 +28,14 @@ module Berliner
     # Perform source-related authorization based on available credentials
     # @return [Boolean] whether the authorization was successful or not
     def auth
-      return false
+      false
     end
 
     # Fetch recent entries from the source's feed
     # @return [Array<String>] an array of article permalinks
     def fetch
       feedjira_entries = Feedjira::Feed.fetch_and_parse(self.class.feed).entries
-      feedjira_entries.map{ |e| e.url }
+      feedjira_entries.map(&:url)
     end
 
     # Create an {Article} object from a {Feed::FeedEntry}
@@ -43,7 +43,7 @@ module Berliner
     # @param [Feed::FeedEntry] entry a single feed entry
     # @return [Article] an {Article} instance
     def parse(entry)
-      html = open(entry.url, :allow_redirections => :safe).read
+      html = open(entry.url, allow_redirections: :safe).read
       document = Readability::Document.new(html)
       image = document.images.empty? ? nil : document.images.first
       Article.new(
@@ -100,7 +100,7 @@ module Berliner
   class DefaultSource < Source
     # The only difference from above is the article source
     def parse(entry)
-      html = open(entry.url, :allow_redirections => :safe).read
+      html = open(entry.url, allow_redirections: :safe).read
       document = Readability::Document.new(html)
       image = document.images.empty? ? nil : document.images.first
       Article.new(
@@ -114,5 +114,4 @@ module Berliner
         )
     end
   end
-
 end

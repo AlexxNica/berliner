@@ -8,10 +8,9 @@ require "berliner/loader"
 module Berliner
   # Manages all Berliner sources
   class SourceManager
-
     # Use a class variable to implement a cache of loaded classes across all
     # instances of {SourceManager}
-    # Useful in order to retrieve previously credentialed {Source} instance 
+    # Useful in order to retrieve previously credentialed {Source} instance
     # without credentials
     @@klasses = {}
 
@@ -22,7 +21,7 @@ module Berliner
     #   source's authentication tokens.  "creds" is used as the plural to
     #   refer to the many tokens that a single source might require for
     #   authorization.
-    def initialize(credentials={})
+    def initialize(credentials = {})
       @credentials = credentials
     end
 
@@ -30,7 +29,7 @@ module Berliner
     # or list all sources if foo is nil.
     # @param [String, Regex, nil] foo the query term
     # @return [Array<String>] the slugs of all sources with foo in their slugs or all sources
-    def search(foo=nil)
+    def search(foo = nil)
       user_sources, gem_sources = Loader.list_files("berliner/sources/")
       source_slugs = (user_sources + gem_sources).map do |path|
         filename = File.basename(path, ".rb")
@@ -60,7 +59,7 @@ module Berliner
     #   an array of instances
     def load_from_url(permalink)
       if permalink.is_a?(Array)
-        return permalink.map{ |s| get_klass_from_url(s)}
+        return permalink.map { |s| get_klass_from_url(s) }
       end
       get_klass_from_url(permalink)
     end
@@ -74,10 +73,10 @@ module Berliner
     # @return [Source] an instance of the specified source
     def get_klass(slug)
       # Check cache for slug
-      if @@klasses.has_key?(slug)
+      if @@klasses.key?(slug)
         # Unless credentials are provided and cached {Source} instance
         # was uncredentialed, return the cached instance
-        unless get_creds(slug) and !@@klasses[slug].authenticated
+        unless get_creds(slug) && !@@klasses[slug].authenticated
           return @@klasses[slug]
         end
       end
@@ -86,13 +85,13 @@ module Berliner
         klass = Loader.read_klass(File.join("berliner", "sources", filename))
       rescue
         raise NameError,
-          "The #{filename.camelize} source was not found. " \
-          "Make sure it is defined in sources/#{filename}.rb"
+              "The #{filename.camelize} source was not found. " \
+              "Make sure it is defined in sources/#{filename}.rb"
       end
       creds = get_creds(slug)
       k = klass.new(creds)
       @@klasses[slug] = k
-      return k
+      k
     end
 
     # Return an instantiated {Source} object given an article permalink
@@ -113,8 +112,7 @@ module Berliner
     # @note See {#initialize} for the difference between "credentials"
     #   and "creds"
     def get_creds(slug)
-      return @credentials[slug] || nil
+      @credentials[slug] || nil
     end
-
   end
 end

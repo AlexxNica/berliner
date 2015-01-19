@@ -14,4 +14,4 @@ task :undoc do
   exec "yard stats --list-undoc"
 end
 
-task :doc => :yard
+task doc: :yard

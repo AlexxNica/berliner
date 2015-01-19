@@ -14,13 +14,11 @@ module Berliner
 
     # Create a new {Profile} object
     def initialize
-      begin
-        FileUtils.mkdir_p(File.dirname(PROFILE_PATH))
-        user_profile = YAML.load_file(PROFILE_PATH)
-        @profile = default_profile.merge(user_profile)
-      rescue
-        @profile = default_profile
-      end
+      FileUtils.mkdir_p(File.dirname(PROFILE_PATH))
+      user_profile = YAML.load_file(PROFILE_PATH)
+      @profile = default_profile.merge(user_profile)
+    rescue
+      @profile = default_profile
     end
 
     # Add a source to the profile if the source is valid
@@ -30,12 +28,12 @@ module Berliner
     # @return [void]
     def add(source)
       if source.is_a?(Array)
-        source.each{ |s| add(s)}
+        source.each { |s| add(s) }
       end
       if SourceManager.new.search.include?(source)
         profile["sources"] |= [source]
       else
-        raise NameError, "Source #{source} not found"
+        fail NameError, "Source #{source} not found"
       end
       write
     end
@@ -46,7 +44,7 @@ module Berliner
     # @return [void]
     def remove(source)
       if source.is_a?(Array)
-        source.each{ |s| remove(s)}
+        source.each { |s| remove(s) }
       end
       profile["sources"] -= [source]
       write
@@ -94,10 +92,9 @@ module Berliner
     # Write the profile to disk
     # @return [void]
     def write
-      File.open(PROFILE_PATH,"w") do |f|
-         f.write profile.to_hash.to_yaml
+      File.open(PROFILE_PATH, "w") do |f|
+        f.write profile.to_hash.to_yaml
       end
     end
-
   end
 end

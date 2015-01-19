@@ -15,12 +15,12 @@ module Berliner
     def initialize(slugs, credentials = {})
       @s_manager = SourceManager.new(credentials)
       @sources = s_manager.load(slugs)
-      @entries = get_entries()
+      @entries = get_entries
     end
 
     # @return [Array<Article>] a list of articles in this feed
     def articles
-      Parallel.map(entries, :in_threads=>10) do |entry|
+      Parallel.map(entries, in_threads: 10) do |entry|
         entry.article
       end.compact
     end
@@ -30,7 +30,7 @@ module Berliner
     # Fetches RSS feed entries for each source
     # @return [Array<Feed::FeedEntry>] a list of entries in this feed
     def get_entries
-      Parallel.map(sources, :in_threads=>10) do |source|
+      Parallel.map(sources, in_threads: 10) do |source|
         source.fetch.map do |url|
           s = s_manager.load_from_url(url)
           FeedEntry.new(url, source.class.title, s)
@@ -70,30 +70,25 @@ module Berliner
       # @param [String] rss_url an article URL (as found in a feed entry)
       # @return [String] a canonical article URL
       def follow_url(rss_url)
-        begin
-          httpc = HTTPClient.new
-          resp = httpc.get(rss_url)
-          # If no response header, just return the original URL
-          location = resp.header['Location'] || rss_url
-          # Get the first URL in the Location header
-          location = location.shift if location.is_a?(Array)
-          # Sanity check that a URL was given
-          (location && !location.empty?) ? location : rss_url
-        rescue
-          nil
-        end
+        httpc = HTTPClient.new
+        resp = httpc.get(rss_url)
+        # If no response header, just return the original URL
+        location = resp.header["Location"] || rss_url
+        # Get the first URL in the Location header
+        location = location.shift if location.is_a?(Array)
+        # Sanity check that a URL was given
+        (location && !location.empty?) ? location : rss_url
+      rescue
+        nil
       end
 
       # Parse the fetched article
       # @return [Article] an article
       def get_article
-        begin
-          source.parse(self)
-        rescue
-          nil
-        end
+        source.parse(self)
+      rescue
+        nil
       end
     end
-
   end
 end

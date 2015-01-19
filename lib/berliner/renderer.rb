@@ -11,7 +11,6 @@ module Berliner
   # {Renderer} and reimplement {Renderer#render} as necessary.
   # @abstract
   class Renderer
-
     # Path to the output berliner.html file
     BERLINER_HTML = File.join(CONFIG_DIR, "berliner.html")
     # Path to the assets output folder berliner_files
@@ -20,8 +19,8 @@ module Berliner
     # Create a new {Renderer} object
     def initialize(options = {})
       @options = options
-      clean_up()
-      make_files_dir()
+      clean_up
+      make_files_dir
     end
 
     # Render articles into a Berliner
@@ -33,13 +32,13 @@ module Berliner
       template = read_template(self.class.template)
       style = read_style(self.class.style)
       articles = save_images(articles)
-      html = Erubis::Eruby.new(template).result({
+      html = Erubis::Eruby.new(template).result(
         articles: articles,
         style: style
-        })
+        )
       File.write(BERLINER_HTML, html)
       begin
-        system %{open "#{BERLINER_HTML}"}
+        system %(open "#{BERLINER_HTML}")
       rescue
       end
     end
@@ -53,8 +52,8 @@ module Berliner
         style = Loader.read_file(File.join("berliner", "assets", "styles", filename))
       rescue
         raise NameError,
-          "The #{slug} CSS file was not found. " \
-          "Make sure it is defined in assets/styles/#{filename}"
+              "The #{slug} CSS file was not found. " \
+              "Make sure it is defined in assets/styles/#{filename}"
       end
       style
     end
@@ -68,8 +67,8 @@ module Berliner
         template = Loader.read_file(File.join("berliner", "assets", "templates", filename))
       rescue
         raise NameError,
-          "The #{slug} template was not found. " \
-          "Make sure it is defined in assets/templates/#{filename}"
+              "The #{slug} template was not found. " \
+              "Make sure it is defined in assets/templates/#{filename}"
       end
       template
     end
@@ -78,7 +77,7 @@ module Berliner
     # @param [Array<Article>] articles an array of {Article} objects
     # @return [Array<Article>] an array of {Article} objects with image attribute altered
     def save_images(articles)
-      Parallel.map(articles, :in_threads=>10) do |article|
+      Parallel.map(articles, in_threads: 10) do |article|
         article.image = save_image(article.image)
         article
       end
@@ -131,15 +130,14 @@ module Berliner
       file = File.join(BERLINER_HTML_FILES, basename)
       begin
         # Timeout image download after 10 seconds
-        Timeout::timeout(10) {
-          File.open(file, "wb") {|f| f.write(open(uri).read)}
-        }
+        Timeout.timeout(10) do
+          File.open(file, "wb") { |f| f.write(open(uri).read) }
+        end
         relative = Pathname.new(file).relative_path_from(Pathname.new(CONFIG_DIR)).to_s
         return relative
       rescue
         return nil
       end
     end
-
   end
 end

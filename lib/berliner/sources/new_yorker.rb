@@ -9,7 +9,7 @@ module Berliner
     homepage "http://www.newyorker.com/"
 
     def parse(entry)
-      html = open(entry.url, :allow_redirections => :safe).read
+      html = open(entry.url, allow_redirections: :safe).read
       doc = Nokogiri::HTML(html)
       title = doc.at_css("hgroup h1").content || ""
       author = doc.attr_equals("itemprop", "name author").first.content || ""
@@ -29,6 +29,5 @@ module Berliner
         permalink: entry.url
         )
     end
-
   end
 end

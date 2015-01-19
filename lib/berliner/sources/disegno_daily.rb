@@ -7,7 +7,7 @@ module Berliner
     homepage "http://www.disegnodaily.com/"
 
     def parse(entry)
-      html = open(entry.url, :allow_redirections => :safe).read
+      html = open(entry.url, allow_redirections: :safe).read
       doc = Nokogiri::HTML(html)
       title = doc.at_css("#main header hgroup h1").content || ""
       image = doc.at_css("#main figure.media img").attribute("src").content || nil

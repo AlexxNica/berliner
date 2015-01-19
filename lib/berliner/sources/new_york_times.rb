@@ -10,16 +10,16 @@ module Berliner
     homepage "http://www.nytimes.com/"
 
     def auth
-      return false unless (creds["username"] && creds["password"])
+      return false unless creds["username"] && creds["password"]
       @mech = Mechanize.new
-      page = @mech.get('https://myaccount.nytimes.com/auth/login')
+      page = @mech.get("https://myaccount.nytimes.com/auth/login")
       form = page.forms.first
       form.set_fields(
         userid: creds["username"],
         password: creds["password"]
         )
       form.click_button
-      return true
+      true
     end
 
     def parse(entry)
@@ -38,9 +38,7 @@ module Berliner
         image = nil
       end
       body_node = doc.at_css("#story-body")
-      body = body_node.css("p.story-body-text.story-content").map do |p|
-        p.to_s
-      end.join("") || ""
+      body = body_node.css("p.story-body-text.story-content").map(&:to_s).join("") || ""
       Article.new(
         title: title,
         author: author,
@@ -51,6 +49,5 @@ module Berliner
         permalink: entry.url
         )
     end
-
   end
 end

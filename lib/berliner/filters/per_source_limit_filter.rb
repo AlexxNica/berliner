@@ -1,5 +1,4 @@
 module Berliner
-
   # Limits the number of articles from each source to a specified number
   class PerSourceLimitFilter
     attr_accessor :options
@@ -13,14 +12,14 @@ module Berliner
     end
 
     def filter(feed)
-      entries = feed.entries.
-        group_by { |entry| entry.via }.
-        inject({}) do |entries, (source, entries_for_source)|
-          entries[source] = entries_for_source.slice(0, options[:limit])
-          entries
-        end.
-        values.
-        flatten
+      entries = feed.entries
+                .group_by(&:via)
+                .inject({}) do |entries, (source, entries_for_source)|
+                  entries[source] = entries_for_source.slice(0, options[:limit])
+                  entries
+                end
+                .values
+                .flatten
 
       feed.entries = entries
       feed
@@ -33,6 +32,5 @@ module Berliner
         limit: 1
       }
     end
-
   end
 end

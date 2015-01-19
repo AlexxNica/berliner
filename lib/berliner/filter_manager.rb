@@ -24,7 +24,7 @@ module Berliner
     #   an array of instances
     def load(argv)
       if argv.is_a?(Array)
-        return argv.map{ |s| get_klass(s)}
+        return argv.map { |s| get_klass(s) }
       end
       get_klass(argv)
     end
@@ -44,11 +44,10 @@ module Berliner
         klass = Loader.read_klass(File.join("berliner", "filters", filename))
       rescue
         raise NameError,
-          "The #{filename.camelize} was not found. " \
-          "Make sure it is defined in filters/#{filename}.rb"
+              "The #{filename.camelize} was not found. " \
+              "Make sure it is defined in filters/#{filename}.rb"
       end
       klass.new(args)
     end
-
   end
 end

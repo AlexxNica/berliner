@@ -30,7 +30,7 @@ module Berliner
     # Return an instantiated {Renderer} object given the renderer slug
     # @param [String] slug the renderer slug
     # @raise [LoadError] if the renderer can't be loaded
-    # @raise [NameError] if the renderer's class name can't be found 
+    # @raise [NameError] if the renderer's class name can't be found
     # @return [Source] an instance of the specified renderer
     def get_klass(slug)
       filename = slug.deslugify
@@ -38,11 +38,10 @@ module Berliner
         klass = Loader.read_klass(File.join("berliner", "renderers", filename))
       rescue
         raise NameError,
-          "The #{filename.camelize} renderer was not found. " \
-          "Make sure it is defined in renderers/#{filename}.rb"
+              "The #{filename.camelize} renderer was not found. " \
+              "Make sure it is defined in renderers/#{filename}.rb"
       end
       klass.new
     end
-
   end
 end

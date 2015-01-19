@@ -4,15 +4,15 @@ module Berliner
   # A Berliner article. The base object for every news feed item
   class Article
     attr_accessor :title,
-      :body,
-      :author,
-      :date_published,
-      :image,
-      :location,
-      :permalink,
-      :source,
-      :via,
-      :other
+                  :body,
+                  :author,
+                  :date_published,
+                  :image,
+                  :location,
+                  :permalink,
+                  :source,
+                  :via,
+                  :other
 
     # Create a new {Article} object
     def initialize(

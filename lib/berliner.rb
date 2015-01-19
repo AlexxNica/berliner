@@ -8,7 +8,6 @@ require "berliner/article"
 
 # Daily digest of online news in a beautiful format
 module Berliner
-
   # Implements top-level CLI commands
   class CLI
     attr_accessor :profile
