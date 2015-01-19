@@ -1,4 +1,7 @@
 require "yard"
+require 'inch/rake'
+
+Inch::Rake::Suggest.new
 
 YARD::Rake::YardocTask.new(:yard) do |task|
   task.files   = ["lib/**/*.rb", "-", "*.md", "LICENSE"]
