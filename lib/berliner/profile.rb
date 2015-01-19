@@ -9,6 +9,7 @@ module Berliner
   class Profile
     attr_accessor :profile
 
+    # Path to the profile.yml file
     PROFILE_PATH = File.join(CONFIG_DIR, "profile.yml")
 
     # Create a new {Profile} object
@@ -60,7 +61,7 @@ module Berliner
     # List the renderer saved in the profile
     # @return [<String>] a renderer slug
     def renderer
-      profile["renderer"] || "default"
+      profile["renderer"]
     end
 
     # List the filters saved in the profile
@@ -69,8 +70,12 @@ module Berliner
       profile["filters"]
     end
 
+    # Get dictionary of the credentials saved in the profile
+    # @return [Hash] a dictionary of credentials
+    # @note See {SourceManager#initialize} for the difference between
+    #   "credentials" and "creds"
     def credentials
-      profile["credentials"] || {}
+      profile["credentials"]
     end
 
     private

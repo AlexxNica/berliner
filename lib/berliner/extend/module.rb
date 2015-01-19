@@ -1,6 +1,6 @@
 # Module additions
 class Module
-  # Method to implement the {Source} DSL.  Allows definition of attributes
+  # Method to implement the {Berliner::Source} DSL.  Allows definition of attributes
   # without an `=`.
   # @param [Symbol, Array<Symbol>] attrs the attributes to expose
   # @return [void]

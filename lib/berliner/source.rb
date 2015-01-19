@@ -98,6 +98,7 @@ module Berliner
 
   # The default source class for unrecognized articles
   class DefaultSource < Source
+    # The only difference from above is the article source
     def parse(entry)
       html = open(entry.url, :allow_redirections => :safe).read
       document = Readability::Document.new(html)

@@ -22,7 +22,7 @@ module Berliner
 
     # For a given URL, "recognize" the correct source slug
     # @param [String] permalink the article URL
-    # @param [String, nil] the slug representing the article's
+    # @return [String, nil] the slug representing the article's
     #   canonical source or nil if not recognized
     def self.get_slug_from_url(permalink)
       begin

@@ -21,21 +21,22 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = ">= 2.0.0"
 
-  gem.add_development_dependency "rake", ["= 10.1.0"]
-  gem.add_development_dependency "rspec", ["= 3.1.0"]
-  gem.add_development_dependency "coveralls", ["= 0.7.1"]
-  gem.add_development_dependency "yard", ["= 0.8.7.4"]
+  gem.add_development_dependency "rake", "~> 10.1.0"
+  gem.add_development_dependency "rspec", "~> 3.1.0"
+  gem.add_development_dependency "coveralls", "~> 0.7.1"
+  gem.add_development_dependency "yard", "~> 0.8.7.4"
+  gem.add_development_dependency "rubocop", "~> 0.28.0"
 
-  gem.add_runtime_dependency "feedjira", ["= 1.1.0"]
-  gem.add_runtime_dependency "fastimage", ["= 1.6.6"]
-  gem.add_runtime_dependency "ruby-readability", ["= 0.7.0"]
-  gem.add_runtime_dependency "activesupport", ["= 4.1.6"]
-  gem.add_runtime_dependency "commander", ["= 4.2.1"]
-  gem.add_runtime_dependency "erubis", ["= 2.7.0"]
-  gem.add_runtime_dependency "open_uri_redirections", ["= 0.2.1"]
-  gem.add_runtime_dependency "parallel", ["= 1.3.3"]
-  gem.add_runtime_dependency "sanitize", ["= 3.0.4"]
-  gem.add_runtime_dependency "mechanize", ["= 2.7.3"]
-  gem.add_runtime_dependency "httpclient", ["= 2.6.0.1"]
-  gem.add_runtime_dependency "nikkou", ["= 0.0.4"]
+  gem.add_runtime_dependency "feedjira", "~> 1.1.0"
+  gem.add_runtime_dependency "fastimage", "~> 1.6.6"
+  gem.add_runtime_dependency "ruby-readability", "~> 0.7.0"
+  gem.add_runtime_dependency "activesupport", "~> 4.1.6"
+  gem.add_runtime_dependency "commander", "~> 4.2.1"
+  gem.add_runtime_dependency "erubis", "~> 2.7.0"
+  gem.add_runtime_dependency "open_uri_redirections", "~> 0.2.1"
+  gem.add_runtime_dependency "parallel", "~> 1.3.3"
+  gem.add_runtime_dependency "sanitize", "~> 3.0.4"
+  gem.add_runtime_dependency "mechanize", "~> 2.7.3"
+  gem.add_runtime_dependency "httpclient", "~> 2.6.0.1"
+  gem.add_runtime_dependency "nikkou", "~> 0.0.4"
 end

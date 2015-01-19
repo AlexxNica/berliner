@@ -11,7 +11,9 @@ module Berliner
   # @abstract
   class Renderer
 
+    # Path to the output berliner.html file
     BERLINER_HTML = File.join(CONFIG_DIR, "berliner.html")
+    # Path to the assets output folder berliner_files
     BERLINER_HTML_FILES = File.join(CONFIG_DIR, "berliner_files")
 
     # Create a new {Renderer} object
@@ -47,14 +49,14 @@ module Berliner
     def read_style(slug)
       filename = "#{slug.gsub(/-/, '_')}.css"
       begin
-        template = File.read(File.join(Dir.home, ".berliner/styles", filename))
+        template = File.read(File.join(Dir.home, ".berliner/assets/styles", filename))
       rescue
         begin
-          template = File.read(File.join(LIB_DIR, "berliner/styles", filename))
+          template = File.read(File.join(LIB_DIR, "berliner/assets/styles", filename))
         rescue
           raise NameError,
             "The #{slug} CSS file was not found. " \
-            "Make sure it is defined in styles/#{filename}"
+            "Make sure it is defined in assets/styles/#{filename}"
         end
       end
       template
@@ -66,14 +68,14 @@ module Berliner
     def read_template(slug)
       filename = "#{slug.gsub(/-/, '_')}.erb"
       begin
-        template = File.read(File.join(Dir.home, ".berliner/templates", filename))
+        template = File.read(File.join(Dir.home, ".berliner/assets/templates", filename))
       rescue
         begin
-          template = File.read(File.join(LIB_DIR, "berliner/templates", filename))
+          template = File.read(File.join(LIB_DIR, "berliner/assets/templates", filename))
         rescue
           raise NameError,
             "The #{slug} template was not found. " \
-            "Make sure it is defined in templates/#{filename}"
+            "Make sure it is defined in assets/templates/#{filename}"
         end
       end
       template
@@ -114,8 +116,8 @@ module Berliner
     # Clean up old berliner.html and berliner_files folder
     # @return [void]
     def clean_up
-      FileUtils.remove_entry_secure(BERLINER_HTML_FILES)
-      FileUtils.remove_entry_secure(BERLINER_HTML)
+      FileUtils.remove_entry_secure(BERLINER_HTML_FILES) if File.exist?(BERLINER_HTML_FILES)
+      FileUtils.remove_entry_secure(BERLINER_HTML) if File.exist?(BERLINER_HTML)
     end
 
     # Create a 'berliner_files' directory in the config dir
