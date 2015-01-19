@@ -5,11 +5,28 @@ module Berliner
   # Lazily load Berliner classes
   class Loader
 
-    # @todo implement
+    # Read the contents of a file (checking in the user config folder first,
+    # then the gem lib)
+    # @param [String] path a relative pathname, with extension,
+    #   ex: "berliner/assets/styles/utilitarian"
+    # @return [String] the requested class object
+    # @raise [NameError] if the class can't be found
     def self.read_file(path)
+      user_path, gem_path = self.user_gem_paths(path)
+      begin
+        contents = File.read(user_path)
+      rescue
+        begin
+          contents = File.read(gem_path)
+        rescue
+          raise NameError
+        end
+      end
+      contents
     end
 
-    # Read a class from the filesystem and return the evaled namespace
+    # Lazily load a class (checking in the user config folder first,
+    # then the gem lib)
     # @param [String] path a relative pathname, ex: "berliner/sources/new_york_times"
     # @return [Object] the requested class object
     # @raise [NameError] if the class can't be found
@@ -25,8 +42,14 @@ module Berliner
       klass
     end
 
-    # @todo implement
+    # List the files in a directory (from the user's config dir and the gem lib)
+    # @param [String] path the path to a relative directory, ex: "berliner/renderers/"
+    # @return [Array(Array<String>, Array<String>)] a tuple of arrays of filepaths
+    #   the first element in the tuple is the array of filepaths from the user's config
+    #   dir, and the second element in the tuple is that of the gem lib
     def self.list_files(path)
+      user_path, gem_path = self.user_gem_paths(File.join(path, "*"))
+      return Dir[user_path], Dir[gem_path]
     end
 
     private
@@ -45,14 +68,24 @@ module Berliner
       path.chomp(".rb")
     end
 
+    # For a given relative path, get the full filepath in the user's
+    # config dir, and the gem lib dir
+    # @param [String] path the relative path, ex: "berliner/renderers/"
+    # return [Array(String, String)] a tuple of the user config filepath and the
+    #   gem lib filepath, ex: ("/home/.berliner/renderers", "/gem/lib/berliner/renderers")
+    def self.user_gem_paths(path)
+      parts = path.split(File::SEPARATOR)
+      parts.shift
+      user_path = File.join(CONFIG_DIR, parts)
+      gem_path = File.join(LIB_DIR, "berliner", parts)
+      return user_path, gem_path
+    end
+
     # Require the klass file at the specified path
     # @param [string] p a normalized relative path, ex: "berliner/sources/new_york_times"
     # @return [void]
     def self.load_klass(p)
-      parts = p.split(File::SEPARATOR)
-      parts.shift
-      user_path = File.join(CONFIG_DIR, parts)
-      gem_path = File.join(LIB_DIR, "berliner", parts)
+      user_path, gem_path = self.user_gem_paths(p)
       begin
         require user_path
       rescue LoadError

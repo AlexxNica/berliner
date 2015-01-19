@@ -4,6 +4,7 @@ require "uri"
 require "pathname"
 require "parallel"
 require "timeout"
+require "berliner/loader"
 
 module Berliner
   # The base object for a Berliner renderer.  Each renderer should inherit from
@@ -47,36 +48,28 @@ module Berliner
     # @param [String] slug the style slug
     # @return [String] the contents of the style file
     def read_style(slug)
-      filename = "#{slug.gsub(/-/, '_')}.css"
+      filename = "#{slug.deslugify}.css"
       begin
-        template = File.read(File.join(Dir.home, ".berliner/assets/styles", filename))
+        style = Loader.read_file(File.join("berliner", "assets", "styles", filename))
       rescue
-        begin
-          template = File.read(File.join(LIB_DIR, "berliner/assets/styles", filename))
-        rescue
-          raise NameError,
-            "The #{slug} CSS file was not found. " \
-            "Make sure it is defined in assets/styles/#{filename}"
-        end
+        raise NameError,
+          "The #{slug} CSS file was not found. " \
+          "Make sure it is defined in assets/styles/#{filename}"
       end
-      template
+      style
     end
 
     # Read an ERB template given its slug
     # @param [String] slug the template slug
     # @return [String] the contents of the template file
     def read_template(slug)
-      filename = "#{slug.gsub(/-/, '_')}.erb"
+      filename = "#{slug.deslugify}.erb"
       begin
-        template = File.read(File.join(Dir.home, ".berliner/assets/templates", filename))
+        template = Loader.read_file(File.join("berliner", "assets", "templates", filename))
       rescue
-        begin
-          template = File.read(File.join(LIB_DIR, "berliner/assets/templates", filename))
-        rescue
-          raise NameError,
-            "The #{slug} template was not found. " \
-            "Make sure it is defined in assets/templates/#{filename}"
-        end
+        raise NameError,
+          "The #{slug} template was not found. " \
+          "Make sure it is defined in assets/templates/#{filename}"
       end
       template
     end

@@ -10,8 +10,7 @@ module Berliner
     #   a query argument (as there are many less total renderers).
     # @return [Array<String>] the slugs of all renderers
     def search
-      user_renderers = Dir[File.join(Dir.home, ".berliner/renderers/*")]
-      gem_renderers = Dir[File.join(LIB_DIR, "berliner/renderers/*")]
+      user_renderers, gem_renderers = Loader.list_files("berliner/renderers/")
       renderer_slugs = (user_renderers + gem_renderers).map do |path|
         filename = File.basename(path, ".rb")
         filename.slugify

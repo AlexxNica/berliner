@@ -10,8 +10,7 @@ module Berliner
     #   a query argument (as there are many less total filters).
     # @return [Array<String>] the slugs of all filters
     def search
-      user_filters = Dir[File.join(Dir.home, ".berliner/filters/*")]
-      gem_filters = Dir[File.join(LIB_DIR, "berliner/filters/*")]
+      user_filters, gem_filters = Loader.list_files("berliner/filters")
       filter_slugs = (user_filters + gem_filters).map do |path|
         filename = File.basename(path, ".rb")
         filename.slugify

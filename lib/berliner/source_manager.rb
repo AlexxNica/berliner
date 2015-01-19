@@ -31,8 +31,7 @@ module Berliner
     # @param [String, Regex, nil] foo the query term
     # @return [Array<String>] the slugs of all sources with foo in their slugs or all sources
     def search(foo=nil)
-      user_sources = Dir[File.join(Dir.home, ".berliner/sources/*")]
-      gem_sources = Dir[File.join(LIB_DIR, "berliner/sources/*")]
+      user_sources, gem_sources = Loader.list_files("berliner/sources/")
       source_slugs = (user_sources + gem_sources).map do |path|
         filename = File.basename(path, ".rb")
         filename.slugify
