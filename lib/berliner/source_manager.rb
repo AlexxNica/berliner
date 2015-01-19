@@ -3,6 +3,7 @@ require "active_support/core_ext"
 require "berliner/extend/string"
 require "berliner/source"
 require "berliner/source_registry"
+require "berliner/loader"
 
 module Berliner
   # Manages all Berliner sources
@@ -34,7 +35,7 @@ module Berliner
       gem_sources = Dir[File.join(LIB_DIR, "berliner/sources/*")]
       source_slugs = (user_sources + gem_sources).map do |path|
         filename = File.basename(path, ".rb")
-        filename.dasherize
+        filename.slugify
       end
       results = source_slugs.uniq.sort
       results = results.grep(foo.query_regex) if foo
@@ -83,15 +84,7 @@ module Berliner
       end
       filename = slug.deslugify
       begin
-        require File.join(Dir.home, ".berliner/sources", filename)
-      rescue LoadError
-        begin
-          require File.join("berliner/sources", filename)
-        rescue LoadError
-        end
-      end
-      begin
-        klass = "Berliner::#{filename.camelize}".constantize
+        klass = Loader.read_klass(File.join("berliner", "sources", filename))
       rescue
         raise NameError,
           "The #{filename.camelize} source was not found. " \

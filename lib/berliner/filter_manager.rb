@@ -1,11 +1,12 @@
 require "active_support"
 require "active_support/core_ext"
+require "berliner/loader"
 
 module Berliner
   # Manages all Berliner filters
   class FilterManager
     # List all user-defined filters and packaged filters
-    # @note Unlike {SourceManager.search}, {search} does not take
+    # @note Unlike {SourceManager#search}, {#search} does not take
     #   a query argument (as there are many less total filters).
     # @return [Array<String>] the slugs of all filters
     def search
@@ -13,7 +14,7 @@ module Berliner
       gem_filters = Dir[File.join(LIB_DIR, "berliner/filters/*")]
       filter_slugs = (user_filters + gem_filters).map do |path|
         filename = File.basename(path, ".rb")
-        filename.gsub(/_/, "-")
+        filename.slugify
       end
       filter_slugs.uniq.sort
     end
@@ -41,15 +42,7 @@ module Berliner
       slug = args.shift
       filename = slug.deslugify + "_filter"
       begin
-        require File.join(Dir.home, ".berliner/filters", filename)
-      rescue LoadError
-        begin
-          require File.join("berliner/filters", filename)
-        rescue LoadError
-        end
-      end
-      begin
-        klass = "Berliner::#{filename.camelize}".constantize
+        klass = Loader.read_klass(File.join("berliner", "filters", filename))
       rescue
         raise NameError,
           "The #{filename.camelize} was not found. " \
