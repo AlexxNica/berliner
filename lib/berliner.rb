@@ -13,8 +13,9 @@ module Berliner
     attr_accessor :profile
 
     # Create a new {CLI} object
-    def initialize(verbose: false)
+    def initialize(verbose = false)
       @profile = Profile.new
+      @verbose = verbose
     end
 
     # Generate and render a Berliner based on the profile
@@ -23,8 +24,8 @@ module Berliner
       feed = Feed.new(profile.sources, profile.credentials)
       renderer = RendererManager.new.load(profile.renderer)
       filters = FilterManager.new.load(profile.filters)
-      feed = filters.inject(feed) do |feed, filter|
-        filter.filter(feed)
+      feed = filters.inject(feed) do |f, filter|
+        filter.filter(f)
       end
       renderer.render(feed.articles)
     end

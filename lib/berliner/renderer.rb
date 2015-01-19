@@ -40,6 +40,7 @@ module Berliner
       begin
         system %(open "#{BERLINER_HTML}")
       rescue
+        pass
       end
     end
 
@@ -49,7 +50,8 @@ module Berliner
     def read_style(slug)
       filename = "#{slug.deslugify}.css"
       begin
-        style = Loader.read_file(File.join("berliner", "assets", "styles", filename))
+        style = Loader.read_file(File.join("berliner",
+                                           "assets", "styles", filename))
       rescue
         raise NameError,
               "The #{slug} CSS file was not found. " \
@@ -64,7 +66,8 @@ module Berliner
     def read_template(slug)
       filename = "#{slug.deslugify}.erb"
       begin
-        template = Loader.read_file(File.join("berliner", "assets", "templates", filename))
+        template = Loader.read_file(File.join("berliner",
+                                              "assets", "templates", filename))
       rescue
         raise NameError,
               "The #{slug} template was not found. " \
@@ -75,7 +78,8 @@ module Berliner
 
     # Save all images in articles to disk and replace URL with relative filename
     # @param [Array<Article>] articles an array of {Article} objects
-    # @return [Array<Article>] an array of {Article} objects with image attribute altered
+    # @return [Array<Article>] an array of {Article} objects with image
+    #   attribute altered
     def save_images(articles)
       Parallel.map(articles, in_threads: 10) do |article|
         article.image = save_image(article.image)
@@ -108,21 +112,23 @@ module Berliner
     # Clean up old berliner.html and berliner_files folder
     # @return [void]
     def clean_up
-      FileUtils.remove_entry_secure(BERLINER_HTML_FILES) if File.exist?(BERLINER_HTML_FILES)
+      FileUtils.remove_entry_secure(
+               BERLINER_HTML_FILES) if File.exist?(BERLINER_HTML_FILES)
       FileUtils.remove_entry_secure(BERLINER_HTML) if File.exist?(BERLINER_HTML)
     end
 
     # Create a 'berliner_files' directory in the config dir
     # @return [void]
     def make_files_dir
-      unless File.directory?(BERLINER_HTML_FILES)
-        FileUtils.mkdir_p(BERLINER_HTML_FILES)
-      end
+      FileUtils.mkdir_p(BERLINER_HTML_FILES) unless File.directory?(
+                                                         BERLINER_HTML_FILES)
     end
 
-    # Download an image given its url, save to disk, and return relative file location
+    # Download an image given its url, save to disk, and return relative
+    #   file location
     # @param [String, nil] url the image url
-    # @return [String, nil] relative file location of image on disk, or nil if no image
+    # @return [String, nil] relative file location of image on disk,
+    #   or nil if no image
     def save_image(url)
       return nil unless url
       uri = URI.parse(url)
@@ -133,7 +139,8 @@ module Berliner
         Timeout.timeout(10) do
           File.open(file, "wb") { |f| f.write(open(uri).read) }
         end
-        relative = Pathname.new(file).relative_path_from(Pathname.new(CONFIG_DIR)).to_s
+        relative = Pathname.new(file)
+                   .relative_path_from(Pathname.new(CONFIG_DIR)).to_s
         return relative
       rescue
         return nil

@@ -1,2 +1,25 @@
+# AllCops:
+#   Exclude:
+#     - 'lib/berliner/sources/**/*'
+#     - 'lib/berliner/renderers/**/*'
+#     - 'lib/berliner/filters/**/*'
+#     - 'lib/berliner/assets/**/*'
+#     - 'lib/berliner/tasks/**/*'
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/MethodLength:
+  Max: 20
+
+RegexpLiteral:
+  MaxSlashes: 0

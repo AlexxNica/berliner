@@ -26,7 +26,8 @@ module Berliner
 
     # Lazily load a class (checking in the user config folder first,
     # then the gem lib)
-    # @param [String] path a relative pathname, ex: "berliner/sources/new_york_times"
+    # @param [String] path a relative pathname,
+    #   ex: "berliner/sources/new_york_times"
     # @return [Object] the requested class object
     # @raise [NameError] if the class can't be found
     def self.read_klass(path)
@@ -42,16 +43,16 @@ module Berliner
     end
 
     # List the files in a directory (from the user's config dir and the gem lib)
-    # @param [String] path the path to a relative directory, ex: "berliner/renderers/"
-    # @return [Array(Array<String>, Array<String>)] a tuple of arrays of filepaths
-    #   the first element in the tuple is the array of filepaths from the user's config
-    #   dir, and the second element in the tuple is that of the gem lib
+    # @param [String] path the path to a relative directory,
+    #   ex: "berliner/renderers/"
+    # @return [Array(Array<String>, Array<String>)] a tuple of arrays of
+    #   filepaths the first element in the tuple is the array of filepaths from
+    #   the user's config dir, and the second element in the tuple is that of
+    #   the gem lib
     def self.list_files(path)
       user_path, gem_path = user_gem_paths(File.join(path, "*"))
       [Dir[user_path], Dir[gem_path]]
     end
-
-    private
 
     # Constantize the fully-qualified classname from filename
     # @param [String] filename the filename, ex: "new_york_times"
@@ -71,7 +72,8 @@ module Berliner
     # config dir, and the gem lib dir
     # @param [String] path the relative path, ex: "berliner/renderers/"
     # return [Array(String, String)] a tuple of the user config filepath and the
-    #   gem lib filepath, ex: ("/home/.berliner/renderers", "/gem/lib/berliner/renderers")
+    #   gem lib filepath,
+    #   ex: ("/home/.berliner/renderers", "/gem/lib/berliner/renderers")
     def self.user_gem_paths(path)
       parts = path.split(File::SEPARATOR)
       parts.shift
@@ -81,7 +83,8 @@ module Berliner
     end
 
     # Require the klass file at the specified path
-    # @param [string] p a normalized relative path, ex: "berliner/sources/new_york_times"
+    # @param [string] p a normalized relative path,
+    #   ex: "berliner/sources/new_york_times"
     # @return [void]
     def self.load_klass(p)
       user_path, gem_path = user_gem_paths(p)
@@ -91,6 +94,7 @@ module Berliner
         begin
           require gem_path
         rescue LoadError
+          pass
         end
       end
     end

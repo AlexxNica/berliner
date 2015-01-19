@@ -8,12 +8,6 @@ require "berliner/loader"
 module Berliner
   # Manages all Berliner sources
   class SourceManager
-    # Use a class variable to implement a cache of loaded classes across all
-    # instances of {SourceManager}
-    # Useful in order to retrieve previously credentialed {Source} instance
-    # without credentials
-    @@klasses = {}
-
     # Create a new {SourceManager} object
     # @param [Hash, nil] credentials a dictionary with
     #   slugs as keys to actual creds (sub-)dictionaries, or nil
@@ -28,7 +22,8 @@ module Berliner
     # Search user-defined sources and packaged sources for a query term foo
     # or list all sources if foo is nil.
     # @param [String, Regex, nil] foo the query term
-    # @return [Array<String>] the slugs of all sources with foo in their slugs or all sources
+    # @return [Array<String>] the slugs of all sources with foo in their slugs
+    #   or all sources
     def search(foo = nil)
       user_sources, gem_sources = Loader.list_files("berliner/sources/")
       source_slugs = (user_sources + gem_sources).map do |path|
@@ -41,7 +36,8 @@ module Berliner
     end
 
     # Load an instantiated {Source} object(s) given the source slug(s)
-    # @param [String, Array<String>] slug the source slug or an array of source slugs
+    # @param [String, Array<String>] slug the source slug or an array of source
+    #   slugs
     # @return [Source, Array<Source>] an instance of the specified source or
     #   an array of instances
     def load(slug)
@@ -54,7 +50,8 @@ module Berliner
     end
 
     # Load an instantiated {Source} object(s) given an article permalink(s)
-    # @param [String, Array<String>] permalink the article permalink or an array of permalinks
+    # @param [String, Array<String>] permalink the article permalink or an array
+    #   of permalinks
     # @return [Source, Array<Source>] an instance of the specified source or
     #   an array of instances
     def load_from_url(permalink)
@@ -66,6 +63,15 @@ module Berliner
 
     private
 
+    # Use a class instance variable to implement a cache of loaded classes
+    # across all instances of {SourceManager}
+    # Useful in order to retrieve previously credentialed {Source} instance
+    # without credentials
+    # @return [Hash] a cache of classes
+    def self.klasses
+      @klasses ||= {}
+    end
+
     # Return an instantiated {Source} object given the source slug
     # @param [String] slug the source slug
     # @raise [LoadError] if the source can't be loaded
@@ -73,11 +79,11 @@ module Berliner
     # @return [Source] an instance of the specified source
     def get_klass(slug)
       # Check cache for slug
-      if @@klasses.key?(slug)
+      if self.class.klasses.key?(slug)
         # Unless credentials are provided and cached {Source} instance
         # was uncredentialed, return the cached instance
-        unless get_creds(slug) && !@@klasses[slug].authenticated
-          return @@klasses[slug]
+        unless get_creds(slug) && !self.class.klasses[slug].authenticated
+          return self.class.klasses[slug]
         end
       end
       filename = slug.deslugify
@@ -90,13 +96,14 @@ module Berliner
       end
       creds = get_creds(slug)
       k = klass.new(creds)
-      @@klasses[slug] = k
+      self.class.klasses[slug] = k
       k
     end
 
     # Return an instantiated {Source} object given an article permalink
     # @param [String] permalink the article permalink
-    # @return [Source, DefaultSource] an instance of the recognized source or the default source
+    # @return [Source, DefaultSource] an instance of the recognized source
+    #   or the default source
     def get_klass_from_url(permalink)
       slug = SourceRegistry.get_slug_from_url(permalink)
       if slug

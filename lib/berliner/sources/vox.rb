@@ -9,7 +9,7 @@ module Berliner
     # Vox has full content in the rss feed so we don't have to scrape
     def articles
       @entries = fetch
-      articles = @entries.map do |entry|
+      @entries.map do |entry|
         Article.new(
           title: entry.title,
           author: entry.author,

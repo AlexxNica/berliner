@@ -3,7 +3,8 @@ require "httpclient"
 require "berliner/source_manager"
 
 module Berliner
-  # An Enumerable object which represents the collective feed of all given sources
+  # An Enumerable object which represents the collective feed of all given
+  # sources
   class Feed
     attr_accessor :s_manager, :sources, :entries, :articles
 
@@ -15,7 +16,7 @@ module Berliner
     def initialize(slugs, credentials = {})
       @s_manager = SourceManager.new(credentials)
       @sources = s_manager.load(slugs)
-      @entries = get_entries
+      @entries = fetch_entries
     end
 
     # @return [Array<Article>] a list of articles in this feed
@@ -29,7 +30,7 @@ module Berliner
 
     # Fetches RSS feed entries for each source
     # @return [Array<Feed::FeedEntry>] a list of entries in this feed
-    def get_entries
+    def fetch_entries
       Parallel.map(sources, in_threads: 10) do |source|
         source.fetch.map do |url|
           s = s_manager.load_from_url(url)
@@ -57,7 +58,7 @@ module Berliner
 
       # @return [Article] the article associated with this entry
       def article
-        @article ||= get_article
+        @article ||= parse_article
       end
 
       private
@@ -65,8 +66,8 @@ module Berliner
       # Follows redirects on the article URL in the feed entry
       # to arrive at the canonical article URL
       # @example Follow NYT RSS URL to canonical article permalink
-      #   follow_url("http://rss.nytimes.com/c/34625/f/640350/s/427271db/sc/8/l/0L0Snytimes0N0C20A150C0A10C190Cnyregion0Cicy0Eroads0Ecause0Eaccidents0Eand0Eclose0Ebridges0Bhtml0Dpartner0Frss0Gemc0Frss/story01.htm") #=>
-      #     "http://www.nytimes.com/2015/01/19/nyregion/icy-roads-cause-accidents-and-close-bridges.html?partner=rss&emc=rss"
+      #   follow_url( "http://rss.nytimes.com/c/34625/f/640350/s/story01.htm" )
+      #     => "http://www.nytimes.com/2015/01/19/nyregion/icy-roads.html"
       # @param [String] rss_url an article URL (as found in a feed entry)
       # @return [String] a canonical article URL
       def follow_url(rss_url)
@@ -84,7 +85,7 @@ module Berliner
 
       # Parse the fetched article
       # @return [Article] an article
-      def get_article
+      def parse_article
         source.parse(self)
       rescue
         nil

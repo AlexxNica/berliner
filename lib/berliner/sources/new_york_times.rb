@@ -33,12 +33,15 @@ module Berliner
       title = doc.at("meta[name='hdl']")["content"] || ""
       author = doc.at("meta[name='author']")["content"] || ""
       begin
-        image = doc.at_css(".lede-container figure .image img").attribute("data-mediaviewer-src").content || nil
+        image = doc
+                .at_css(".lede-container figure .image img")
+                .attribute("data-mediaviewer-src").content || nil
       rescue
         image = nil
       end
       body_node = doc.at_css("#story-body")
-      body = body_node.css("p.story-body-text.story-content").map(&:to_s).join("") || ""
+      body = body_node
+             .css("p.story-body-text.story-content").map(&:to_s).join("") || ""
       Article.new(
         title: title,
         author: author,

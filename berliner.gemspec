@@ -9,7 +9,8 @@ Gem::Specification.new do |gem|
   gem.version       = Berliner::VERSION
   gem.authors       = ["Seth Thompson", "Geoffrey Litt"]
   gem.email         = ["s3th.thompson@gmail.com", "gklitt@gmail.com"]
-  gem.description   = "Berliner is a Ruby gem and CLI that compiles a daily digest of online news in a beautiful format."
+  gem.description   = "Berliner is a Ruby gem and CLI that compiles a " \
+                      "daily digest of online news in a beautiful format."
   gem.summary       = Berliner::DESCRIPTION
   gem.homepage      = "https://github.com/s3ththompson/berliner"
   gem.licenses      = ["MIT"]

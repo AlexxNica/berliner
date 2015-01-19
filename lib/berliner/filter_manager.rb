@@ -19,13 +19,12 @@ module Berliner
     end
 
     # Load an instantiated {Source} object(s) given the source slug(s)
-    # @param [String, Array<String>] argv the source slug or an array of source slugs
+    # @param [String, Array<String>] argv the source slug or an array of source
+    #   slugs
     # @return [Source, Array<Source>] an instance of the specified source or
     #   an array of instances
     def load(argv)
-      if argv.is_a?(Array)
-        return argv.map { |s| get_klass(s) }
-      end
+      return argv.map { |s| get_klass(s) } if argv.is_a?(Array)
       get_klass(argv)
     end
 

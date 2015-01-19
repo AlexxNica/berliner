@@ -9,11 +9,12 @@ module Berliner
     def parse(entry)
       html = open(entry.url, allow_redirections: :safe).read
       doc = Nokogiri::HTML(html)
-      title = doc.at_css("#main header hgroup h1").content || ""
-      image = doc.at_css("#main figure.media img").attribute("src").content || nil
+      title = doc.at_css("#main header hgroup h1").content
+      image = doc.at_css("#main figure.media img")
+              .attribute("src").content
       intro = doc.at_css("#main header .markdown").to_s
       main = doc.at_css("#main main .markdown").to_s
-      body = "#{intro} #{main}" || ""
+      body = "#{intro} #{main}"
       Article.new(
         title: title,
         author: "Disegno Daily",

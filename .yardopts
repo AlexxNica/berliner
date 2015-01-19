@@ -1,7 +1,6 @@
 --markup markdown
 --exclude lib/berliner/sources/*
 --exclude lib/berliner/renderers/*
---exclude lib/berliner/templates/*
 --exclude lib/berliner/filters/*
 --exclude lib/berliner/assets/*
 --exclude lib/berliner/tasks/*

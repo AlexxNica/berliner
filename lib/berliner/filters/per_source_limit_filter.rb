@@ -14,9 +14,11 @@ module Berliner
     def filter(feed)
       entries = feed.entries
                 .group_by(&:via)
-                .inject({}) do |entries, (source, entries_for_source)|
-                  entries[source] = entries_for_source.slice(0, options[:limit])
-                  entries
+                .each_with_object({}) do |(source, entries_for_source),
+                                          meta_entries|
+                  meta_entries[source] = entries_for_source
+                                         .slice(0, options[:limit])
+                  meta_entries
                 end
                 .values
                 .flatten

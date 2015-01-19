@@ -27,9 +27,7 @@ module Berliner
     # @raise [NameError] if the source is not found
     # @return [void]
     def add(source)
-      if source.is_a?(Array)
-        source.each { |s| add(s) }
-      end
+      source.each { |s| add(s) } if source.is_a?(Array)
       if SourceManager.new.search.include?(source)
         profile["sources"] |= [source]
       else
@@ -43,9 +41,7 @@ module Berliner
     #   array of source slugs
     # @return [void]
     def remove(source)
-      if source.is_a?(Array)
-        source.each { |s| remove(s) }
-      end
+      source.each { |s| remove(s) } if source.is_a?(Array)
       profile["sources"] -= [source]
       write
     end

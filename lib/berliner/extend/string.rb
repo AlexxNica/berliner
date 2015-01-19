@@ -11,8 +11,8 @@ class String
   # @return [Regexp] query regex
   def query_regex
     case self
-      when %r{^/(.*)/$} then Regexp.new(Regexp.last_match[1])
-      else /.*#{Regexp.escape(self)}.*/i
+    when %r{^/(.*)/$} then Regexp.new(Regexp.last_match[1])
+    else /.*#{Regexp.escape(self)}.*/i
     end
   end
 
