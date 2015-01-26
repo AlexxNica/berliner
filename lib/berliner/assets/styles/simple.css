@@ -15,6 +15,19 @@ h1 {
   font-size: 1.5em;
 }
 
+h1.berliner-heading {
+  font-size: 2em;
+  font-family: 'Abril Fatface', cursive;
+  background-color: #c30206;
+  color: #fff;
+  padding: 0 5px;
+}
+
+h2.berliner-date {
+  font-weight: bold;
+  padding: 5px;
+}
+
 h2, h3 {
   font-size: 1em;
   font-weight: normal;
@@ -46,11 +59,19 @@ img {
   max-width: 600px;
 }
 
+.content .heading-block {
+  display: none;
+}
+
 .table-of-contents {
   position: fixed;
   left: 20px;
   top: 20px;
   width: 300px;
+}
+
+.table-of-contents li {
+  margin-bottom: 5px;
 }
 
 article {
@@ -64,6 +85,10 @@ article {
   .content {
     position: static;
     margin: 0 auto;
+  }
+
+  .content .heading-block {
+    display: block;
   }
 
   .table-of-contents {
