@@ -3,3 +3,9 @@ rvm:
   - 2.0.0
   - 2.1.1
   - 2.1.2
+notifications:
+  webhooks:
+    ulrs: https://webhooks.gitter.im/e/21c902ea33c26876c1f0
+    on_success: change
+    on_failure: always
+    on_start: false
