@@ -32,9 +32,9 @@ module Berliner
     # @return [Array<Feed::FeedEntry>] a list of entries in this feed
     def fetch_entries
       Parallel.map(sources, in_threads: 10) do |source|
-        source.fetch.map do |url|
-          s = s_manager.load_from_url(url)
-          FeedEntry.new(url, source.class.title, s)
+        source.fetch.map do |entry|
+          s = s_manager.load_from_url(entry[:url])
+          FeedEntry.new(entry[:url], entry[:title], source.class.title, s)
         end
       end.flatten.compact
     end
@@ -43,15 +43,16 @@ module Berliner
     # A {FeedEntry} stores metadata about an article such as the URL.
     # It also scrapes article content when requested, and caches that content.
     class FeedEntry
-      attr_accessor :url, :via, :source
+      attr_accessor :url, :via, :source, :title
 
       # Create a new {Feed::FeedEntry} object
       # The {Source} instance for the feed is designed to be passed in from
       # the parent {Feed} instance so that the sources are properly
       # credentialed.  However, an (uncredentialed) {Source} instance will be
       # created for the given URL, if not passed in.
-      def initialize(rss_url, via, source = nil)
+      def initialize(rss_url, title, via, source = nil)
         @url = follow_url(rss_url)
+        @title = title
         @via = via
         @source = source || SourceManager.new.load_from_url(url)
       end

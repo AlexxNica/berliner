@@ -35,7 +35,7 @@ module Berliner
     # @return [Array<String>] an array of article permalinks
     def fetch
       feedjira_entries = Feedjira::Feed.fetch_and_parse(self.class.feed).entries
-      feedjira_entries.map(&:url)
+      feedjira_entries.map{|e| {url: e.url, title: e.title}}
     end
 
     # Create an {Article} object from a {Feed::FeedEntry}
