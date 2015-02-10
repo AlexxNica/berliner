@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Berliner</title>
+  <style type="text/css">
+  <%= style %>
+  </style>
+  <link href='http://fonts.googleapis.com/css?family=Abril+Fatface' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <div class="table-of-contents">
+    <div class="heading-block">
+      <h1 class="berliner-heading">Berliner</h1>
+      <h2 class="berliner-date"><%= Time.now.strftime "%A, %B %d" %></h2>
+    </div>
+    <ul>
+      <% articles.each do |article| %>
+        <li>
+          <a href="#<%= article.title.parameterize %>">
+            <h3><%= article.title %></h3>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="heading-block">
+      <h1 class="berliner-heading">Berliner</h1>
+      <h2 class="berliner-date"><%= Time.now.strftime "%A, %B %d" %></h2>
+    </div>
+    <% articles.each do |article| %>
+      <article id="<%= article.title.parameterize %>">
+        <p>
+          <a href="<%= article.permalink %>">
+            <h1><%= article.title %></h1>
+          </a>
+          <h2><%= article.author %></h2>
+          <% if article.source != article.via %>
+            <h3><%= article.source %> via <%= article.via %></h3>
+          <% else %>
+            <h3><%= article.source %></h3>
+          <% end %>
+          <% if article.image %>
+            <p><img src="<%= article.image%>"></p>
+          <% end %>
+        </p>
+        <%= article.body %>
+      </article>
+    <% end %>
+  </div>
+</body>
+</html>
