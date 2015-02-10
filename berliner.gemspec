@@ -41,4 +41,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "mechanize", "~> 2.7.3"
   gem.add_runtime_dependency "httpclient", "~> 2.6.0.1"
   gem.add_runtime_dependency "nikkou", "~> 0.0.4"
+  gem.add_runtime_dependency "rainbow", "~> 2.0.0"
 end
