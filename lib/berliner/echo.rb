@@ -9,8 +9,8 @@ module Berliner
     VERBOSE = 2
 
     # Color enums
-    WHITE = :white
-    BLUE = :blue
+    # WHITE = :white
+    DEFAULT = :default
     GREEN = :green
     YELLOW = :yellow
     RED = :red
@@ -24,11 +24,11 @@ module Berliner
       end
 
       def debug(message)
-        print(message, Echo::WHITE, Echo::VERBOSE)
+        print(message, Echo::DEFAULT, Echo::VERBOSE)
       end
 
       def info(message)
-        print(message, Echo::BLUE)
+        print(message, Echo::DEFAULT)
       end
 
       def success(message)
@@ -48,7 +48,7 @@ module Berliner
       # @param [Number] color the color of the message
       # @param [Number] v the verbosity level of the message
       # @return [void]
-      def print(message, color=Echo::WHITE, verbosity=Echo::NORMAL)
+      def print(message, color=Echo::DEFAULT, verbosity=Echo::NORMAL)
         puts Rainbow(message).color(color) unless self.verbosity < verbosity
       end
 
