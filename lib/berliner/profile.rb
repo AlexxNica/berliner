@@ -15,10 +15,21 @@ module Berliner
     # Create a new {Profile} object
     def initialize
       FileUtils.mkdir_p(File.dirname(PROFILE_PATH))
+
+      Echo.debug("Reading profile from #{PROFILE_PATH}")
       user_profile = YAML.load_file(PROFILE_PATH)
       @profile = default_profile.merge(user_profile)
+
+      Echo.debug("Sources:")
+      profile["sources"].each{ |s| Echo.debug("\t#{s}") }
+      Echo.debug("Filters:")
+      profile["filters"].each{ |f| Echo.debug("\t#{f}") }
+      Echo.debug("Renderer:\n\t#{profile["renderer"]}")
+      Echo.debug("Credentials:")
+      profile["credentials"].each_key{ |c| Echo.debug("\t#{c}") }
     rescue
       @profile = default_profile
+      Echo.debug("Using default profile")
     end
 
     # Add a source to the profile if the source is valid
@@ -33,6 +44,7 @@ module Berliner
       end
       if SourceManager.new.search.include?(source)
         profile["sources"] |= [source]
+        Echo.info("Added #{source} to sources.")
       else
         fail NameError, "Source #{source} not found"
       end
@@ -49,6 +61,7 @@ module Berliner
         return
       end
       profile["sources"] -= [source]
+      Echo.info("Removed #{source} from sources.")
       write
     end
 

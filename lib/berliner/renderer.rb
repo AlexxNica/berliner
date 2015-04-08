@@ -37,11 +37,7 @@ module Berliner
         style: style
         )
       File.write(BERLINER_HTML, html)
-      begin
-        system %(open "#{BERLINER_HTML}")
-      rescue
-        pass
-      end
+      BERLINER_HTML
     end
 
     # Read a CSS style file given its slug

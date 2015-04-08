@@ -82,7 +82,9 @@ module Berliner
       if self.class.klasses.key?(slug)
         # Unless credentials are provided and cached {Source} instance
         # was uncredentialed, return the cached instance
-        unless get_creds(slug) && !self.class.klasses[slug].authenticated
+        authenticated = self.class.klasses[slug].authenticated
+        unless get_creds(slug) && !authenticated
+          Echo.debug("Loaded #{slug} from cache #{authenticated ? 'with' : 'without'} creds.")
           return self.class.klasses[slug]
         end
       end
@@ -96,6 +98,7 @@ module Berliner
       end
       creds = get_creds(slug)
       k = klass.new(creds)
+      Echo.debug("Loaded #{slug} #{creds ? 'with' : 'without'} creds.")
       self.class.klasses[slug] = k
       k
     end

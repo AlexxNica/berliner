@@ -34,6 +34,7 @@ module Berliner
     # Fetch recent entries from the source's feed
     # @return [Array<String>] an array of article permalinks
     def fetch
+      Echo.debug("Fetching entry URLs for #{self.class.title}")
       feedjira_entries = Feedjira::Feed.fetch_and_parse(self.class.feed).entries
       feedjira_entries.map(&:url)
     end

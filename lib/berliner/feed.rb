@@ -78,7 +78,9 @@ module Berliner
         # Get the first URL in the Location header
         location = location.shift if location.is_a?(Array)
         # Sanity check that a URL was given
-        (location && !location.empty?) ? location : rss_url
+        url = (location && !location.empty?) ? location : rss_url
+        Echo.debug("Followed #{rss_url} to #{url}") unless url == rss_url
+        url
       rescue
         nil
       end
@@ -87,7 +89,9 @@ module Berliner
       # @return [Article] an article
       def parse_article
         source.parse(self)
+        Echo.debug("Parsed #{url}")
       rescue
+        Echo.warn("Failed to parse #{url}")
         nil
       end
     end

@@ -41,7 +41,7 @@ command :search do |c|
   HERE
   c.action do |args, options|
     fail OptionParser::InvalidArgument, args.drop(1) if args.length > 1
-    puts Berliner::CLI.new(options.verbose).search(args.first)
+    Berliner::CLI.new(options.verbose).search(args.first)
   end
 end
 
@@ -75,6 +75,6 @@ command :list do |c|
   c.description = "List all sources currently added to your Berliner."
   c.action do |args, options|
     fail OptionParser::InvalidArgument, args unless args.empty?
-    puts Berliner::CLI.new(options.verbose).list
+    Berliner::CLI.new(options.verbose).list
   end
 end
