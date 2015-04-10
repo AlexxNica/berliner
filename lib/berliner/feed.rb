@@ -88,8 +88,9 @@ module Berliner
       # Parse the fetched article
       # @return [Article] an article
       def parse_article
-        source.parse(self)
+        article = source.parse(self)
         Echo.debug("Parsed #{url}")
+        article
       rescue
         Echo.warn("Failed to parse #{url}")
         nil
