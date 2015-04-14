@@ -34,7 +34,7 @@ func startPipe(feeds []string) <-chan string {
 	// until data is available on the channel
 	// AND they block senders until receivers are ready
 	// to receive downstream.  thus the senders here
-	// need to be async
+	// need to be async if we want to channel to be unbuffered
 	out := make(chan string)
 	go func() {
 		for _, f := range feeds {
@@ -43,7 +43,7 @@ func startPipe(feeds []string) <-chan string {
 		// in all of our examples, closing the pipe means
 		// telling the downstream functions that there's no
 		// more work to be done
-	close(out)
+		close(out)
 	}()
 	return out
 }
