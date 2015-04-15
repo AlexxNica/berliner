@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 )
 
 func main() {
@@ -9,11 +10,11 @@ func main() {
 	input := []string{
 		"http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
 		"http://www.vox.com/rss/index.xml",
-		}
+	}
 
 	feeds := startPipe(input)
 	urls := pipeFetch(feeds)
-	// htmls := pipeRead(urls)
+	htmls := pipeRead(urls)
 	// u := filterURLs(urls)
 	// htmls := read(urls)
 	// posts := parse(htmls)
@@ -22,8 +23,9 @@ func main() {
 
 	// render(out)
 
-	for url := range urls {
-		fmt.Printf("%s\n", url)
+	for html := range htmls {
+		doc := goquery.NewDocumentFromNode(html)
+		fmt.Printf("Title: %s\n", doc.Find("head title").Text())
 	}
 }
 

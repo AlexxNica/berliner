@@ -1,8 +1,8 @@
 package main
 
 import (
-	"sync"
 	"github.com/SlyMarbo/rss"
+	"sync"
 )
 
 func pipeFetch(urls <-chan string) <-chan string {
@@ -30,9 +30,9 @@ func pipeFetch(urls <-chan string) <-chan string {
 				// to putting wg.Done() after our synchronous fetch function
 				defer wg.Done()
 				fetch(url, out)
-			// the reason we refer to out using a closure, but pass 
-			// in url explicitly is one of few go gotchas
-			// https://github.com/golang/go/wiki/CommonMistakes#using-goroutines-on-loop-iterator-variables
+				// the reason we refer to out using a closure, but pass
+				// in url explicitly is one of few go gotchas
+				// https://github.com/golang/go/wiki/CommonMistakes#using-goroutines-on-loop-iterator-variables
 			}(url)
 		}
 		// we arrive here immediately after the anonymous
@@ -61,5 +61,5 @@ func fetch(url string, out chan string) {
 		// looks like some feeds put permalink in
 		// item.Link, and some in item.ID
 		out <- item.ID
-	}	
+	}
 }
