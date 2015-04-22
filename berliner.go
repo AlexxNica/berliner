@@ -1,51 +1,32 @@
 package main
 
 import (
-	"fmt"
-	"github.com/PuerkitoBio/goquery"
+	"github.com/spf13/cobra"
 )
 
 func main() {
-	// conf := readConf()
-	input := []string{
-		"http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
-		"http://www.vox.com/rss/index.xml",
+
+	Berliner := &cobra.Command{
+		Use:   "berliner",
+		Short: "Daily digest of online news in a beautiful format",
+		Long:  "Daily digest of online news in a beautiful format.",
 	}
 
-	feeds := startPipe(input)
-	urls := pipeFetch(feeds)
-	htmls := pipeRead(urls)
-	// u := filterURLs(urls)
-	// htmls := read(urls)
-	// posts := parse(htmls)
-	// p := filterPosts(posts)
-	// out := collect(posts)
-
-	// render(out)
-
-	for html := range htmls {
-		doc := goquery.NewDocumentFromNode(html)
-		fmt.Printf("Title: %s\n", doc.Find("head title").Text())
+	cmdFetch := &cobra.Command{
+		Use:   "_fetch",
+		Short: "Fetch feeds from stdin",
+		Long:  "Fetch article permalinks for feeds read from stdin.",
+		Run:   Fetch,
 	}
-}
 
-// temporary function, but equivalent to gen()
-// in this example https://blog.golang.org/pipelines
-func startPipe(feeds []string) <-chan string {
-	// oh yeah, unbuffered channels block receivers
-	// until data is available on the channel
-	// AND they block senders until receivers are ready
-	// to receive downstream.  thus the senders here
-	// need to be async if we want to channel to be unbuffered
-	out := make(chan string)
-	go func() {
-		for _, f := range feeds {
-			out <- f
-		}
-		// in all of our examples, closing the pipe means
-		// telling the downstream functions that there's no
-		// more work to be done
-		close(out)
-	}()
-	return out
+	cmdParse := &cobra.Command{
+		Use:   "_parse",
+		Short: "Parse article permalinks from stdin",
+		Long:  "Parse structured articles from permalinks from stdin",
+		Run:   Parse,
+	}
+
+	Berliner.AddCommand(cmdFetch, cmdParse)
+
+	Berliner.Execute()
 }
