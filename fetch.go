@@ -3,39 +3,31 @@ package main
 import (
 	"fmt"
 	"os"
-	"sync"
 
 	"github.com/SlyMarbo/rss"
 	"github.com/spf13/cobra"
 )
 
 func Fetch(cmd *cobra.Command, args []string) {
-	feeds := readLines()
-	links := fetch(feeds)
+	links := make(chan string)
+	p := &Pipe{
+		workers: 10,
+		do:      fetch,
+		in:      readLines(),
+		out:     links,
+	}
+	err := p.pipe()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	
 	for link := range links {
 		fmt.Fprintln(os.Stdout, link)
 	}
 }
 
-func fetch(feeds <-chan string) <-chan string {
-	out := make(chan string)
-	go func() {
-		var wg sync.WaitGroup
-
-		for feed := range feeds {
-			wg.Add(1)
-			go func(feed string) {
-				defer wg.Done()
-				innerFetch(feed, out)
-			}(feed)
-		}
-		wg.Wait()
-		close(out)
-	}()
-	return out
-}
-
-func innerFetch(feed string, out chan string) {
+func fetch(feed string, out chan<- string) {
 	f, err := rss.Fetch(feed)
 	if err != nil {
 		return

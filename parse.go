@@ -6,39 +6,44 @@ import (
 	"golang.org/x/net/html/charset"
 	"net/http"
 	"os"
-	"sync"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/spf13/cobra"
 )
 
 func Parse(cmd *cobra.Command, args []string) {
-	links := readLines()
-	pages := get(links)
-	articles := parse(pages)
+	c := make(chan *html.Node)
+	p1 := &Pipe{
+		workers: 20,
+		do:      get,
+		in:      readLines(),
+		out:     c,
+	}
+	err := p1.pipe()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	articles := make(chan *Article)
+	p2 := &Pipe{
+		workers: 5,
+		do:      parse,
+		in:      c,
+		out:     articles,
+	}
+	err = p2.pipe()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	for article := range articles {
 		fmt.Fprintln(os.Stdout, article.title)
 	}
 }
 
-func get(links <-chan string) <-chan *html.Node {
-	out := make(chan *html.Node)
-	go func() {
-		var wg sync.WaitGroup
-		for link := range links {
-			wg.Add(1)
-			go func(link string) {
-				defer wg.Done()
-				innerGet(link, out)
-			}(link)
-		}
-		wg.Wait()
-		close(out)
-	}()
-	return out
-}
-
-func innerGet(link string, out chan *html.Node) {
+func get(link string, out chan *html.Node) {
 	resp, err := http.Get(link)
 	defer resp.Body.Close()
 	if err != nil {
@@ -62,24 +67,7 @@ type Article struct {
 	title string
 }
 
-func parse(pages <-chan *html.Node) <-chan *Article {
-	out := make(chan *Article)
-	go func() {
-		var wg sync.WaitGroup
-		for page := range pages {
-			wg.Add(1)
-			go func(page *html.Node) {
-				defer wg.Done()
-				innerParse(page, out)
-			}(page)
-		}
-		wg.Wait()
-		close(out)
-	}()
-	return out
-}
-
-func innerParse(page *html.Node, out chan *Article) {
+func parse(page *html.Node, out chan *Article) {
 	doc := goquery.NewDocumentFromNode(page)
 	out <- &Article{
 		title: doc.Find("head title").Text(),
