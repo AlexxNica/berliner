@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"net/url"
 
 	"github.com/SlyMarbo/rss"
 	"github.com/spf13/cobra"
@@ -23,7 +23,7 @@ func Fetch(cmd *cobra.Command, args []string) {
 	}
 	
 	for link := range links {
-		fmt.Fprintln(os.Stdout, link)
+		fmt.Println(link)
 	}
 }
 
@@ -33,6 +33,11 @@ func fetch(feed string, out chan<- string) {
 		return
 	}
 	for _, item := range f.Items {
-		out <- item.ID
+		link := item.ID
+		_, err := url.Parse(link)
+		if err != nil {
+			continue
+		}
+		out <- link
 	}
 }

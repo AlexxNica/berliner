@@ -2,74 +2,39 @@ package main
 
 import (
 	"fmt"
-	"golang.org/x/net/html"
-	"golang.org/x/net/html/charset"
-	"net/http"
-	"os"
 
-	"github.com/PuerkitoBio/goquery"
+	"github.com/s3ththompson/berliner/extractors"
+	// "github.com/PuerkitoBio/goquery"
 	"github.com/spf13/cobra"
 )
 
 func Parse(cmd *cobra.Command, args []string) {
-	c := make(chan *html.Node)
-	p1 := &Pipe{
+	posts := make(chan *extractors.Post)
+	p := &Pipe{
 		workers: 20,
-		do:      get,
-		in:      readLines(),
-		out:     c,
-	}
-	err := p1.pipe()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	articles := make(chan *Article)
-	p2 := &Pipe{
-		workers: 5,
 		do:      parse,
-		in:      c,
-		out:     articles,
+		in:      readLines(),
+		out:     posts,
 	}
-	err = p2.pipe()
+	err := p.pipe()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	for article := range articles {
-		fmt.Fprintln(os.Stdout, article.title)
+	for post := range posts {
+		fmt.Println(post)
 	}
 }
 
-func get(link string, out chan *html.Node) {
-	resp, err := http.Get(link)
-	defer resp.Body.Close()
+func parse(link string, out chan *extractors.Post) {
+	e := extractors.New(link)
+	page, err := e.Get()
 	if err != nil {
-		fmt.Printf("Read error: %s\n", link)
 		return
 	}
-	r, err := charset.NewReader(resp.Body, resp.Header.Get("content-type"))
+	post, err := e.Extract(page)
 	if err != nil {
-		fmt.Printf("UTF8 error: %s\n", link)
 		return
 	}
-	doc, err := html.Parse(r)
-	if err != nil {
-		fmt.Printf("Parse error: %s\n", link)
-		return
-	}
-	out <- doc
-}
-
-type Article struct {
-	title string
-}
-
-func parse(page *html.Node, out chan *Article) {
-	doc := goquery.NewDocumentFromNode(page)
-	out <- &Article{
-		title: doc.Find("head title").Text(),
-	}
+	out <- post
 }

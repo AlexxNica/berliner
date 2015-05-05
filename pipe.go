@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-
 	"reflect"
 	"sync"
 )
@@ -68,7 +67,7 @@ func (p *Pipe) pipe() error {
 			p.wg.Add(1)
 			go func() {
 				// since "do" function is synchronous, work will be done when
-				// this anonymous function exits
+				// this anonymous function (which calls "do") exits
 				defer p.wg.Done()
 
 				// this would just be `for item := range p.in` if we didn't
