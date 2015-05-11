@@ -1,10 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"text/template"
+	"encoding/csv"
 
 	"github.com/s3ththompson/berliner/extractors"
 	"github.com/spf13/cobra"
@@ -12,23 +12,21 @@ import (
 
 func Render(cmd *cobra.Command, args []string) {
 	posts := []*extractors.Post{}
-	scanner := bufio.NewScanner(os.Stdin)
-	for {
-		if !scanner.Scan() {
-			break
-		}
-		if err := scanner.Err(); err != nil {
-			fmt.Fprintln(os.Stderr, "reading standard input: ", err)
-		}
-		post := &extractors.Post{}
-		post.Title = scanner.Text()
-		scanner.Scan()
-		post.Content = scanner.Text()
-		scanner.Scan()
-		post.Link = scanner.Text()
-		scanner.Scan()
-		post.Image = scanner.Text()
-		posts = append(posts, post)
+	reader := csv.NewReader(os.Stdin)
+	reader.Comma = '\t'
+	reader.FieldsPerRecord = 4
+	_, _ = reader.Read() // discard csv index
+	records, err := reader.ReadAll()
+	if err != nil {
+		return
+	}
+	for _, record := range records {
+		posts = append(posts, &extractors.Post{
+			Title: record[0],
+			Content: record[1],
+			Link: record[2],
+			Image: record[3],
+			})
 	}
 
 	const html = `
@@ -97,7 +95,7 @@ func Render(cmd *cobra.Command, args []string) {
 		}{
 			posts,
 		}
-	err := t.Execute(os.Stdout, data)
+	err = t.Execute(os.Stdout, data)
 	if err != nil {
 		fmt.Println("executing template:", err)
 	}

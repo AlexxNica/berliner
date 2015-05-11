@@ -21,6 +21,7 @@ func Parse(cmd *cobra.Command, args []string) {
 		fmt.Println(err)
 		return
 	}
+	fmt.Println("TITLE\tCONTENT\tLINK\tIMAGE")
 	for post := range posts {
 		fmt.Println(post)
 	}

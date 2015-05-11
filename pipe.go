@@ -16,7 +16,7 @@ type Pipe struct {
 	// should resemble type:
 	// func(T, chan<- T)
 	// unit of work is passed as first argument,
-	// completed work unit(s) are sent on channel in
+	// completed work unit(s) are sent out on channel in
 	// second argument
 	in  interface{} // input channel, should resemble type: <-chan T
 	out interface{} // output channel, should resemble type: chan<- T

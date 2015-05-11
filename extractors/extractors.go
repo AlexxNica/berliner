@@ -12,7 +12,7 @@ type Post struct {
 }
 
 func (p *Post) String() string {
-	return p.Title + "\n" + p.Content + "\n" + p.Link + "\n" + p.Image
+	return p.Title + "\t" + p.Content + "\t" + p.Link + "\t" + p.Image
 }
 
 type Extractor interface {
