@@ -21,7 +21,7 @@ func Fetch(cmd *cobra.Command, args []string) {
 		fmt.Println(err)
 		return
 	}
-	
+
 	for link := range links {
 		fmt.Println(link)
 	}

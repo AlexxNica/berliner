@@ -1,2 +1,0 @@
-http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml
-http://www.vox.com/rss/index.xml

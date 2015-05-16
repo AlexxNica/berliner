@@ -1,10 +1,10 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
 	"os"
 	"text/template"
-	"encoding/csv"
 
 	"github.com/s3ththompson/berliner/extractors"
 	"github.com/spf13/cobra"
@@ -22,11 +22,11 @@ func Render(cmd *cobra.Command, args []string) {
 	}
 	for _, record := range records {
 		posts = append(posts, &extractors.Post{
-			Title: record[0],
+			Title:   record[0],
 			Content: record[1],
-			Link: record[2],
-			Image: record[3],
-			})
+			Link:    record[2],
+			Image:   record[3],
+		})
 	}
 
 	const html = `
@@ -92,9 +92,9 @@ func Render(cmd *cobra.Command, args []string) {
 	t := template.Must(template.New("html").Parse(html))
 	data := struct {
 		Posts []*extractors.Post
-		}{
-			posts,
-		}
+	}{
+		posts,
+	}
 	err = t.Execute(os.Stdout, data)
 	if err != nil {
 		fmt.Println("executing template:", err)
