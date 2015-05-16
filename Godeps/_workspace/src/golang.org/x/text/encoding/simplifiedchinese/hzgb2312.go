@@ -8,12 +8,12 @@ import (
 	"errors"
 	"unicode/utf8"
 
-	"golang.org/x/text/encoding"
-	"golang.org/x/text/transform"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/encoding"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/transform"
 )
 
-// HZGB2312 is the HZ-GB2312 encoding.
-var HZGB2312 encoding.Encoding = hzGB2312{}
+var HZGB2312 encoding. // HZGB2312 is the HZ-GB2312 encoding.
+Encoding = hzGB2312{}
 
 type hzGB2312 struct{}
 

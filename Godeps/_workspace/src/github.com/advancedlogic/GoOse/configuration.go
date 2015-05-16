@@ -1,7 +1,7 @@
 package goose
 
 import (
-	"github.com/advancedlogic/gojs-config"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/gojs-config"
 	"time"
 )
 

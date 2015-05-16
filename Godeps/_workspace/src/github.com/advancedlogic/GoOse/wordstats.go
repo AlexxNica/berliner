@@ -1,7 +1,7 @@
 package goose
 
 import (
-	"gopkg.in/fatih/set.v0"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/gopkg.in/fatih/set.v0"
 )
 
 //some word statistics

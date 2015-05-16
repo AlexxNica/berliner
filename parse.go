@@ -5,7 +5,7 @@ import (
 
 	"github.com/s3ththompson/berliner/extractors"
 	// "github.com/PuerkitoBio/goquery"
-	"github.com/spf13/cobra"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
 func Parse(cmd *cobra.Command, args []string) {

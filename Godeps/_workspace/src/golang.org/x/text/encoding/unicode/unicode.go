@@ -10,8 +10,8 @@ import (
 	"unicode/utf16"
 	"unicode/utf8"
 
-	"golang.org/x/text/encoding"
-	"golang.org/x/text/transform"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/encoding"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/transform"
 )
 
 // UTF16 returns a UTF-16 Encoding for the given default endianness and byte

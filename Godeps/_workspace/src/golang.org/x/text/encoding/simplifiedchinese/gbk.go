@@ -8,13 +8,13 @@ import (
 	"errors"
 	"unicode/utf8"
 
-	"golang.org/x/text/encoding"
-	"golang.org/x/text/transform"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/encoding"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/transform"
 )
 
 var (
-	// GB18030 is the GB18030 encoding.
-	GB18030 encoding.Encoding = gbk{gb18030: true}
+	GB18030  encoding. // GB18030 is the GB18030 encoding.
+	Encoding = gbk{gb18030: true}
 	// GBK is the GBK encoding. It encodes an extension of the GB2312 character set
 	// and is also known as Code Page 936.
 	GBK encoding.Encoding = gbk{gb18030: false}

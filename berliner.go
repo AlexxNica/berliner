@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/spf13/cobra"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
 func main() {

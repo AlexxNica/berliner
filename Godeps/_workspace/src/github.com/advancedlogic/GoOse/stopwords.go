@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"gopkg.in/fatih/set.v0"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/gopkg.in/fatih/set.v0"
 )
 
 var PUNCTUATION = regexp.MustCompile("[^\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\p{Pc}\\s]")

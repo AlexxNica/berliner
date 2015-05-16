@@ -2,13 +2,13 @@ package extractors
 
 import (
 	"bytes"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html/charset"
 	"net/http"
-	"golang.org/x/net/html"
-	"golang.org/x/net/html/charset"
 	"strings"
 	"unicode"
 
-	goose "github.com/advancedlogic/GoOse"
+	goose "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/GoOse"
 )
 
 type Default struct {
@@ -51,16 +51,16 @@ func (e *Default) Extract(page *html.Node) (*Post, error) {
 	g := goose.New()
 	article := g.ExtractFromRawHtml(e.link, rawHtml)
 	content := strings.Map(func(r rune) rune {
-        if unicode.IsSpace(r) {
-            return ' '
-        }
-        return r
-    }, article.CleanedText)
+		if unicode.IsSpace(r) {
+			return ' '
+		}
+		return r
+	}, article.CleanedText)
 
 	return &Post{
-		Title: article.Title,
+		Title:   article.Title,
 		Content: content,
-		Link: article.CanonicalLink,
-		Image: article.TopImage,
+		Link:    article.CanonicalLink,
+		Image:   article.TopImage,
 	}, nil
 }

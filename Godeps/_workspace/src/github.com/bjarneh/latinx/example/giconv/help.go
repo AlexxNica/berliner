@@ -5,42 +5,42 @@
 package main
 
 import (
-    "fmt"
-    "os"
-    "github.com/bjarneh/latinx"
+	"fmt"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/bjarneh/latinx"
+	"os"
 )
 
 func someSortOfHelp() {
 
-    switch {
-    case help:
-        helpAndExit()
-    case version:
-        versionAndExit()
-    case use:
-        usage()
-        os.Exit(0)
-    case list:
-        listAndExit()
-    }
+	switch {
+	case help:
+		helpAndExit()
+	case version:
+		versionAndExit()
+	case use:
+		usage()
+		os.Exit(0)
+	case list:
+		listAndExit()
+	}
 
 }
 
 func versionAndExit() {
-    fmt.Println("giconv 0.1")
-    os.Exit(0)
+	fmt.Println("giconv 0.1")
+	os.Exit(0)
 }
 
 func listAndExit() {
-    for _, v := range latinx.Available() {
-        fmt.Printf("%s\n", v)
-    }
-    os.Exit(0)
+	for _, v := range latinx.Available() {
+		fmt.Printf("%s\n", v)
+	}
+	os.Exit(0)
 }
 
 func usage() {
 
-    var msg string = `
+	var msg string = `
   General synopsis:
 
   giconv -f=<ENCODING> -t=<ENCODING> filename
@@ -58,11 +58,11 @@ func usage() {
 
   giconv -f=iso-8859-15 -t=utf-8 < input.txt > output.txt
     `
-    fmt.Printf("%s\n", msg)
+	fmt.Printf("%s\n", msg)
 }
 
 func helpAndExit() {
-    var msg string = `
+	var msg string = `
   giconv - simple iconv clone for ISO 8859
 
   usage: giconv -f=<ENCODING> -t=<ENCODING> filename
@@ -77,7 +77,7 @@ func helpAndExit() {
     -u --usage     : print typical usage of giconv
     -o --output    : write output to file (not stdout)
     ̀`
-    fmt.Printf("%s\n", msg)
+	fmt.Printf("%s\n", msg)
 
-    os.Exit(0)
+	os.Exit(0)
 }

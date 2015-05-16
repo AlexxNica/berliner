@@ -1,8 +1,8 @@
 package goose
 
 import (
-	"github.com/advancedlogic/goquery"
-	"gopkg.in/fatih/set.v0"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/goquery"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/gopkg.in/fatih/set.v0"
 	"strconv"
 	"strings"
 )

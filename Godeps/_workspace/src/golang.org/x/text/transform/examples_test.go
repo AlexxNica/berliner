@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"unicode"
 
-	"golang.org/x/text/transform"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/transform"
 	"golang.org/x/text/unicode/norm"
 )
 

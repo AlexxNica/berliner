@@ -1,14 +1,14 @@
 package extractors
 
 import (
-	"golang.org/x/net/html"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 )
 
 type Post struct {
-	Title string
+	Title   string
 	Content string
-	Link string
-	Image string
+	Link    string
+	Image   string
 }
 
 func (p *Post) String() string {
@@ -25,7 +25,7 @@ type Extractor interface {
 
 type ExtractorList struct {
 	extractors []Extractor
-	fallback Extractor
+	fallback   Extractor
 }
 
 func (m *ExtractorList) FindMatch(link string) Extractor {
@@ -40,7 +40,7 @@ func (m *ExtractorList) FindMatch(link string) Extractor {
 func New(link string) Extractor {
 	m := &ExtractorList{
 		extractors: []Extractor{},
-		fallback: &Default{},
+		fallback:   &Default{},
 	}
 	e := m.FindMatch(link)
 	e.SetLink(link)

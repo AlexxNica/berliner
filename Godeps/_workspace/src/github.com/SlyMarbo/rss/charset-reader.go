@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/axgle/mahonia"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/axgle/mahonia"
 )
 
 func charsetReader(charset string, input io.Reader) (io.Reader, error) {

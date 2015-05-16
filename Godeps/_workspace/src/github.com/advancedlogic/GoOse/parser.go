@@ -1,8 +1,8 @@
 package goose
 
 import (
-	"github.com/advancedlogic/goquery"
-	"golang.org/x/net/html"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/goquery"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 )
 
 type parser struct{}

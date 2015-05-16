@@ -2,7 +2,7 @@
 
 package charmap
 
-import "golang.org/x/text/encoding"
+import "github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/encoding"
 
 // CodePage437 is the IBM Code Page 437 encoding.
 var CodePage437 encoding.Encoding = &codePage437

@@ -18,8 +18,8 @@ package cobra
 import (
 	"bytes"
 	"fmt"
-	"github.com/inconshreveable/mousetrap"
-	flag "github.com/spf13/pflag"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/inconshreveable/mousetrap"
+	flag "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/pflag"
 	"io"
 	"os"
 	"runtime"

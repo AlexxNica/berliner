@@ -2,9 +2,9 @@ package goose
 
 import (
 	"container/list"
-	"github.com/advancedlogic/goquery"
-	"golang.org/x/net/html"
-	"golang.org/x/net/html/atom"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/goquery"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html/atom"
 	"log"
 	"regexp"
 	"strings"

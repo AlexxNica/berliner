@@ -6,8 +6,8 @@ import (
 	"os"
 	"text/template"
 
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 	"github.com/s3ththompson/berliner/extractors"
-	"github.com/spf13/cobra"
 )
 
 func Render(cmd *cobra.Command, args []string) {
@@ -15,11 +15,15 @@ func Render(cmd *cobra.Command, args []string) {
 	reader := csv.NewReader(os.Stdin)
 	reader.Comma = '\t'
 	reader.FieldsPerRecord = 4
+	reader.LazyQuotes = true
 	_, _ = reader.Read() // discard csv index
 	records, err := reader.ReadAll()
 	if err != nil {
+		fmt.Println("hello")
+		fmt.Println(err)
 		return
 	}
+	fmt.Println("goodbye")
 	for _, record := range records {
 		posts = append(posts, &extractors.Post{
 			Title:   record[0],

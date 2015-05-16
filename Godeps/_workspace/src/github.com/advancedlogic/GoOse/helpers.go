@@ -3,7 +3,7 @@ package goose
 import (
 	"crypto/md5"
 	"fmt"
-	"github.com/bjarneh/latinx"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/bjarneh/latinx"
 	"io"
 	"strings"
 	"unicode/utf8"

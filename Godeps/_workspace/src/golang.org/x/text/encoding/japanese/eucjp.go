@@ -8,12 +8,12 @@ import (
 	"errors"
 	"unicode/utf8"
 
-	"golang.org/x/text/encoding"
-	"golang.org/x/text/transform"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/encoding"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/transform"
 )
 
-// EUCJP is the EUC-JP encoding.
-var EUCJP encoding.Encoding = eucJP{}
+var EUCJP encoding. // EUCJP is the EUC-JP encoding.
+Encoding = eucJP{}
 
 type eucJP struct{}
 

@@ -7,8 +7,8 @@ import (
 	"net/http/cookiejar"
 	"strings"
 
-	"code.google.com/p/go-charset/charset"
-	"github.com/advancedlogic/goquery"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/code.google.com/p/go-charset/charset"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/goquery"
 )
 
 type Crawler struct {

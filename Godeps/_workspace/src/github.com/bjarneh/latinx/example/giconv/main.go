@@ -7,7 +7,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/bjarneh/latinx"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/bjarneh/latinx"
 	"io"
 	"io/ioutil"
 	"os"
@@ -44,7 +44,7 @@ var (
 func init() {
 
 	flag.StringVar(&to, "t", to, "output encoding")
-	flag.StringVar(&to, "to", to, "output encoding") // shorter alias 
+	flag.StringVar(&to, "to", to, "output encoding") // shorter alias
 	flag.StringVar(&to, "to-code", to, "output encoding")
 	flag.StringVar(&from, "f", from, "input encoding")
 	flag.StringVar(&from, "from", from, "input encoding") // shorter alias

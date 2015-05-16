@@ -8,12 +8,12 @@ import (
 	"errors"
 	"unicode/utf8"
 
-	"golang.org/x/text/encoding"
-	"golang.org/x/text/transform"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/encoding"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/transform"
 )
 
-// ISO2022JP is the ISO-2022-JP encoding.
-var ISO2022JP encoding.Encoding = iso2022JP{}
+var ISO2022JP encoding. // ISO2022JP is the ISO-2022-JP encoding.
+Encoding = iso2022JP{}
 
 type iso2022JP struct{}
 
