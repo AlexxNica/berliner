@@ -33,7 +33,14 @@ func main() {
 		Run:   Render,
 	}
 
-	Berliner.AddCommand(cmdFetch, cmdParse, cmdRender)
+	cmdPocket := &cobra.Command{
+		Use:   "_pocket",
+		Short: "Send to Pocket",
+		Long:  "Send articles to your Pocket",
+		Run:   Pocket,
+	}
+
+	Berliner.AddCommand(cmdFetch, cmdParse, cmdRender, cmdPocket)
 
 	Berliner.Execute()
 }
