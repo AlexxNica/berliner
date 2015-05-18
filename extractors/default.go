@@ -5,6 +5,7 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html/charset"
 	"net/http"
+	"net/url"
 	"strings"
 	"unicode"
 
@@ -12,24 +13,24 @@ import (
 )
 
 type Default struct {
-	link string
+	post *Post
 }
 
 func (e *Default) Recognize(link string) bool {
 	return true
 }
 
-func (e *Default) SetLink(link string) {
-	e.link = link
+func (e *Default) SetPost(post *Post) {
+	e.post = post
 }
 
 func (e *Default) Get() (*html.Node, error) {
-	resp, err := http.Get(e.link)
+	resp, err := http.Get(e.post.Permalink)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	e.link = resp.Request.URL.String()
+	e.post.Permalink = resp.Request.URL.String()
 	r, err := charset.NewReader(resp.Body, resp.Header.Get("content-type"))
 	if err != nil {
 		return nil, err
@@ -49,7 +50,7 @@ func (e *Default) Extract(page *html.Node) (*Post, error) {
 	}
 	rawHtml := raw.String()
 	g := goose.New()
-	article := g.ExtractFromRawHtml(e.link, rawHtml)
+	article := g.ExtractFromRawHtml(e.post.Permalink, rawHtml)
 	content := strings.Map(func(r rune) rune {
 		if unicode.IsSpace(r) {
 			return ' '
@@ -57,10 +58,18 @@ func (e *Default) Extract(page *html.Node) (*Post, error) {
 		return r
 	}, article.CleanedText)
 
-	return &Post{
-		Title:   article.Title,
-		Content: content,
-		Link:    article.CanonicalLink,
-		Image:   article.TopImage,
-	}, nil
+	source := ""
+	url, err := url.Parse(e.post.Permalink)
+	if err == nil {
+		source = url.Host
+	}
+
+	e.post.Title = article.Title
+	e.post.Permalink = article.CanonicalLink
+	e.post.Content = content
+	e.post.Images = []string{article.TopImage}
+	e.post.Tags = strings.Split(article.MetaKeywords, ",")
+	e.post.Source = source
+	e.post.Language = article.MetaLang
+	return e.post, nil
 }

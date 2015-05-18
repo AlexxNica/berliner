@@ -10,7 +10,7 @@
 
 > WARNING: Berliner is experimental software under active development.  There are few tests. The CLI commands, architecture, APIs, and source code layout may change at any moment.
 
-> **Berliner will be fit for public use at v0.1.0** (follow progress [here](https://github.com/s3ththompson/berliner/issues/10) and [here](https://github.com/s3ththompson/berliner/issues/11).)
+> **Berliner will be fit for public use at v0.1.0**
 
 # Installation
 

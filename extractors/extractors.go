@@ -4,23 +4,11 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 )
 
-type Post struct {
-	Title   string
-	Content string
-	Link    string
-	Image   string
-}
-
-func (p *Post) String() string {
-	return p.Title + "\t" + p.Content + "\t" + p.Link + "\t" + p.Image
-}
-
 type Extractor interface {
 	Recognize(string) bool
-	SetLink(string)
+	SetPost(*Post)
 	Get() (*html.Node, error)
 	Extract(*html.Node) (*Post, error)
-	// Browser() browser of some sort
 }
 
 type ExtractorList struct {
@@ -37,12 +25,12 @@ func (m *ExtractorList) FindMatch(link string) Extractor {
 	return m.fallback
 }
 
-func New(link string) Extractor {
+func New(post *Post) Extractor {
 	m := &ExtractorList{
 		extractors: []Extractor{},
 		fallback:   &Default{},
 	}
-	e := m.FindMatch(link)
-	e.SetLink(link)
+	e := m.FindMatch(post.Permalink)
+	e.SetPost(post)
 	return e
 }

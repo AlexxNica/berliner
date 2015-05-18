@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/csv"
 	"fmt"
 	"os"
 	"text/template"
@@ -11,28 +10,10 @@ import (
 )
 
 func Render(cmd *cobra.Command, args []string) {
-	posts := []*extractors.Post{}
-	reader := csv.NewReader(os.Stdin)
-	reader.Comma = '\t'
-	reader.FieldsPerRecord = 4
-	reader.LazyQuotes = true
-	_, _ = reader.Read() // discard csv index
-	records, err := reader.ReadAll()
+	posts, err := extractors.ReadPosts(os.Stdin)
 	if err != nil {
-		fmt.Println("hello")
 		fmt.Println(err)
-		return
 	}
-	fmt.Println("goodbye")
-	for _, record := range records {
-		posts = append(posts, &extractors.Post{
-			Title:   record[0],
-			Content: record[1],
-			Link:    record[2],
-			Image:   record[3],
-		})
-	}
-
 	const html = `
 <!DOCTYPE html>
 <html>
@@ -85,8 +66,8 @@ func Render(cmd *cobra.Command, args []string) {
 <body>
 	{{ range .Posts }}
 		<article>
-			<h1><a href="{{.Link}}">{{ .Title }}</a></h1>
-			<p><img src="{{.Image}}"></p>
+			<h1><a href="{{.Permalink}}">{{ .Title }}</a></h1>
+			<p><img src="{{index .Images 0}}"></p>
 			<p>{{ .Content }}</p>
 		</article>
 	{{ end }}
