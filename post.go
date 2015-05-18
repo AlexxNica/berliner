@@ -1,4 +1,4 @@
-package extractors
+package main
 
 import (
 	"encoding/csv"

@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/s3ththompson/berliner/extractors"
+	"github.com/s3ththompson/berliner/browser"
 	"os"
 	// "github.com/PuerkitoBio/goquery"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
 func Parse(cmd *cobra.Command, args []string) {
-	posts := make(chan *extractors.Post)
+	posts := make(chan *Post)
 	p := &Pipe{
 		workers: 20,
 		do:      parse,
@@ -21,16 +21,16 @@ func Parse(cmd *cobra.Command, args []string) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(extractors.PostHeader)
+	fmt.Println(PostHeader)
 	for post := range posts {
 		fmt.Println(post)
 	}
 }
 
-func readPosts() <-chan *extractors.Post {
-	out := make(chan *extractors.Post)
+func readPosts() <-chan *Post {
+	out := make(chan *Post)
 	go func() {
-		posts, err := extractors.ReadPosts(os.Stdin)
+		posts, err := ReadPosts(os.Stdin)
 		if err == nil {
 			for _, post := range posts {
 				out <- post
@@ -41,15 +41,15 @@ func readPosts() <-chan *extractors.Post {
 	return out
 }
 
-func parse(p *extractors.Post, out chan<- *extractors.Post) {
-	e := extractors.New(p)
-	page, err := e.Get()
+func parse(p *Post, out chan<- *Post) {
+	b, err := browser.New(map[string]map[string]string{})
 	if err != nil {
 		return
 	}
-	post, err := e.Extract(page)
+	post, err := b.Browse(p.Permalink)
 	if err != nil {
 		return
 	}
-	out <- post
+	post2 := Post(*post)
+	out <- &post2
 }

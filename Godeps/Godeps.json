@@ -11,6 +11,11 @@
 			"Rev": "ebbeafdc430eb6c7e44e9a730a38eaff4c56ba3a"
 		},
 		{
+			"ImportPath": "github.com/PuerkitoBio/goquery",
+			"Comment": "v0.3.2-78-g60ec77b",
+			"Rev": "60ec77b0032de8548a0d67f76154458850264a99"
+		},
+		{
 			"ImportPath": "github.com/SlyMarbo/rss",
 			"Rev": "73bc2e663ee3b9aaf0c60f90d75dab1236b23273"
 		},
@@ -46,6 +51,11 @@
 		{
 			"ImportPath": "github.com/geoffreylitt/go-pocket/auth",
 			"Rev": "5be05f0a26c6217f8b64ad1c7c8aec449959b468"
+		},
+		{
+			"ImportPath": "github.com/headzoo/surf",
+			"Comment": "0.5.4",
+			"Rev": "a917cf23593f0c5d4731afcc590893dcca579bd9"
 		},
 		{
 			"ImportPath": "github.com/inconshreveable/mousetrap",

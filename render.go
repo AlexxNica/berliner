@@ -6,11 +6,10 @@ import (
 	"text/template"
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
-	"github.com/s3ththompson/berliner/extractors"
 )
 
 func Render(cmd *cobra.Command, args []string) {
-	posts, err := extractors.ReadPosts(os.Stdin)
+	posts, err := ReadPosts(os.Stdin)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -76,7 +75,7 @@ func Render(cmd *cobra.Command, args []string) {
 
 	t := template.Must(template.New("html").Parse(html))
 	data := struct {
-		Posts []*extractors.Post
+		Posts []*Post
 	}{
 		posts,
 	}

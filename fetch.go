@@ -6,11 +6,10 @@ import (
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/SlyMarbo/rss"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
-	"github.com/s3ththompson/berliner/extractors"
 )
 
 func Fetch(cmd *cobra.Command, args []string) {
-	posts := make(chan *extractors.Post)
+	posts := make(chan *Post)
 	p := &Pipe{
 		workers: 10,
 		do:      fetch,
@@ -23,13 +22,13 @@ func Fetch(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	fmt.Println(extractors.PostHeader)
+	fmt.Println(PostHeader)
 	for post := range posts {
 		fmt.Println(post)
 	}
 }
 
-func fetch(feed string, out chan<- *extractors.Post) {
+func fetch(feed string, out chan<- *Post) {
 	f, err := rss.Fetch(feed)
 	if err != nil {
 		return
@@ -40,7 +39,7 @@ func fetch(feed string, out chan<- *extractors.Post) {
 		if err != nil {
 			continue
 		}
-		out <- &extractors.Post{
+		out <- &Post{
 			Permalink: link,
 			Title:     item.Title,
 			Date:      item.Date,
