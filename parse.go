@@ -18,7 +18,7 @@ func Parse(cmd *cobra.Command, args []string) {
 	}
 	err := p.pipe()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
 		return
 	}
 	fmt.Println(PostHeader)
@@ -30,13 +30,15 @@ func Parse(cmd *cobra.Command, args []string) {
 func readPosts() <-chan *Post {
 	out := make(chan *Post)
 	go func() {
+		defer close(out)
 		posts, err := ReadPosts(os.Stdin)
-		if err == nil {
-			for _, post := range posts {
-				out <- post
-			}
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return
 		}
-		close(out)
+		for _, post := range posts {
+			out <- post
+		}
 	}()
 	return out
 }
@@ -44,11 +46,11 @@ func readPosts() <-chan *Post {
 func parse(p *Post, out chan<- *Post) {
 	b, err := browser.New(map[string]map[string]string{})
 	if err != nil {
-		return
+		fmt.Fprintln(os.Stderr, err)
 	}
 	post, err := b.Browse(p.Permalink)
 	if err != nil {
-		return
+		fmt.Fprintln(os.Stderr, err)
 	}
 	mypost := Post(*post)
 	out <- &mypost // cast *browser.Post to *Post

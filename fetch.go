@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"net/url"
+	"os"
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/SlyMarbo/rss"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
@@ -18,7 +18,7 @@ func Fetch(cmd *cobra.Command, args []string) {
 	}
 	err := p.pipe()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
 		return
 	}
 
@@ -31,13 +31,12 @@ func Fetch(cmd *cobra.Command, args []string) {
 func fetch(feed string, out chan<- *Post) {
 	f, err := rss.Fetch(feed)
 	if err != nil {
-		return
+		fmt.Fprintln(os.Stderr, err)
 	}
 	for _, item := range f.Items {
-		link := item.ID
-		_, err := url.Parse(link)
-		if err != nil {
-			continue
+		link := item.Link
+		if link == "" {
+			link = item.ID
 		}
 		out <- &Post{
 			Permalink: link,

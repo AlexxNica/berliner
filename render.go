@@ -11,7 +11,8 @@ import (
 func Render(cmd *cobra.Command, args []string) {
 	posts, err := ReadPosts(os.Stdin)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
+		return
 	}
 	const html = `
 <!DOCTYPE html>
@@ -81,6 +82,7 @@ func Render(cmd *cobra.Command, args []string) {
 	}
 	err = t.Execute(os.Stdout, data)
 	if err != nil {
-		fmt.Println("executing template:", err)
+		fmt.Fprintln(os.Stderr, err)
+		return
 	}
 }

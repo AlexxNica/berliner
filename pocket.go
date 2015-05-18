@@ -12,7 +12,6 @@ import (
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/geoffreylitt/go-pocket/api"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/geoffreylitt/go-pocket/auth"
-
 )
 
 func Pocket(cmd *cobra.Command, args []string) {

@@ -59,7 +59,7 @@ func (s *NewYorkTimes) Get(bow *browser.Browser, link string) (string, *html.Nod
 	return bow.Url().String(), page, nil
 }
 
-func (e *NewYorkTimes) Extract(permalink string, page *html.Node) (*Post, error) {
+func (s *NewYorkTimes) Extract(permalink string, page *html.Node) (*Post, error) {
 	doc := goquery.NewDocumentFromNode(page)
 	doc.Find("meta[name=author]").Attr("content")
 
