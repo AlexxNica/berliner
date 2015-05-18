@@ -18,6 +18,7 @@ func New(credentials map[string]map[string]string) (*Browser, error) {
 		sl: &StrategyList{
 			strats: map[string]Strategy{
 				"new-york-times": &NewYorkTimes{},
+				"new-yorker": &NewYorker{},
 			},
 			fallback: &Default{},
 		},
