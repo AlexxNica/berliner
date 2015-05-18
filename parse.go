@@ -50,6 +50,6 @@ func parse(p *Post, out chan<- *Post) {
 	if err != nil {
 		return
 	}
-	post2 := Post(*post)
-	out <- &post2
+	mypost := Post(*post)
+	out <- &mypost // cast *browser.Post to *Post
 }

@@ -3,29 +3,17 @@ package browser
 import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html/charset"
-	"bytes"
 	"errors"
-	"net/url"
 	"strings"
-	"unicode"
 	"io"
-	goose "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/GoOse"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
 )
 
 type NewYorkTimes struct {}
 
 func (s *NewYorkTimes) Recognize(link string) bool {
-	u, err := url.Parse(link)
-	if err != nil {
-		return false
-	}
-	parts := strings.Split(u.Host, ".")
-	if len(parts) > 2 {
-		parts = parts[1:]
-	}
-	domain := strings.Join(parts, ".") 
-	return domain == "nytimes.com"
+	return domainMatch(link, "nytimes.com")
 }
 
 func (s *NewYorkTimes) Login(bow *browser.Browser, creds map[string]string) error {
@@ -72,28 +60,24 @@ func (s *NewYorkTimes) Get(bow *browser.Browser, link string) (string, *html.Nod
 }
 
 func (e *NewYorkTimes) Extract(permalink string, page *html.Node) (*Post, error) {
-	var raw bytes.Buffer
-	err := html.Render(&raw, page)
-	if err != nil {
-		return nil, err
-	}
-	rawHtml := raw.String()
-	g := goose.New()
-	article := g.ExtractFromRawHtml(permalink, rawHtml)
-	content := strings.Map(func(r rune) rune {
-		if unicode.IsSpace(r) {
-			return ' '
-		}
-		return r
-	}, article.CleanedText)
+	doc := goquery.NewDocumentFromNode(page)
+	doc.Find("meta[name=author]").Attr("content")
+
+	title, _ := doc.Find("meta[name=hdl]").Attr("content")
+	content := doc.Find("p.story-body-text.story-content").Text()
+	topImage, _ := doc.Find(".lede-container figure .image img").Attr("data-mediaviewer-src")
+	author, _ := doc.Find("meta[name=author]").Attr("content")
+	keywords, _ := doc.Find("meta[name=keywords]").Attr("content")
+	lang, _ := doc.Find("html").Attr("lang")
 
 	return &Post{
-		Title: article.Title,
-		Permalink: article.CanonicalLink,
+		Title: title,
+		Permalink: permalink,
 		Content: content,
-		Images: []string{article.TopImage},
-		Tags: strings.Split(article.MetaKeywords, ","),
+		Images: []string{topImage},
+		Authors: []string{author},
+		Tags: strings.Split(keywords, ","),
 		Source: "new-york-times",
-		Language: article.MetaLang,
+		Language: lang,
 	}, nil
 }
