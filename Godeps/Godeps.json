@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/s3ththompson/berliner",
-	"GoVersion": "go1.4",
+	"GoVersion": "go1.4.2",
 	"Packages": [
 		"./..."
 	],
@@ -38,6 +38,14 @@
 		{
 			"ImportPath": "github.com/bjarneh/latinx",
 			"Rev": "4dfe9ba2a293f28a5e06fc7ffe56b1d71a47b8c8"
+		},
+		{
+			"ImportPath": "github.com/geoffreylitt/go-pocket/api",
+			"Rev": "5be05f0a26c6217f8b64ad1c7c8aec449959b468"
+		},
+		{
+			"ImportPath": "github.com/geoffreylitt/go-pocket/auth",
+			"Rev": "5be05f0a26c6217f8b64ad1c7c8aec449959b468"
 		},
 		{
 			"ImportPath": "github.com/inconshreveable/mousetrap",
