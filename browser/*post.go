@@ -16,3 +16,7 @@ type Post struct {
 	Source    string
 	Language  string
 }
+
+func (p *Post) sanitize() (err error) {
+	return
+}

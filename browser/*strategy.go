@@ -6,10 +6,10 @@ import (
 )
 
 type Strategy interface {
-	Recognize(string) bool
-	Login(*browser.Browser, map[string]string) error
-	Get(*browser.Browser, string) (string, *html.Node, error)
-	Extract(string, *html.Node) (*Post, error)
+	recognize(string) bool
+	login(*browser.Browser, map[string]string) error
+	get(*browser.Browser, string) (string, *html.Node, error)
+	extract(string, *html.Node) (*Post, error)
 }
 
 type StrategyList struct {
@@ -17,9 +17,9 @@ type StrategyList struct {
 	fallback   Strategy
 }
 
-func (sl *StrategyList) FindMatch(link string) Strategy {
+func (sl *StrategyList) findMatch(link string) Strategy {
 	for _, s := range sl.strats {
-		if s.Recognize(link) {
+		if s.recognize(link) {
 			return s
 		}
 	}

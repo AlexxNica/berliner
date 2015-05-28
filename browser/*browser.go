@@ -12,8 +12,22 @@ type Browser struct {
 	sl *StrategyList
 }
 
-func New(credentials map[string]map[string]string) (*Browser, error) {
-	b := &Browser {
+func (b *Browser) massLogin(credentials map[string]map[string]string) error {
+	for slug, creds := range credentials {
+		s, ok := b.sl.strats[slug]
+		if !ok {
+			return errors.New("unrecognized credential.")
+		}
+		err := s.login(b.bow, creds)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func New(credentials map[string]map[string]string) (b *Browser, err error) {
+	b = &Browser {
 		bow: surf.NewBrowser(),
 		sl: &StrategyList{
 			strats: map[string]Strategy{
@@ -25,25 +39,20 @@ func New(credentials map[string]map[string]string) (*Browser, error) {
 	}
 	b.bow.AddRequestHeader("Accept", "text/html")
 	b.bow.AddRequestHeader("Accept-Charset", "utf8")
-	for slug, creds := range credentials {
-		s, ok := b.sl.strats[slug]
-		if !ok {
-			return nil, errors.New("unrecognized credential.")
-		}
-		err := s.Login(b.bow, creds)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return b, nil
+	err = b.massLogin(credentials)
+	return
 }
 
-func (b *Browser) Browse(link string) (post *Post, err error) {
-	s := b.sl.FindMatch(link)
-	permalink, page, err := s.Get(b.bow, link)
+func (b *Browser) Parse(link string) (post *Post, err error) {
+	s := b.sl.findMatch(link)
+	permalink, page, err := s.get(b.bow, link)
 	if err != nil {
 		return nil, err
 	}
-	post, err = s.Extract(permalink, page)
-	return
+	post, err = s.extract(permalink, page)
+	if err != nil {
+		return nil, err
+	}
+	err = post.sanitize()
+	return post, err
 }

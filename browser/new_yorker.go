@@ -11,15 +11,15 @@ import (
 
 type NewYorker struct {}
 
-func (s *NewYorker) Recognize(link string) bool {
+func (s *NewYorker) recognize(link string) bool {
 	return domainMatch(link, "newyorker.com")
 }
 
-func (s *NewYorker) Login(bow *browser.Browser, creds map[string]string) (err error) {
+func (s *NewYorker) login(bow *browser.Browser, creds map[string]string) (err error) {
 	return
 }
 
-func (s *NewYorker) Get(bow *browser.Browser, link string) (string, *html.Node, error) {
+func (s *NewYorker) get(bow *browser.Browser, link string) (string, *html.Node, error) {
     err := bow.Open(link)
     if err != nil {
     	return "", nil, err
@@ -40,9 +40,8 @@ func (s *NewYorker) Get(bow *browser.Browser, link string) (string, *html.Node, 
 	return bow.Url().String(), page, nil
 }
 
-func (s *NewYorker) Extract(permalink string, page *html.Node) (*Post, error) {
+func (s *NewYorker) extract(permalink string, page *html.Node) (*Post, error) {
 	doc := goquery.NewDocumentFromNode(page)
-	doc.Find("hgroup h1").Text()
 
 	title := doc.Find("hgroup h1").Text()
 	content := doc.Find(".articleBody p").Text()

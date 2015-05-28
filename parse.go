@@ -48,7 +48,7 @@ func parse(p *Post, out chan<- *Post) {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
-	post, err := b.Browse(p.Permalink)
+	post, err := b.Parse(p.Permalink)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}

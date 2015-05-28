@@ -15,15 +15,15 @@ import (
 
 type Default struct {}
 
-func (s *Default) Recognize(link string) bool {
+func (s *Default) recognize(link string) bool {
 	return true
 }
 
-func (s *Default) Login(bow *browser.Browser, creds map[string]string) error {
+func (s *Default) login(bow *browser.Browser, creds map[string]string) error {
 	return nil
 }
 
-func (s *Default) Get(bow *browser.Browser, link string) (string, *html.Node, error) {
+func (s *Default) get(bow *browser.Browser, link string) (string, *html.Node, error) {
 	resp, err := http.Get(link)
 	if err != nil {
 		return "", nil, err
@@ -41,7 +41,7 @@ func (s *Default) Get(bow *browser.Browser, link string) (string, *html.Node, er
 	return permalink, page, nil
 }
 
-func (s *Default) Extract(permalink string, page *html.Node) (*Post, error) {
+func (s *Default) extract(permalink string, page *html.Node) (*Post, error) {
 	var raw bytes.Buffer
 	err := html.Render(&raw, page)
 	if err != nil {

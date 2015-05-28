@@ -12,11 +12,11 @@ import (
 
 type NewYorkTimes struct {}
 
-func (s *NewYorkTimes) Recognize(link string) bool {
+func (s *NewYorkTimes) recognize(link string) bool {
 	return domainMatch(link, "nytimes.com")
 }
 
-func (s *NewYorkTimes) Login(bow *browser.Browser, creds map[string]string) error {
+func (s *NewYorkTimes) login(bow *browser.Browser, creds map[string]string) error {
 	err := bow.Open("https://myaccount.nytimes.com/auth/login")
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func (s *NewYorkTimes) Login(bow *browser.Browser, creds map[string]string) erro
     return nil
 }
 
-func (s *NewYorkTimes) Get(bow *browser.Browser, link string) (string, *html.Node, error) {
+func (s *NewYorkTimes) get(bow *browser.Browser, link string) (string, *html.Node, error) {
     err := bow.Open(link)
     if err != nil {
     	return "", nil, err
@@ -59,9 +59,8 @@ func (s *NewYorkTimes) Get(bow *browser.Browser, link string) (string, *html.Nod
 	return bow.Url().String(), page, nil
 }
 
-func (s *NewYorkTimes) Extract(permalink string, page *html.Node) (*Post, error) {
+func (s *NewYorkTimes) extract(permalink string, page *html.Node) (*Post, error) {
 	doc := goquery.NewDocumentFromNode(page)
-	doc.Find("meta[name=author]").Attr("content")
 
 	title, _ := doc.Find("meta[name=hdl]").Attr("content")
 	content := doc.Find("p.story-body-text.story-content").Text()
