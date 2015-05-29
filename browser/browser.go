@@ -9,25 +9,17 @@ import (
 
 type Browser struct {
 	Bow *browser.Browser
-	sl  *StrategyList
 }
 
 func (b *Browser) Init() {
 	b.Bow = surf.NewBrowser()
-	b.sl = &StrategyList{
-		strats: map[string]Strategy{
-			"new-york-times": &NewYorkTimes{},
-			"new-yorker":     &NewYorker{},
-		},
-		fallback: &Default{},
-	}
 	b.Bow.AddRequestHeader("Accept", "text/html")
 	b.Bow.AddRequestHeader("Accept-Charset", "utf8")
 }
 
 func (b *Browser) Login(credentials map[string]map[string]string) error {
 	for slug, creds := range credentials {
-		s, ok := b.sl.strats[slug]
+		s, ok := strategies.bySlug(slug)
 		if !ok {
 			return errors.New("unrecognized credential.")
 		}
@@ -47,7 +39,7 @@ func New(credentials map[string]map[string]string) (b *Browser, err error) {
 }
 
 func (b *Browser) Parse(link string) (post *Post, err error) {
-	s := b.sl.findMatch(link)
+	s := strategies.byLink(link)
 	permalink, page, err := s.get(b.Bow, link)
 	if err != nil {
 		return nil, err

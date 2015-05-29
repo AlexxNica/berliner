@@ -4,20 +4,20 @@ import (
 	"strings"
 	"time"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 	"github.com/rubenfonseca/fastimage"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 )
 
 type Image struct {
-	URL string
-	Alt string
-	Width uint32
+	URL    string
+	Alt    string
+	Width  uint32
 	Height uint32
 }
 
 func (i *Image) fastImage() {
 	_, size, err := fastimage.DetectImageType(i.URL)
-	if (err != nil) {
+	if err != nil {
 		return
 	}
 	i.Width = size.Width
@@ -52,16 +52,16 @@ type Post struct {
 
 func (p *Post) addImage(url string, alt string) {
 	p.images = append(p.images, Image{
-			URL: url,
-			Alt: alt,
-		})
+		URL: url,
+		Alt: alt,
+	})
 }
 
 func (p *Post) addMovie(url string, alt string) {
 	p.movies = append(p.movies, Movie{
-			URL: url,
-			Alt: alt,
-		})
+		URL: url,
+		Alt: alt,
+	})
 }
 
 func (p *Post) setContent(s string) {

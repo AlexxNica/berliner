@@ -12,17 +12,21 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
 )
 
-type Default struct {}
+type fallback struct{}
 
-func (s *Default) recognize(link string) bool {
+func (s *fallback) slug() string {
+	return ""
+}
+
+func (s *fallback) recognize(link string) bool {
 	return true
 }
 
-func (s *Default) login(bow *browser.Browser, creds map[string]string) error {
+func (s *fallback) login(bow *browser.Browser, creds map[string]string) error {
 	return nil
 }
 
-func (s *Default) get(bow *browser.Browser, link string) (string, *html.Node, error) {
+func (s *fallback) get(bow *browser.Browser, link string) (string, *html.Node, error) {
 	resp, err := http.Get(link)
 	if err != nil {
 		return "", nil, err
@@ -40,7 +44,7 @@ func (s *Default) get(bow *browser.Browser, link string) (string, *html.Node, er
 	return permalink, page, nil
 }
 
-func (s *Default) extract(permalink string, page *html.Node) (*Post, error) {
+func (s *fallback) extract(permalink string, page *html.Node) (*Post, error) {
 	var raw bytes.Buffer
 	err := html.Render(&raw, page)
 	if err != nil {
@@ -57,11 +61,11 @@ func (s *Default) extract(permalink string, page *html.Node) (*Post, error) {
 	}
 
 	p := &Post{
-		title: article.Title,
+		title:     article.Title,
 		permalink: article.CanonicalLink,
-		tags: strings.Split(article.MetaKeywords, ","),
-		source: source,
-		language: article.MetaLang,
+		tags:      strings.Split(article.MetaKeywords, ","),
+		source:    source,
+		language:  article.MetaLang,
 	}
 	p.setContent(article.CleanedText)
 	p.addImage(article.TopImage, "")

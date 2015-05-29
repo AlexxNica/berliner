@@ -1,38 +1,42 @@
 package browser
 
 import (
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html/charset"
-	"strings"
 	"io"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
+	"strings"
 )
 
-type NewYorker struct {}
+type newYorker struct{}
 
-func (s *NewYorker) recognize(link string) bool {
+func (s *newYorker) slug() string {
+	return "new-yorker"
+}
+
+func (s *newYorker) recognize(link string) bool {
 	return domainMatch(link, "newyorker.com")
 }
 
-func (s *NewYorker) login(bow *browser.Browser, creds map[string]string) (err error) {
+func (s *newYorker) login(bow *browser.Browser, creds map[string]string) (err error) {
 	return
 }
 
-func (s *NewYorker) get(bow *browser.Browser, link string) (string, *html.Node, error) {
-    err := bow.Open(link)
-    if err != nil {
-    	return "", nil, err
-    }
-   	r, w := io.Pipe()
-   	go func() {
-   		_, _ = bow.Download(w)
-   		w.Close()
-   	}()
-    r2, err := charset.NewReader(r, bow.ResponseHeaders().Get("content-type"))
+func (s *newYorker) get(bow *browser.Browser, link string) (string, *html.Node, error) {
+	err := bow.Open(link)
 	if err != nil {
-    	return "", nil, err
-    }
+		return "", nil, err
+	}
+	r, w := io.Pipe()
+	go func() {
+		_, _ = bow.Download(w)
+		w.Close()
+	}()
+	r2, err := charset.NewReader(r, bow.ResponseHeaders().Get("content-type"))
+	if err != nil {
+		return "", nil, err
+	}
 	page, err := html.Parse(r2)
 	if err != nil {
 		return "", nil, err
@@ -40,7 +44,7 @@ func (s *NewYorker) get(bow *browser.Browser, link string) (string, *html.Node, 
 	return bow.Url().String(), page, nil
 }
 
-func (s *NewYorker) extract(permalink string, page *html.Node) (*Post, error) {
+func (s *newYorker) extract(permalink string, page *html.Node) (*Post, error) {
 	doc := goquery.NewDocumentFromNode(page)
 
 	title := doc.Find("hgroup h1").Text()
@@ -51,14 +55,18 @@ func (s *NewYorker) extract(permalink string, page *html.Node) (*Post, error) {
 	lang, _ := doc.Find("html").Attr("lang")
 
 	p := &Post{
-		title: title,
+		title:     title,
 		permalink: permalink,
-		authors: []string{author},
-		tags: strings.Split(keywords, ","),
-		source: "new-yorker",
-		language: lang,
+		authors:   []string{author},
+		tags:      strings.Split(keywords, ","),
+		source:    s.slug(),
+		language:  lang,
 	}
 	p.setContent(content)
 	p.addImage(topImage, "")
 	return p, nil
+}
+
+func init() {
+	register(&newYorker{})
 }

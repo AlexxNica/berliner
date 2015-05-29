@@ -1,12 +1,11 @@
 package browser
 
-import(
+import (
 	"bytes"
-	"strings"
-	"net/url"
-	"unicode"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
-
+	"net/url"
+	"strings"
+	"unicode"
 )
 
 func domainMatch(link string, d string) bool {

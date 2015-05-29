@@ -14,7 +14,7 @@ import (
 )
 
 func Pocket( //todo: put this somewhere else?
-cmd *cobra.Command, args []string) {
+	cmd *cobra.Command, args []string) {
 
 	const consumerKey = "41271-5803fea25a99fa750709a512"
 
