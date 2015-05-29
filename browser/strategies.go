@@ -5,7 +5,7 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 )
 
-type Strategy interface {
+type strategy interface {
 	slug() string
 	recognize(string) bool
 	login(*browser.Browser, map[string]string) error
@@ -13,17 +13,17 @@ type Strategy interface {
 	extract(string, *html.Node) (*Post, error)
 }
 
-type Strategies struct {
-	strats   map[string]Strategy
-	fallback Strategy
+type _strategies struct {
+	strats   map[string]strategy
+	fallback strategy
 }
 
-func (s *Strategies) bySlug(slug string) (Strategy, bool) {
+func (s *_strategies) bySlug(slug string) (strategy, bool) {
 	strat, ok := s.strats[slug]
 	return strat, ok
 }
 
-func (s *Strategies) byLink(link string) Strategy {
+func (s *_strategies) byLink(link string) strategy {
 	for _, strat := range s.strats {
 		if strat.recognize(link) {
 			return strat
@@ -32,11 +32,11 @@ func (s *Strategies) byLink(link string) Strategy {
 	return s.fallback
 }
 
-var strategies Strategies = Strategies{
+var strategies _strategies = _strategies{
 	fallback: &fallback{},
 }
 
-func register(strat Strategy) {
+func register(strat strategy) {
 	slug := strat.slug()
 	if _, dup := strategies.strats[slug]; dup {
 		return
