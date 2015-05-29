@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"unicode"
 
 	goose "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/GoOse"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
@@ -50,12 +49,6 @@ func (s *Default) extract(permalink string, page *html.Node) (*Post, error) {
 	rawHtml := raw.String()
 	g := goose.New()
 	article := g.ExtractFromRawHtml(permalink, rawHtml)
-	content := strings.Map(func(r rune) rune {
-		if unicode.IsSpace(r) {
-			return ' '
-		}
-		return r
-	}, article.CleanedText)
 
 	source := ""
 	u, err := url.Parse(permalink)
@@ -63,13 +56,14 @@ func (s *Default) extract(permalink string, page *html.Node) (*Post, error) {
 		source = u.Host
 	}
 
-	return &Post{
-		Title: article.Title,
-		Permalink: article.CanonicalLink,
-		Content: content,
-		Images: []string{article.TopImage},
-		Tags: strings.Split(article.MetaKeywords, ","),
-		Source: source,
-		Language: article.MetaLang,
-	}, nil
+	p := &Post{
+		title: article.Title,
+		permalink: article.CanonicalLink,
+		tags: strings.Split(article.MetaKeywords, ","),
+		source: source,
+		language: article.MetaLang,
+	}
+	p.setContent(article.CleanedText)
+	p.addImage(article.TopImage, "")
+	return p, nil
 }

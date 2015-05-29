@@ -8,14 +8,14 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
-
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/geoffreylitt/go-pocket/api"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/geoffreylitt/go-pocket/auth"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
-func Pocket(cmd *cobra.Command, args []string) {
-	//todo: put this somewhere else?
+func Pocket( //todo: put this somewhere else?
+cmd *cobra.Command, args []string) {
+
 	const consumerKey = "41271-5803fea25a99fa750709a512"
 
 	// todo: restore access token from saved config file, rather

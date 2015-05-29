@@ -69,14 +69,15 @@ func (s *NewYorkTimes) extract(permalink string, page *html.Node) (*Post, error)
 	keywords, _ := doc.Find("meta[name=keywords]").Attr("content")
 	lang, _ := doc.Find("html").Attr("lang")
 
-	return &Post{
-		Title: title,
-		Permalink: permalink,
-		Content: content,
-		Images: []string{topImage},
-		Authors: []string{author},
-		Tags: strings.Split(keywords, ","),
-		Source: "new-york-times",
-		Language: lang,
-	}, nil
+	p := &Post{
+		title: title,
+		permalink: permalink,
+		authors: []string{author},
+		tags: strings.Split(keywords, ","),
+		source: "new-york-times",
+		language: lang,
+	}
+	p.setContent(content)
+	p.addImage(topImage, "")
+	return p, nil
 }

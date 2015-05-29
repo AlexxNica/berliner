@@ -44,14 +44,14 @@ func readPosts() <-chan *Post {
 }
 
 func parse(p *Post, out chan<- *Post) {
-	b, err := browser.New(map[string]map[string]string{})
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-	}
-	post, err := b.Parse(p.Permalink)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-	}
-	mypost := Post(*post)
+	// b, err := browser.New(map[string]map[string]string{})
+	// if err != nil {
+	// 	fmt.Fprintln(os.Stderr, err)
+	// }
+	// post, err := b.Parse(p.Permalink)
+	// if err != nil {
+	// 	fmt.Fprintln(os.Stderr, err)
+	// }
+	mypost := nil
 	out <- &mypost // cast *browser.Post to *Post
 }
