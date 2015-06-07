@@ -29,6 +29,11 @@ func Fetch(cmd *cobra.Command, args []string) {
 }
 
 func fetch(feed string, out chan<- *Post) {
+	// ignore blank or commented out lines
+	if (len(feed) == 0 || feed[0] == '#') {
+		return
+	}
+
 	f, err := rss.Fetch(feed)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
