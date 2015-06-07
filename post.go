@@ -103,7 +103,7 @@ func WritePosts(p []*Post, w io.Writer) error {
 	if err != nil {
 		return err
 	}
-	for post := range p {
+	for _, post := range p {
 		_, err = fmt.Fprintln(w, post)
 		if err != nil {
 			return err

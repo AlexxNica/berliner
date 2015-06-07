@@ -40,7 +40,14 @@ func main() {
 		Run:   Pocket,
 	}
 
-	Berliner.AddCommand(cmdFetch, cmdRender, cmdPocket)
+	cmdFilter := &cobra.Command{
+		Use:   "_filter",
+		Short: "Filter articles",
+		Long:  "(prototype) limit to 5 articles per source",
+		Run:   Filter,
+	}
+
+	Berliner.AddCommand(cmdFetch, cmdRender, cmdPocket, cmdFilter)
 
 	Berliner.Execute()
 }
