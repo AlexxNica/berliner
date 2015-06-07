@@ -27,7 +27,7 @@ func Filter(cmd *cobra.Command, args []string) {
 
 	for _, p := range input {
 		counter[p.Source] += 1
-		if counter[p.Source] <= PerSourceLimit{
+		if counter[p.Source] <= PerSourceLimit {
 			output = append(output, p)
 		}
 	}
