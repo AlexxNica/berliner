@@ -42,6 +42,7 @@ func fetch(feed string, out chan<- *Post) {
 			Permalink: link,
 			Title:     item.Title,
 			Date:      item.Date,
+			Source:    feed,
 		}
 	}
 }
