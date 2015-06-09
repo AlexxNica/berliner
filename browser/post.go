@@ -3,8 +3,8 @@ package browser
 import (
 	"time"
 
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/microcosm-cc/bluemonday"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/rubenfonseca/fastimage"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 )
 
 type Image struct {
@@ -43,7 +43,7 @@ func newMovie(url, alt string) Movie {
 type Post struct {
 	Title     string
 	Permalink string
-	Content   *html.Node
+	Content   string
 	Images    []Image
 	Movies    []Movie
 	Date      time.Time
@@ -53,9 +53,13 @@ type Post struct {
 	Language  string
 }
 
-// TODO: add real sanitization
-func (p *Post) sanitize() (err error) {
-	return
+func (p *Post) sanitize() {
+	sanitized := bluemonday.UGCPolicy().Sanitize(p.Content)
+	p.Content = sanitized
+}
+
+func (p Post) validate() bool {
+	return true
 }
 
 func (p *Post) addImage(url string, alt string) {

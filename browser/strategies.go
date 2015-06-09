@@ -33,6 +33,7 @@ func (s *_strategies) byLink(link string) strategy {
 }
 
 var strategies _strategies = _strategies{
+	strats:   make(map[string]strategy),
 	fallback: &fallback{},
 }
 

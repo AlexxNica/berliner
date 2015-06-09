@@ -48,9 +48,6 @@ func (b *Browser) Parse(link string) (post *Post, err error) {
 	if err != nil {
 		return nil, err
 	}
-	err = post.sanitize()
-	if err != nil {
-		return nil, err
-	}
+	post.sanitize()
 	return post, nil
 }

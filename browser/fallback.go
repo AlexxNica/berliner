@@ -54,11 +54,6 @@ func (s *fallback) extract(permalink string, page *html.Node) (*Post, error) {
 	g := goose.New()
 	article := g.ExtractFromRawHtml(permalink, rawHtml)
 
-	content, err := html.Parse(strings.NewReader(article.CleanedText))
-	if err != nil {
-		return nil, err
-	}
-
 	source := ""
 	u, err := url.Parse(permalink)
 	if err == nil {
@@ -67,7 +62,7 @@ func (s *fallback) extract(permalink string, page *html.Node) (*Post, error) {
 
 	p := &Post{
 		Title:     article.Title,
-		Content:   content,
+		Content:   article.CleanedText,
 		Permalink: article.CanonicalLink,
 		Tags:      strings.Split(article.MetaKeywords, ","),
 		Source:    source,

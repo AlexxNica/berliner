@@ -48,16 +48,11 @@ func (s *newYorker) extract(permalink string, page *html.Node) (*Post, error) {
 	doc := goquery.NewDocumentFromNode(page)
 
 	title := doc.Find("hgroup h1").Text()
-	body := doc.Find(".articleBody p").Text()
+	content := doc.Find(".articleBody p").Text()
 	topImage, _ := doc.Find(".articleBody figure.featured a").Attr("href")
 	author, _ := doc.Find(".author-details meta[itemprop=name]").Attr("content")
 	keywords, _ := doc.Find("meta[name=news_keywords]").Attr("content")
 	lang, _ := doc.Find("html").Attr("lang")
-
-	content, err := html.Parse(strings.NewReader(body))
-	if err != nil {
-		return nil, err
-	}
 
 	p := &Post{
 		Title:     title,

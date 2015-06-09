@@ -62,6 +62,10 @@
 			"Rev": "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
 		},
 		{
+			"ImportPath": "github.com/microcosm-cc/bluemonday",
+			"Rev": "fcd0f5074e55df204568c7419509fb59ddcad228"
+		},
+		{
 			"ImportPath": "github.com/rubenfonseca/fastimage",
 			"Rev": "dce6ab04375b253cef619aac0f81200137c8d19f"
 		},

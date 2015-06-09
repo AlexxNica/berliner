@@ -67,16 +67,11 @@ func (s *newYorkTimes) extract(permalink string, page *html.Node) (*Post, error)
 	doc := goquery.NewDocumentFromNode(page)
 
 	title, _ := doc.Find("meta[name=hdl]").Attr("content")
-	body := doc.Find("p.story-body-text.story-content").Text()
+	content := doc.Find("p.story-body-text.story-content").Text()
 	topImage, _ := doc.Find(".lede-container figure .image img").Attr("data-mediaviewer-src")
 	author, _ := doc.Find("meta[name=author]").Attr("content")
 	keywords, _ := doc.Find("meta[name=keywords]").Attr("content")
 	lang, _ := doc.Find("html").Attr("lang")
-
-	content, err := html.Parse(strings.NewReader(body))
-	if err != nil {
-		return nil, err
-	}
 
 	p := &Post{
 		Title:     title,
