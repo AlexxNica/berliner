@@ -1,11 +1,11 @@
 package browser
 
 import (
-	"bytes"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
+	// "bytes"
+	// "github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 	"net/url"
 	"strings"
-	"unicode"
+	// "unicode"
 )
 
 func domainMatch(link string, d string) bool {
@@ -21,27 +21,11 @@ func domainMatch(link string, d string) bool {
 	return domain == d
 }
 
-// TODO: actual trim
-func trim(s string) string {
-	return s
-}
-
-// TODO: actual squeeze
-func squeeze(s string) string {
-	return strings.Map(func(r rune) rune {
-		if unicode.IsSpace(r) {
-			return ' '
-		}
-		return r
-	}, s)
-
-}
-
-func render(page *html.Node) string {
-	var b bytes.Buffer
-	err := html.Render(&b, page)
-	if err != nil {
-		return ""
-	}
-	return b.String()
-}
+// func render(page *html.Node) string {
+// 	var b bytes.Buffer
+// 	err := html.Render(&b, page)
+// 	if err != nil {
+// 		return ""
+// 	}
+// 	return b.String()
+// }

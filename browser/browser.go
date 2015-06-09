@@ -4,11 +4,11 @@ import (
 	"errors"
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
+	surfBrowser "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
 )
 
 type Browser struct {
-	Bow *browser.Browser
+	Bow *surfBrowser.Browser
 }
 
 func (b *Browser) Init() {
@@ -48,5 +48,9 @@ func (b *Browser) Parse(link string) (post *Post, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return post, err
+	err = post.sanitize()
+	if err != nil {
+		return nil, err
+	}
+	return post, nil
 }
