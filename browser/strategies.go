@@ -13,34 +13,34 @@ type strategy interface {
 	extract(string, *html.Node) (*Post, error)
 }
 
-type _strategies struct {
-	strats   map[string]strategy
+type lookup struct {
+	table   map[string]strategy
 	fallback strategy
 }
 
-func (s *_strategies) bySlug(slug string) (strategy, bool) {
-	strat, ok := s.strats[slug]
-	return strat, ok
+func (l *lookup) bySlug(slug string) (strategy, bool) {
+	s, ok := l.table[slug]
+	return s, ok
 }
 
-func (s *_strategies) byLink(link string) strategy {
-	for _, strat := range s.strats {
-		if strat.recognize(link) {
-			return strat
+func (l *lookup) byLink(link string) strategy {
+	for _, s := range l.table {
+		if s.recognize(link) {
+			return s
 		}
 	}
-	return s.fallback
+	return l.fallback
 }
 
-var strategies _strategies = _strategies{
-	strats:   make(map[string]strategy),
+var strategies lookup = lookup{
+	table:   make(map[string]strategy),
 	fallback: &fallback{},
 }
 
-func register(strat strategy) {
-	slug := strat.slug()
-	if _, dup := strategies.strats[slug]; dup {
+func register(s strategy) {
+	slug := s.slug()
+	if _, dup := strategies.table[slug]; dup {
 		return
 	}
-	strategies.strats[slug] = strat
+	strategies.table[slug] = s
 }
