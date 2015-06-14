@@ -14,13 +14,13 @@ type strategy interface {
 }
 
 type lookup struct {
-	table   map[string]strategy
+	table    map[string]strategy
 	fallback strategy
 }
 
-func (l *lookup) bySlug(slug string) (strategy, bool) {
-	s, ok := l.table[slug]
-	return s, ok
+func (l *lookup) bySlug(slug string) (s strategy, ok bool) {
+	s, ok = l.table[slug]
+	return
 }
 
 func (l *lookup) byLink(link string) strategy {
@@ -33,7 +33,7 @@ func (l *lookup) byLink(link string) strategy {
 }
 
 var strategies lookup = lookup{
-	table:   make(map[string]strategy),
+	table:    make(map[string]strategy),
 	fallback: &fallback{},
 }
 

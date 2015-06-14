@@ -17,7 +17,10 @@ var bySlugTests = []struct {
 func TestBySlug(t *testing.T) {
 	for _, tt := range bySlugTests {
 		s, ok := strategies.bySlug(tt.in)
-		if ok != tt.ok && s.slug() != tt.out {
+		if ok != tt.ok {
+			t.Errorf("strategies.bySlug(%v) => _, %v, want _, %v", tt.in, ok, tt.ok)
+		}
+		if ok && s.slug() != tt.out {
 			t.Errorf("strategies.bySlug(%v) => %v, %v, want %v, %v", tt.in, s.slug(), ok, tt.out, tt.ok)
 		}
 	}
