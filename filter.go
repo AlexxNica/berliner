@@ -1,5 +1,6 @@
-// This is a simple test filter that only lets through a set
-// number of articles from each source.
+// This file defines all the built-in filters, which are cobra subcommands of
+// the parent _filter command.
+// Having them be subcommands enables different CLI flags per filter type.
 
 package main
 
@@ -10,19 +11,37 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
+func init() {
+	cmdFilter.Run = Noop
+
+	cmdClamp.Run = Clamp
+	cmdClamp.Flags().IntVarP(&clampLimit, "limit", "l", 3, "Limit for maximum number of articles per source")
+	cmdFilter.AddCommand(cmdClamp)
+}
+
+// _filter only exists as a cobra command to group its subcommands nicely.
+// Calling it directly returns an error.
+
 var cmdFilter = &cobra.Command{
 	Use:   "_filter",
 	Short: "Filter articles",
-	Long:  "(prototype) limit to 5 articles per source",
+	Long:  "Use a subcommand of filter (e.g. _filter clamp) to filter articles",
 }
 
-func init() {
-	cmdFilter.Run = Filter
+func Noop(cmd *cobra.Command, args []string) {
+	panic("_filter must be called with a valid subcommand to specify the filter.")
 }
 
-const PerSourceLimit int = 3
+// Clamp filter
 
-func Filter(cmd *cobra.Command, args []string) {
+var clampLimit int
+var cmdClamp = &cobra.Command{
+	Use:   "clamp",
+	Short: "Limit number of articles",
+	Long:  "Limit number of articles downloaded per source",
+}
+
+func Clamp(cmd *cobra.Command, args []string) {
 	input, err := ReadPosts(os.Stdin)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -37,7 +56,7 @@ func Filter(cmd *cobra.Command, args []string) {
 
 	for _, p := range input {
 		counter[p.Source] += 1
-		if counter[p.Source] <= PerSourceLimit {
+		if counter[p.Source] <= clampLimit {
 			output = append(output, p)
 		}
 	}

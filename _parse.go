@@ -18,7 +18,6 @@ func init() {
 	cmdParse.Run = Parse
 }
 
-
 func Parse(cmd *cobra.Command, args []string) {
 	posts := make(chan *Post)
 	p := &Pipe{
