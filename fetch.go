@@ -8,6 +8,16 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
+var cmdFetch = &cobra.Command{
+	Use:   "_fetch",
+	Short: "Fetch feeds",
+	Long:  "Fetch article permalinks to stdout for feeds read from stdin.",
+}
+
+func init() {
+	cmdFetch.Run = Fetch
+}
+
 func Fetch(cmd *cobra.Command, args []string) {
 	posts := make(chan *Post)
 	p := &Pipe{

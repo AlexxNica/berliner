@@ -10,6 +10,16 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
+var cmdFilter = &cobra.Command{
+	Use:   "_filter",
+	Short: "Filter articles",
+	Long:  "(prototype) limit to 5 articles per source",
+}
+
+func init() {
+	cmdFilter.Run = Filter
+}
+
 const PerSourceLimit int = 3
 
 func Filter(cmd *cobra.Command, args []string) {
