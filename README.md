@@ -6,7 +6,7 @@
  -->
 <img align="right" height="250" src="http://i.imgur.com/4BEEus9.png" alt="Berliner">
 
-> Daily digests of online news
+> 📚 Daily news digests, for picky readers
 
 > WARNING: Berliner is experimental software under active development.  There are few tests. The CLI commands, architecture, APIs, and source code layout may change at any moment.
 

@@ -9,6 +9,16 @@ import (
 	"github.com/s3ththompson/berliner/browser"
 )
 
+var cmdFetch = &cobra.Command{
+	Use:   "_fetch",
+	Short: "Fetch feeds",
+	Long:  "Fetch article permalinks to stdout for feeds read from stdin.",
+}
+
+func init() {
+	cmdFetch.Run = Fetch
+}
+
 func Fetch(cmd *cobra.Command, args []string) {
 	posts := make(chan *browser.Post)
 	p := &Pipe{

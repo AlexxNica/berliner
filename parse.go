@@ -9,6 +9,16 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
+var cmdParse = &cobra.Command{
+	Use:   "_parse",
+	Short: "Parse article permalinks",
+	Long:  "Parse structured articles to stdout from permalinks from stdin",
+}
+
+func init() {
+	cmdParse.Run = Parse
+}
+
 func Parse(cmd *cobra.Command, args []string) {
 	posts := make(chan *browser.Post)
 	p := &Pipe{

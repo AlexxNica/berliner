@@ -13,6 +13,16 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
+var cmdPocket = &cobra.Command{
+	Use:   "_pocket",
+	Short: "Send to Pocket",
+	Long:  "Send articles to your Pocket",
+}
+
+func init() {
+	cmdPocket.Run = Pocket
+}
+
 func Pocket( //todo: put this somewhere else?
 	cmd *cobra.Command, args []string) {
 

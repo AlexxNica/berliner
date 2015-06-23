@@ -9,6 +9,16 @@ import (
 	"github.com/s3ththompson/berliner/browser"
 )
 
+var cmdRender = &cobra.Command{
+	Use:   "_render",
+	Short: "Render articles",
+	Long:  "Render an HTML file to stdout from articles and metadata passed in to stdin",
+}
+
+func init() {
+	cmdRender.Run = Render
+}
+
 func Render(cmd *cobra.Command, args []string) {
 	posts, err := ReadPosts(os.Stdin)
 	if err != nil {
