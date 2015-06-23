@@ -1,11 +1,14 @@
 package browser
 
 import (
+	"regexp"
 	"time"
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/microcosm-cc/bluemonday"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/rubenfonseca/fastimage"
 )
+
+var rxURL = regexp.MustCompile(`^((ftp|http|https):\/\/)?(\S+(:\S*)?@)?((([1-9]\d?|1\d\d|2[01]\d|22[0-3])(\.(1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.([0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|((www\.)?)?(([a-z\x{00a1}-\x{ffff}0-9]+-?-?_?)*[a-z\x{00a1}-\x{ffff}0-9]+)(?:\.([a-z\x{00a1}-\x{ffff}]{2,}))?)|localhost)(:(\d{1,5}))?((\/|\?|#)[^\s]*)?$`)
 
 type Image struct {
 	URL    string
@@ -27,13 +30,13 @@ func newImage(url, alt string) Image {
 	return i
 }
 
-type Movie struct {
+type Video struct {
 	URL string
 	Alt string
 }
 
-func newMovie(url, alt string) Movie {
-	m := Movie{
+func newVideo(url, alt string) Video {
+	m := Video{
 		URL: url,
 		Alt: alt,
 	}
@@ -45,11 +48,12 @@ type Post struct {
 	Permalink string
 	Content   string
 	Images    []Image
-	Movies    []Movie
+	Videos    []Video
 	Date      time.Time
 	Authors   []string
 	Tags      []string
 	Source    string
+	Via       string
 	Language  string
 }
 
@@ -59,17 +63,27 @@ func (p *Post) sanitize() {
 }
 
 func (p Post) validate() bool {
-	return true
+	for _, image := range p.Images {
+		if s := image.URL; s == "" || !rxURL.MatchString(s) {
+			return false
+		}
+	}
+	for _, video := range p.Videos {
+		if s := video.URL; s == "" || !rxURL.MatchString(s) {
+			return false
+		}
+	}
+	if !rxURL.MatchString(p.Permalink) {
+		return false
+	}
+	valid := (p.Title != "" && p.Permalink != "" && p.Content != "" && p.Source != "")
+	return valid
 }
 
 func (p *Post) addImage(url string, alt string) {
 	p.Images = append(p.Images, newImage(url, alt))
 }
 
-func (p *Post) addMovie(url string, alt string) {
-	p.Movies = append(p.Movies, newMovie(url, alt))
-}
-
-func (p Post) String() string {
-	return p.Source + ": " + p.Title
+func (p *Post) addVideo(url string, alt string) {
+	p.Videos = append(p.Videos, newVideo(url, alt))
 }
