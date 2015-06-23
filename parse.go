@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/s3ththompson/berliner/browser"
 	"os"
+
+	"github.com/s3ththompson/berliner/browser"
 	// "github.com/PuerkitoBio/goquery"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
 func Parse(cmd *cobra.Command, args []string) {
-	posts := make(chan *Post)
+	posts := make(chan *browser.Post)
 	p := &Pipe{
 		workers: 20,
 		do:      parse,
@@ -21,14 +22,18 @@ func Parse(cmd *cobra.Command, args []string) {
 		fmt.Fprintln(os.Stderr, err)
 		return
 	}
-	fmt.Println(PostHeader)
+	out := []*browser.Post{}
 	for post := range posts {
-		fmt.Println(post)
+		out = append(out, post)
+	}
+	err = WritePosts(out, os.Stdout)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
 	}
 }
 
-func readPosts() <-chan *Post {
-	out := make(chan *Post)
+func readPosts() <-chan *browser.Post {
+	out := make(chan *browser.Post)
 	go func() {
 		defer close(out)
 		posts, err := ReadPosts(os.Stdin)
@@ -43,7 +48,7 @@ func readPosts() <-chan *Post {
 	return out
 }
 
-func parse(p *Post, out chan<- *Post) {
+func parse(p *browser.Post, out chan<- *browser.Post) {
 	b, err := browser.New(map[string]map[string]string{})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -52,6 +57,5 @@ func parse(p *Post, out chan<- *Post) {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
-	mypost := Post(*post)
-	out <- &mypost // cast *browser.Post to *Post
+	out <- post
 }

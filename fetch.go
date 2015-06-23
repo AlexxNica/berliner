@@ -6,10 +6,11 @@ import (
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/SlyMarbo/rss"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
+	"github.com/s3ththompson/berliner/browser"
 )
 
 func Fetch(cmd *cobra.Command, args []string) {
-	posts := make(chan *Post)
+	posts := make(chan *browser.Post)
 	p := &Pipe{
 		workers: 10,
 		do:      fetch,
@@ -22,13 +23,17 @@ func Fetch(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	fmt.Println(PostHeader)
+	out := []*browser.Post{}
 	for post := range posts {
-		fmt.Println(post)
+		out = append(out, post)
+	}
+	err = WritePosts(out, os.Stdout)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
 	}
 }
 
-func fetch(feed string, out chan<- *Post) {
+func fetch(feed string, out chan<- *browser.Post) {
 	// ignore blank or commented out lines
 	if len(feed) == 0 || feed[0] == '#' {
 		return
@@ -43,11 +48,10 @@ func fetch(feed string, out chan<- *Post) {
 		if link == "" {
 			link = item.ID
 		}
-		out <- &Post{
+		out <- &browser.Post{
 			Permalink: link,
 			Title:     item.Title,
 			Date:      item.Date,
-			Source:    feed,
 		}
 	}
 }

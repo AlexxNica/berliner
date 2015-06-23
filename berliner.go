@@ -17,12 +17,12 @@ func main() {
 		Run:   Fetch,
 	}
 
-	// cmdParse := &cobra.Command{
-	// 	Use:   "_parse",
-	// 	Short: "Parse article permalinks",
-	// 	Long:  "Parse structured articles to stdout from permalinks from stdin",
-	// 	Run:   Parse,
-	// }
+	cmdParse := &cobra.Command{
+		Use:   "_parse",
+		Short: "Parse article permalinks",
+		Long:  "Parse structured articles to stdout from permalinks from stdin",
+		Run:   Parse,
+	}
 
 	cmdRender := &cobra.Command{
 		Use:   "_render",
@@ -45,7 +45,7 @@ func main() {
 		Run:   Filter,
 	}
 
-	Berliner.AddCommand(cmdFetch, cmdRender, cmdPocket, cmdFilter)
+	Berliner.AddCommand(cmdFetch, cmdParse, cmdRender, cmdPocket, cmdFilter)
 
 	Berliner.Execute()
 }

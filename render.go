@@ -6,6 +6,7 @@ import (
 	"text/template"
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
+	"github.com/s3ththompson/berliner/browser"
 )
 
 func Render(cmd *cobra.Command, args []string) {
@@ -67,7 +68,7 @@ func Render(cmd *cobra.Command, args []string) {
 	{{ range .Posts }}
 		<article>
 			<h1><a href="{{.Permalink}}">{{ .Title }}</a></h1>
-			<p><img src="{{index .Images 0}}"></p>
+			<p><img src="{{(index .Images 0).URL}}"></p>
 			<p>{{ .Content }}</p>
 		</article>
 	{{ end }}
@@ -76,7 +77,7 @@ func Render(cmd *cobra.Command, args []string) {
 
 	t := template.Must(template.New("html").Parse(html))
 	data := struct {
-		Posts []*Post
+		Posts []*browser.Post
 	}{
 		posts,
 	}

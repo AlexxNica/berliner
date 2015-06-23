@@ -48,7 +48,7 @@ func (s *newYorker) extract(permalink string, page *html.Node) (*Post, error) {
 	doc := goquery.NewDocumentFromNode(page)
 
 	title := doc.Find("hgroup h1").Text()
-	content := doc.Find(".articleBody p").Text()
+	content, _ := doc.Find(".articleBody p").WrapAllHtml("<div></div>").Html()
 	topImage, _ := doc.Find(".articleBody figure.featured a").Attr("href")
 	author, _ := doc.Find(".author-details meta[itemprop=name]").Attr("content")
 	keywords, _ := doc.Find("meta[name=news_keywords]").Attr("content")

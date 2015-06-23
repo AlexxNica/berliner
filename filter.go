@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	// "github.com/PuerkitoBio/goquery"
+	"github.com/s3ththompson/berliner/browser"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
@@ -20,7 +21,7 @@ func Filter(cmd *cobra.Command, args []string) {
 	}
 
 	// Slice of posts to output
-	output := make([]*Post, 0)
+	output := make([]*browser.Post, 0)
 
 	// Map to count how many times each source has been seen
 	counter := make(map[string]int)
