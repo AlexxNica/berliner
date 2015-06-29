@@ -8,8 +8,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/geoffreylitt/go-pocket/api"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/geoffreylitt/go-pocket/auth"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/motemen/go-pocket/api"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/motemen/go-pocket/auth"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
 )
 
@@ -23,7 +23,7 @@ func init() {
 	cmdPocket.Run = Pocket
 }
 
-func Pocket( //todo: put this somewhere else?
+func Pocket(
 	cmd *cobra.Command, args []string) {
 
 	const consumerKey = "41271-5803fea25a99fa750709a512"
@@ -46,12 +46,12 @@ func Pocket( //todo: put this somewhere else?
 		tagsStr := strings.Join(tags, ",")
 
 		options := &api.AddOption{
-			Url:   post.Permalink,
+			URL:   post.Permalink,
 			Title: post.Title,
 			Tags:  tagsStr,
 		}
 
-		_, err := client.Add(options)
+		err := client.Add(options)
 		if err != nil {
 			panic(err)
 		}
