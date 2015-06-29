@@ -78,8 +78,10 @@ func Render(cmd *cobra.Command, args []string) {
 	{{ range .Posts }}
 		<article>
 			<h1><a href="{{.Permalink}}">{{ .Title }}</a></h1>
+			<h2>{{.Authors}}</h2>
+			<h2>{{.Source}}</h2>
 			<p><img src="{{(index .Images 0).URL}}"></p>
-			<p>{{ .Content }}</p>
+			<div>{{ .Content }}</div>
 		</article>
 	{{ end }}
 </body>

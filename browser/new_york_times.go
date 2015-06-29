@@ -67,7 +67,15 @@ func (s *newYorkTimes) extract(permalink string, page *html.Node) (*Post, error)
 	doc := goquery.NewDocumentFromNode(page)
 
 	title, _ := doc.Find("meta[name=hdl]").Attr("content")
-	content, _ := doc.Find("p.story-body-text.story-content").WrapAllHtml("<div></div>").Html()
+
+	content := ""
+	doc.Find("p.story-body-text.story-content").Each(func(_ int, s *goquery.Selection) {
+		html, _ := s.Html()
+		content += "<p>"
+		content += html
+		content += "</p>"
+	})
+
 	topImage, _ := doc.Find(".lede-container figure .image img").Attr("data-mediaviewer-src")
 	author, _ := doc.Find("meta[name=author]").Attr("content")
 	keywords, _ := doc.Find("meta[name=keywords]").Attr("content")
