@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"html/template"
 
 	goose "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/GoOse"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
@@ -44,6 +45,16 @@ func (s *fallback) get(bow *browser.Browser, link string) (string, *html.Node, e
 	return permalink, page, nil
 }
 
+// Converts an article with newline-delimited paragraphs to an HTML string
+// with each paragraph wrapped in a <p> tag
+func textToHtml(text string) (string) {
+	var buf bytes.Buffer
+	var t = template.Must(template.New("name").Parse("{{range .}}<p>{{.}}</p>{{end}}"))
+	err := t.Execute(&buf, strings.Split(text, "\n\n"))
+	if err != nil { panic(err) }
+  return buf.String()
+}
+
 func (s *fallback) extract(permalink string, page *html.Node) (*Post, error) {
 	var raw bytes.Buffer
 	err := html.Render(&raw, page)
@@ -62,7 +73,7 @@ func (s *fallback) extract(permalink string, page *html.Node) (*Post, error) {
 
 	p := &Post{
 		Title:     article.Title,
-		Content:   article.CleanedText,
+		Content:   textToHtml(article.CleanedText),
 		Permalink: article.CanonicalLink,
 		Tags:      strings.Split(article.MetaKeywords, ","),
 		Source:    source,
