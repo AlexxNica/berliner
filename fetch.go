@@ -52,16 +52,17 @@ func fetch(feed string, out chan<- *browser.Post) {
 	f, err := rss.Fetch(feed)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
-	}
-	for _, item := range f.Items {
-		link := item.Link
-		if link == "" {
-			link = item.ID
-		}
-		out <- &browser.Post{
-			Permalink: link,
-			Title:     item.Title,
-			Date:      item.Date,
+	} else {
+		for _, item := range f.Items {
+			link := item.Link
+			if link == "" {
+				link = item.ID
+			}
+			out <- &browser.Post{
+				Permalink: link,
+				Title:     item.Title,
+				Date:      item.Date,
+			}
 		}
 	}
 }
