@@ -1,25 +1,38 @@
 package berliner
 
 import (
+	"sync"
+
 	. "github.com/s3ththompson/berliner/post"
 )
 
 type Berliner struct {
 	stream stream
+	renderers []func([]Post)
 }
 
 func New() Berliner {
 	return Berliner{}
 }
 
-// func (b Berliner) Go() error {
-// 	status := b.ctx.start()
-// 	update CLI progress with output of status.tick
-// 	write CLI messages with output of status.messages
-// }
+func (b *Berliner) Go() {
+	posts := []Post{}
+	for post := range b.stream.posts() {
+		posts = append(posts, post)
+	}
+	var wg sync.WaitGroup
+	for _, renderer := range b.renderers {
+		wg.Add(1)
+		go func(renderer func([]Post)) {
+			defer wg.Done()
+			renderer(posts)
+		}(renderer)
+	}
+	wg.Wait()
+}
 
 func (b *Berliner) Renderer(f func([]Post)) {
-	// b.stream.addRenderer(f)
+	b.renderers = append(b.renderers, f)
 }
 
 func (b *Berliner) Filter(f func(<-chan Post) <-chan Post) {
