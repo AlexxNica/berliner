@@ -1,35 +1,36 @@
 package berliner
 
 import (
+	"github.com/s3ththompson/berliner/content"
+	"github.com/s3ththompson/berliner/scrape"
 	"sync"
-	. "github.com/s3ththompson/berliner/post"
 )
 
 type streamer interface {
-	posts() <-chan Post
+	posts(*scrape.Client) <-chan content.Post
 }
 
 type source struct {
-	f func() <-chan Post
+	f func(*scrape.Client) <-chan content.Post
 }
 
-func (s *source) posts() <-chan Post {
-	return s.f()
+func (s *source) posts(c *scrape.Client) <-chan content.Post {
+	return s.f(c)
 }
 
 type stream struct {
 	children []streamer
-	filters []func(<-chan Post) <-chan Post
+	filters  []func(<-chan content.Post) <-chan content.Post
 }
 
-func (s *stream) posts() <-chan Post {
-	agg := make(chan Post)
+func (s *stream) posts(c *scrape.Client) <-chan content.Post {
+	agg := make(chan content.Post)
 	var wg sync.WaitGroup
 	go func() {
 		for _, child := range s.children {
 			wg.Add(1)
 			go func(child streamer) {
-				for post := range child.posts() {
+				for post := range child.posts(c) {
 					agg <- post
 				}
 				wg.Done()
@@ -38,7 +39,7 @@ func (s *stream) posts() <-chan Post {
 		wg.Wait()
 		close(agg)
 	}()
-	var out <-chan Post
+	var out <-chan content.Post
 	out = agg
 	for _, filter := range s.filters {
 		out = filter(out)
@@ -46,21 +47,21 @@ func (s *stream) posts() <-chan Post {
 	return out
 }
 
-func (s *stream) Filter(f func(<-chan Post) <-chan Post) {
+func (s *stream) Filter(f func(<-chan content.Post) <-chan content.Post) {
 	s.addFilter(f)
 }
 
-func (s *stream) addFilter(f func(<-chan Post) <-chan Post) {
+func (s *stream) addFilter(f func(<-chan content.Post) <-chan content.Post) {
 	s.filters = append(s.filters, f)
 }
 
-func (s *stream) addSource(f func() <-chan Post) *stream {
+func (s *stream) addSource(f func(*scrape.Client) <-chan content.Post) *stream {
 	child := wrapSource(f)
 	s.children = append(s.children, child)
 	return child
 }
 
-func wrapSource(f func() <-chan Post) *stream {
+func wrapSource(f func(*scrape.Client) <-chan content.Post) *stream {
 	return &stream{
 		children: []streamer{
 			&source{

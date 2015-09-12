@@ -1,0 +1,58 @@
+package scrape
+
+import (
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html/charset"
+	"github.com/s3ththompson/berliner/content"
+	"io"
+)
+
+type Client struct {
+	Bow *browser.Browser
+}
+
+func NewClient() *Client {
+	c := &Client{}
+	c.init()
+	return c
+}
+
+func (c *Client) init() {
+	c.Bow = surf.NewBrowser()
+	c.Bow.AddRequestHeader("Accept", "text/html")
+	c.Bow.AddRequestHeader("Accept-Charset", "utf8")
+}
+
+func (c *Client) Get(link string) (*html.Node, string, error) {
+	err := c.Bow.Open(link)
+	if err != nil {
+		return nil, "", err
+	}
+	r, w := io.Pipe()
+	go func() {
+		_, _ = c.Bow.Download(w)
+		w.Close()
+	}()
+	r2, err := charset.NewReader(r, c.Bow.ResponseHeaders().Get("content-type"))
+	if err != nil {
+		return nil, "", err
+	}
+	page, err := html.Parse(r2)
+	if err != nil {
+		return nil, "", err
+	}
+	return page, c.Bow.Url().String(), nil
+}
+
+func (c *Client) GetPost(link string) (content.Post, error) {
+	page, permalink, err := c.Get(link)
+	s := scrapers.byLink(permalink)
+	post, err := s.scrape(page)
+	if err != nil {
+		return content.Post{}, err
+	}
+	post.Permalink = permalink
+	return post, nil
+}
