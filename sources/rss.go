@@ -15,12 +15,12 @@ func RSS(feed string) func() <-chan content.Post {
 				return
 			}
 			for _, item := range f.Items {
-				link := item.Link
-				if link == "" {
-					link = item.ID
+				permalink := item.Link
+				if permalink == "" {
+					permalink = item.ID
 				}
 				out <- content.Post{
-					Permalink: link,
+					Permalink: permalink,
 					Title:     item.Title,
 					Date:      item.Date,
 					Via:       feed,

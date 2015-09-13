@@ -15,9 +15,9 @@ type lookup struct {
 	fallback scraper
 }
 
-func (l *lookup) byLink(link string) scraper {
+func (l *lookup) byURL(url string) scraper {
 	for _, s := range l.list {
-		if s.recognize(link) {
+		if s.recognize(url) {
 			return s
 		}
 	}

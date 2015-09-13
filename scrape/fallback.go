@@ -12,7 +12,7 @@ import (
 
 type fallback struct{}
 
-func (s *fallback) recognize(link string) bool {
+func (s *fallback) recognize(url string) bool {
 	return true
 }
 

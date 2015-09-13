@@ -1,12 +1,12 @@
 package scrape
 
 import (
-	"net/url"
+	neturl "net/url"
 	"strings"
 )
 
-func domainMatch(link string, d string) bool {
-	u, err := url.Parse(link)
+func domainMatch(url string, d string) bool {
+	u, err := neturl.Parse(url)
 	if err != nil {
 		return false
 	}

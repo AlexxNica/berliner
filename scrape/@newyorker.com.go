@@ -9,8 +9,8 @@ import (
 
 type newYorker struct{}
 
-func (s *newYorker) recognize(link string) bool {
-	return domainMatch(link, "newyorker.com")
+func (s *newYorker) recognize(url string) bool {
+	return domainMatch(url, "newyorker.com")
 }
 
 func (s *newYorker) scrape(page *html.Node) (content.Post, error) {

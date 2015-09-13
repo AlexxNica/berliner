@@ -25,8 +25,8 @@ func (c *Client) init() {
 	c.Bow.AddRequestHeader("Accept-Charset", "utf8")
 }
 
-func (c *Client) Get(link string) (*html.Node, string, error) {
-	err := c.Bow.Open(link)
+func (c *Client) Get(url string) (*html.Node, string, error) {
+	err := c.Bow.Open(url)
 	if err != nil {
 		return nil, "", err
 	}
@@ -46,9 +46,9 @@ func (c *Client) Get(link string) (*html.Node, string, error) {
 	return page, c.Bow.Url().String(), nil
 }
 
-func (c *Client) GetPost(link string) (content.Post, error) {
-	page, permalink, err := c.Get(link)
-	s := scrapers.byLink(permalink)
+func (c *Client) GetPost(url string) (content.Post, error) {
+	page, permalink, err := c.Get(url)
+	s := scrapers.byURL(permalink)
 	post, err := s.scrape(page)
 	if err != nil {
 		return content.Post{}, err
