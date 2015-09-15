@@ -51,12 +51,13 @@ func parseAtom(data []byte, read *db) (*Feed, error) {
 		}
 		next.ID = item.ID
 		for _, link := range item.Links {
-			if link.Rel == "" {
+			if link.Rel == "alternate" || link.Rel == "" {
 				next.Link = link.Href
 			} else {
 				next.Enclosures = append(next.Enclosures, &Enclosure{
 					Url:    link.Href,
 					Type:   link.Type,
+					Rel:    link.Rel,
 					Length: link.Length,
 				})
 			}

@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/transform"
+	"golang.org/x/text/transform"
 )
 
 func transformString(t transform.Transformer, s string) (string, error) {

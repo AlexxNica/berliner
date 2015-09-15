@@ -16,9 +16,9 @@ import (
 	"unicode/utf8"
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/encoding"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/encoding/charmap"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/text/transform"
+	"golang.org/x/text/encoding"
+	"golang.org/x/text/encoding/charmap"
+	"golang.org/x/text/transform"
 )
 
 // Lookup returns the encoding with the specified label, and its canonical

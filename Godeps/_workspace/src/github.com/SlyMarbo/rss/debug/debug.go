@@ -1,12 +1,17 @@
 // Run with: go run -tags debug debug.go [URL]
+
+// +build ignore
+
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/SlyMarbo/rss"
+	"github.com/SlyMarbo/rss"
 )
 
 func main() {
@@ -20,5 +25,15 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("%+v\n", feed)
+	raw, err := json.Marshal(feed)
+	if err != nil {
+		panic(err)
+	}
+
+	buf := new(bytes.Buffer)
+	if err := json.Indent(buf, raw, "", "\t"); err != nil {
+		panic(err)
+	}
+
+	fmt.Println(buf.String())
 }

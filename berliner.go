@@ -1,15 +1,49 @@
-package main
+package berliner
 
-import "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/spf13/cobra"
+import (
+	"sync"
 
-func main() {
-	Berliner := &cobra.Command{
-		Use:   "berliner",
-		Short: "Daily digest",
-		Long:  "Daily digest of online news in a beautiful format.",
+	"github.com/s3ththompson/berliner/content"
+	"github.com/s3ththompson/berliner/scrape"
+)
+
+type Berliner struct {
+	stream    stream
+	renderers []func([]content.Post)
+}
+
+func New() Berliner {
+	return Berliner{}
+}
+
+func (b *Berliner) Go() {
+	posts := []content.Post{}
+	for post := range b.stream.posts(scrape.NewClient()) {
+		posts = append(posts, post)
 	}
+	var wg sync.WaitGroup
+	for _, renderer := range b.renderers {
+		wg.Add(1)
+		go func(renderer func([]content.Post)) {
+			defer wg.Done()
+			renderer(posts)
+		}(renderer)
+	}
+	wg.Wait()
+}
 
-	Berliner.AddCommand(cmdFetch, cmdParse, cmdRender, cmdPocket, cmdFilter)
+func (b *Berliner) Renderer(f func([]content.Post)) {
+	b.renderers = append(b.renderers, f)
+}
 
-	Berliner.Execute()
+func (b *Berliner) Filter(f func(<-chan content.Post) <-chan content.Post) {
+	b.stream.addFilter(f)
+}
+
+func (b *Berliner) Source(f func(*scrape.Client) <-chan content.Post) *stream {
+	return b.stream.addSource(f)
+}
+
+func (b *Berliner) Posts() <-chan content.Post {
+	return b.stream.posts(scrape.NewClient())
 }
