@@ -10,7 +10,7 @@ import (
 type newYorker struct{}
 
 func (s *newYorker) recognize(url string) bool {
-	return domainMatch(url, "newyorker.com")
+	return isDomain(url, "newyorker.com")
 }
 
 func (s *newYorker) scrape(page *html.Node) (content.Post, error) {
@@ -20,6 +20,7 @@ func (s *newYorker) scrape(page *html.Node) (content.Post, error) {
 		Body:     must(doc.Find(".articleBody p").WrapAllHtml("<div></div>").Html()),
 		Authors:  []string{doc.Find(".author-details meta[itemprop=name]").AttrOr("content", "")},
 		Tags:     strings.Split(doc.Find("meta[name=news_keywords]").AttrOr("content", ""), ","),
+		Source: "New Yorker",
 		Language: doc.Find("html").AttrOr("lang", "en"),
 	}, nil
 }

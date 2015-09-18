@@ -16,7 +16,7 @@ func RSS(feed string) func() <-chan content.Post {
 			}
 			for _, item := range f.Items {
 				permalink := item.Link
-				if permalink == "" {
+				if permalink == "" { // TODO: remove?
 					permalink = item.ID
 				}
 				out <- content.Post{

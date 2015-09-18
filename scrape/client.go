@@ -54,5 +54,8 @@ func (c *Client) GetPost(url string) (content.Post, error) {
 		return content.Post{}, err
 	}
 	post.Permalink = permalink
+	if post.Source == "" {
+		post.Source = getDomain(permalink)
+	}
 	return post, nil
 }

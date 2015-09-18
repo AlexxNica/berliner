@@ -21,7 +21,13 @@ func (s *source) posts(c *scrape.Client) <-chan content.Post {
 type stream struct {
 	children []streamer
 	filters  []func(<-chan content.Post) <-chan content.Post
+	// TODO: cache posts
 }
+// TODO: abort stuff if it takes too long
+// select {
+// 	case strChan <- "value":
+// 	case <-time.After(5 * time.Second):
+// }
 
 func (s *stream) posts(c *scrape.Client) <-chan content.Post {
 	agg := make(chan content.Post)

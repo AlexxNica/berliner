@@ -5,17 +5,20 @@ import (
 	"strings"
 )
 
-func domainMatch(url string, d string) bool {
+func getDomain(url string) string {
 	u, err := neturl.Parse(url)
 	if err != nil {
-		return false
+		return ""
 	}
 	parts := strings.Split(u.Host, ".")
 	if len(parts) > 2 {
 		parts = parts[1:]
 	}
-	domain := strings.Join(parts, ".")
-	return domain == d
+	return strings.Join(parts, ".")
+}
+
+func isDomain(url string, d string) bool {
+	return d == getDomain(url)
 }
 
 func must(result string, err error) string {
