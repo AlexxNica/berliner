@@ -17,7 +17,7 @@ func ReadFor(duration time.Duration, wpms ...int) func(<-chan content.Post) <-ch
 		if len(wpms) > 0 {
 			wpm = wpms[0]
 		}
-		minutes := int(duration/time.Minute)
+		minutes := int(duration / time.Minute)
 		maxWords := wpm * minutes
 
 		out := make(chan content.Post)

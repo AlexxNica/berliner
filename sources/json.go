@@ -1,8 +1,8 @@
 package sources
 
 import (
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
 
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/scrape"

@@ -18,7 +18,7 @@ func main() {
 	// Add sources
 	newYorker := b.Source(s.NewYorker())
 	b.Source(s.DisegnoDaily())
-	// Alternatively, read posts from JSON file
+	// Alternatively, read posts from JSON file (see below)
 	// b.Source(s.FromJSON("berliner.json"))
 	
 
@@ -33,7 +33,7 @@ func main() {
 	// Render HTML to output file; specify template name and css name (found in assets folder)
 	b.Renderer(r.HTML("berliner.html", "bootstrap", "bootstrap"))
 	// Or, write posts to JSON for future use
-	// b.Render(r.ToJSON("berliner.json"))
+	// b.Renderer(r.ToJSON("berliner.json"))
 	b.Go()
 }
 ```

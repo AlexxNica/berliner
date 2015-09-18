@@ -23,6 +23,7 @@ type stream struct {
 	filters  []func(<-chan content.Post) <-chan content.Post
 	// TODO: cache posts
 }
+
 // TODO: abort stuff if it takes too long
 // select {
 // 	case strChan <- "value":
