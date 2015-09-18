@@ -23,7 +23,6 @@ func RSS(feed string) func() <-chan content.Post {
 					Permalink: permalink,
 					Title:     item.Title,
 					Date:      item.Date,
-					Via:       feed,
 				}
 			}
 		}()

@@ -11,6 +11,10 @@
 			"Rev": "ebbeafdc430eb6c7e44e9a730a38eaff4c56ba3a"
 		},
 		{
+			"ImportPath": "github.com/GeertJohan/go.rice",
+			"Rev": "ada95a01c963696fb73320ee662195af68be81ae"
+		},
+		{
 			"ImportPath": "github.com/PuerkitoBio/goquery",
 			"Comment": "v0.3.2-78-g60ec77b",
 			"Rev": "60ec77b0032de8548a0d67f76154458850264a99"
@@ -45,6 +49,10 @@
 			"Rev": "4dfe9ba2a293f28a5e06fc7ffe56b1d71a47b8c8"
 		},
 		{
+			"ImportPath": "github.com/daaku/go.zipexe",
+			"Rev": "a5fe2436ffcb3236e175e5149162b41cd28bd27d"
+		},
+		{
 			"ImportPath": "github.com/fatih/color",
 			"Comment": "v0.1-8-g76d4231",
 			"Rev": "76d423163af754ff6423d2d9be0057fbf03c57c2"
@@ -53,6 +61,10 @@
 			"ImportPath": "github.com/headzoo/surf",
 			"Comment": "0.5.5",
 			"Rev": "d8c2ee11cb0d0f16eb1e58b68497058b580eada6"
+		},
+		{
+			"ImportPath": "github.com/kardianos/osext",
+			"Rev": "6e7f843663477789fac7c02def0d0909e969b4e5"
 		},
 		{
 			"ImportPath": "github.com/mattn/go-isatty",

@@ -25,7 +25,7 @@ func ReadFor(duration time.Duration, wpms ...int) func(<-chan content.Post) <-ch
 			defer close(out)
 			for post := range posts {
 				words := countWords(post.Body)
-				if words < maxWords {
+				if words < maxWords { // this should be fuzzy
 					out <- post
 					maxWords -= words
 				} else {
