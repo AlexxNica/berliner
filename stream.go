@@ -6,6 +6,122 @@ import (
 	"sync"
 )
 
+
+// a stream is a set of "things that can emit posts" + filters to apply to those posts.
+// "things that can emit posts" are usually sources, but they can also be child streams,
+// thus enabling the ability to combine multiple sets of sources + filters in a proper tree-like fashion.
+
+// implementation-wise, "things that can emit posts" are termed streamers and are recognized by having a posts() method
+// the functions returned by sources in the sources package need to be wrapped in the 'source' struct below in order to give them a posts() method
+// Moreover, to enable filters to be added to them, source structs are immediately wrapped in empty stream structs.
+
+
+// e.g.
+
+// b.Source(s.MySource())
+
+// yields the equivalent of
+
+// b.stream = &stream{
+// 	children: []streamer{
+// 		&stream{
+// 			children: []streamer{
+// 				&source{
+// 					f: s.MySource(),
+// 				},
+// 			},
+// 		},
+// 	}
+// }
+
+// s2 := b.Source(s.MySource2())
+
+// adds
+
+// b.stream = &stream{
+// 	children: []streamer{
+// 		&stream{
+// 			children: []streamer{
+// 				&source{
+// 					f: s.MySource(),
+// 				},
+// 			},
+// 		},
+// 		&stream{
+// 			children: []streamer{
+// 				&source{
+// 					f: s.MySource2(),
+// 				},
+// 			},
+// 		},
+// 	}
+// }
+
+// and assigns that second stream struct to s2
+// so that
+
+// s2.Filter(f.S2Filter())
+
+// yields
+
+// b.stream = &stream{
+// 	children: []streamer{
+// 		&stream{
+// 			children: []streamer{
+// 				&source{
+// 					f: s.MySource(),
+// 				},
+// 			},
+// 		},
+// 		&stream{
+// 			children: []streamer{
+// 				&source{
+// 					f: s.MySource2(),
+// 				},
+// 			},
+// 			filters: []func(<-chan content.Post) <-chan content.Post{
+// 				f.S2Filter()
+// 			}
+// 		},
+// 	}
+// }
+
+// finally, adding another top-level filter
+
+// b.Filter(f.TopFilter())
+
+// would yield
+
+// b.stream = &stream{
+// 	children: []streamer{
+// 		&stream{
+// 			children: []streamer{
+// 				&source{
+// 					f: s.MySource(),
+// 				},
+// 			},
+// 		},
+// 		&stream{
+// 			children: []streamer{
+// 				&source{
+// 					f: s.MySource2(),
+// 				},
+// 			},
+// 			filters: []func(<-chan content.Post) <-chan content.Post{
+// 				f.S2Filter()
+// 			}
+// 		},
+// 	},
+// 	filters: []func(<-chan content.Post) <-chan content.Post{
+// 		f.TopFilter()
+// 	}
+// }
+
+// as long as the stream struct has a posts() method that aggregates the posts returned by calling posts()
+// on each of its children, and then passing those aggregate posts through the filters in its filters array,
+// then you can collect the filtered posts of an entire berliner by just calling
+// posts() on the top-level stream...
+
 type streamer interface {
 	posts(*scrape.Client) <-chan content.Post
 }
