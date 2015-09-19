@@ -6,7 +6,6 @@ import (
 	"sync"
 )
 
-
 // a stream is a set of "things that can emit posts" + filters to apply to those posts.
 // "things that can emit posts" are usually sources, but they can also be child streams,
 // thus enabling the ability to combine multiple sets of sources + filters in a proper tree-like fashion.
@@ -14,7 +13,6 @@ import (
 // implementation-wise, "things that can emit posts" are termed streamers and are recognized by having a posts() method
 // the functions returned by sources in the sources package need to be wrapped in the 'source' struct below in order to give them a posts() method
 // Moreover, to enable filters to be added to them, source structs are immediately wrapped in empty stream structs.
-
 
 // e.g.
 

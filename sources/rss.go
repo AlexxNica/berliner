@@ -3,6 +3,7 @@ package sources
 import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/SlyMarbo/rss"
 	"github.com/s3ththompson/berliner/content"
+	"net/url"
 )
 
 func RSS(feed string) func() <-chan content.Post {
@@ -16,8 +17,13 @@ func RSS(feed string) func() <-chan content.Post {
 			}
 			for _, item := range f.Items {
 				permalink := item.Link
-				if permalink == "" { // TODO: remove?
-					permalink = item.ID
+				// In some cases the permalink may be found in item ID for some reason.
+				if permalink == "" {
+					// Do some basic validation that it's a real URL before using item ID
+					parsed, err := url.Parse(item.ID)
+					if err == nil && parsed.Host != "" {
+						permalink = item.ID
+					}
 				}
 				out <- content.Post{
 					Permalink: permalink,

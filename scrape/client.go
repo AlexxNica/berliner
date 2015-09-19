@@ -48,6 +48,9 @@ func (c *Client) Get(url string) (*html.Node, string, error) {
 
 func (c *Client) GetPost(url string) (content.Post, error) {
 	page, permalink, err := c.Get(url)
+	if err != nil {
+		return content.Post{}, err
+	}
 	s := scrapers.byURL(permalink)
 	post, err := s.scrape(page)
 	if err != nil {
