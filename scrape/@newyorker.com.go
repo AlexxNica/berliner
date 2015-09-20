@@ -22,6 +22,7 @@ func (s *newYorker) scrape(page *html.Node) (content.Post, error) {
 		Tags:     strings.Split(doc.Find("meta[name=news_keywords]").AttrOr("content", ""), ","),
 		Source:   "New Yorker",
 		Language: doc.Find("html").AttrOr("lang", "en"),
+		Images:   []string{doc.Find("figure.featured img").AttrOr("src", "")},
 	}, nil
 }
 

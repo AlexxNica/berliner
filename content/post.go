@@ -8,7 +8,7 @@ type Post struct {
 	Title     string
 	Permalink string
 	Body      string
-	// Images    []Image // TODO
+	Images    []string
 	// Videos    []Video
 	Date     time.Time
 	Authors  []string
@@ -37,6 +37,9 @@ func MergePosts(p1, p2 Post) Post { // TODO: fix this shit
 	}
 	if len(p2.Tags) != 0 {
 		p1.Tags = p2.Tags
+	}
+	if len(p2.Images) != 0 {
+		p1.Images = p2.Images
 	}
 	if p2.Source != "" {
 		p1.Source = p2.Source
