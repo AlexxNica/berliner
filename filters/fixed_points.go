@@ -4,6 +4,7 @@ import (
 	"github.com/s3ththompson/berliner/content"
 )
 
+// Assigns a fixed point value to all posts in a stream
 func FixedPoints(points int) func(<-chan content.Post) <-chan content.Post {
 	return func(posts <-chan content.Post) <-chan content.Post {
 		out := make(chan content.Post)
