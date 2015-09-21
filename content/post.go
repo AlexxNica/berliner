@@ -16,6 +16,7 @@ type Post struct {
 	Source   string // TODO: rename source: we use source to mean feed aggregator AND individual source
 	Via      string
 	Language string
+	Points   int
 	// TODO: idea: add a error parameter so that you can signal that a post has an error (and exclude it from filters) but keep the rest of the struct data around for debugging purposes (compare to throwing the entire post out immediately on error)
 }
 

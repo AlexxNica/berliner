@@ -23,6 +23,7 @@ func Terminal() func([]content.Post) {
 			fmt.Println(strconv.Itoa(i+1) + ". " + color.WhiteString(post.Title) + " (" + color.GreenString(post.Source) + ")")
 			fmt.Println("  -> " + color.BlueString(post.Permalink))
 			fmt.Println("  -> " + color.YellowString(trim(post.Body, 80)+"..."))
+			fmt.Println("  -> " + color.YellowString(strconv.Itoa(post.Points)))
 		}
 	}
 }
