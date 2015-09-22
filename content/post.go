@@ -2,6 +2,8 @@ package content
 
 import (
 	"time"
+
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/microcosm-cc/bluemonday"
 )
 
 type Post struct {
@@ -18,6 +20,11 @@ type Post struct {
 	Language string
 	Points   int
 	// TODO: idea: add a error parameter so that you can signal that a post has an error (and exclude it from filters) but keep the rest of the struct data around for debugging purposes (compare to throwing the entire post out immediately on error)
+}
+
+func (p *Post) Sanitize() {
+	sanitized := bluemonday.UGCPolicy().Sanitize(p.Body)
+	p.Body = sanitized
 }
 
 func MergePosts(p1, p2 Post) Post { // TODO: fix this shit

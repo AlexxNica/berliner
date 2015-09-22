@@ -182,11 +182,25 @@ func (s *stream) addSource(f func(*scrape.Client) <-chan content.Post) *stream {
 	return child
 }
 
+func clean(f func(*scrape.Client) <-chan content.Post) func(*scrape.Client) <-chan content.Post {
+	return func(c *scrape.Client) <-chan content.Post {
+		out := make(chan content.Post)
+		go func() {
+			defer close(out)
+			for post := range f(c) {
+				post.Sanitize()
+				out <- post
+			}
+		}()
+		return out
+	}
+}
+
 func wrapSource(f func(*scrape.Client) <-chan content.Post) *stream {
 	return &stream{
 		children: []streamer{
 			&source{
-				f: f,
+				f: clean(f),
 			},
 		},
 	}

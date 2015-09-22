@@ -71,6 +71,10 @@
 			"Rev": "7fcbc72f853b92b5720db4a6b8482be612daef24"
 		},
 		{
+			"ImportPath": "github.com/microcosm-cc/bluemonday",
+			"Rev": "85ba47ef2ca30f636a36c5c3f31f91092e26db60"
+		},
+		{
 			"ImportPath": "github.com/shiena/ansicolor",
 			"Rev": "a54d7ff4d92a268defe26e50d3187e6b6a2fa047"
 		},
@@ -87,9 +91,18 @@
 			"Rev": "c980adc4a823548817b9c47d38c6ca6b7d7d8b6a"
 		},
 		{
+			"ImportPath": "gopkg.in/alexcesaro/quotedprintable.v3",
+			"Rev": "2caba252f4dc53eaf6b553000885530023f54623"
+		},
+		{
 			"ImportPath": "gopkg.in/fatih/set.v0",
 			"Comment": "v0.1.0-3-g27c4092",
 			"Rev": "27c40922c40b43fe04554d8223a402af3ea333f3"
+		},
+		{
+			"ImportPath": "gopkg.in/gomail.v2",
+			"Comment": "2.0.0-2-gb1e5552",
+			"Rev": "b1e55520bf557d8a614f1e1f493ce892c1b5e97e"
 		}
 	]
 }

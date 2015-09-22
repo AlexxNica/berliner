@@ -2,7 +2,7 @@
 
 package gomail
 
-import "gopkg.in/alexcesaro/quotedprintable.v3"
+import "github.com/s3ththompson/berliner/Godeps/_workspace/src/gopkg.in/alexcesaro/quotedprintable.v3"
 
 var newQPWriter = quotedprintable.NewWriter
 

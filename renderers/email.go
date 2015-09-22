@@ -1,21 +1,21 @@
 package renderers
 
 import (
+	"bytes"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/GeertJohan/go.rice"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/gopkg.in/gomail.v2"
 	"github.com/s3ththompson/berliner/content"
 	"path"
 	"text/template"
-	"bytes"
 )
 
 type EmailParams struct {
-	SmtpServer	string
-	SmtpPort		int
-	SmtpUsername	string
-	SmtpPassword	string
-	FromAddress	string
-	ToAddress	string
+	SmtpServer   string
+	SmtpPort     int
+	SmtpUsername string
+	SmtpPassword string
+	FromAddress  string
+	ToAddress    string
 }
 
 func Email(params EmailParams, args ...string) func([]content.Post) {
@@ -66,7 +66,7 @@ func Email(params EmailParams, args ...string) func([]content.Post) {
 		err = d.DialAndSend(m)
 
 		if err != nil {
-		    panic(err)
+			panic(err)
 		}
 	}
 }
