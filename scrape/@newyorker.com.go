@@ -4,6 +4,7 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/content"
+	"strconv"
 	"strings"
 )
 
@@ -17,7 +18,10 @@ func (s *newYorker) scrape(page *html.Node) (content.Post, error) {
 	doc := goquery.NewDocumentFromNode(page)
 	return content.Post{
 		Title:    doc.Find("hgroup h1").Text(),
-		Body:     must(doc.Find(".articleBody p").WrapAllHtml("<div></div>").Html()),
+		Body:     strings.Join(doc.Find(".articleBody > p").Map(func(_ int, s *goquery.Selection) string {
+			html, _ := s.Html()
+			return "<p>" + html + "</p>"
+		}), "\n"),
 		Authors:  []string{doc.Find(".author-details meta[itemprop=name]").AttrOr("content", "")},
 		Tags:     strings.Split(doc.Find("meta[name=news_keywords]").AttrOr("content", ""), ","),
 		Source:   "New Yorker",
