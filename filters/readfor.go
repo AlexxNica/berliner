@@ -1,15 +1,10 @@
 package filters
 
 import (
-	"strings"
 	"time"
 
 	"github.com/s3ththompson/berliner/content"
 )
-
-func countWords(text string) int {
-	return len(strings.Fields(text)) // TODO: just look at words in paragraph tags
-}
 
 func ReadFor(duration time.Duration, wpms ...int) func(<-chan content.Post) <-chan content.Post {
 	return func(posts <-chan content.Post) <-chan content.Post {
@@ -24,7 +19,7 @@ func ReadFor(duration time.Duration, wpms ...int) func(<-chan content.Post) <-ch
 		go func() {
 			defer close(out)
 			for post := range posts {
-				words := countWords(post.Body)
+				words := post.Wordcount()
 				if words < maxWords { // this should be fuzzy
 					out <- post
 					maxWords -= words

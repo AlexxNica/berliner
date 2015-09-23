@@ -2,8 +2,12 @@ package content
 
 import (
 	"time"
+	"strings"
+	"fmt"
+	"os"
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/microcosm-cc/bluemonday"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
 )
 
 type Post struct {
@@ -59,4 +63,15 @@ func MergePosts(p1, p2 Post) Post { // TODO: fix this shit
 		p1.Language = p2.Language
 	}
 	return p1
+}
+
+// Returns the word count of the post.
+func (p *Post) Wordcount() int {
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(p.Body))
+	if err != nil {
+		fmt.Println(os.Stderr, "Error: Couldn't compute word count.")
+		return 0
+	}
+	text := doc.Find("p").Text() // only count text in paragraph tags
+	return len(strings.Fields(text))
 }
