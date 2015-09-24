@@ -7,6 +7,7 @@ import (
 	"github.com/s3ththompson/berliner/content"
 )
 
+// logger is private because the only instance is the global package-level one (`std`)
 type logger struct {
 	ch chan Entry
 }
@@ -21,10 +22,13 @@ var std = new()
 
 func new() *logger {
 	return &logger{
+		// buffered channel so that logging doesn't block if there's no reader
 		ch: make(chan Entry, 1000),
 	}
 }
 
+// Only errors are exposed because it's an antipattern for filters to log stuff themselves
+// All (non-error) logging is handled by the berliner core framework
 func Error(args ...interface{}) {
 	(&context{}).Error(args...)
 }
