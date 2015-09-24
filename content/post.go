@@ -19,11 +19,10 @@ type Post struct {
 	Date     time.Time
 	Authors  []string
 	Tags     []string
-	Source   string // TODO: rename source: we use source to mean feed aggregator AND individual source
+	Origin   string
 	Via      string
 	Language string
 	Points   int
-	// TODO: idea: add a error parameter so that you can signal that a post has an error (and exclude it from filters) but keep the rest of the struct data around for debugging purposes (compare to throwing the entire post out immediately on error)
 }
 
 func (p *Post) Sanitize() {
@@ -53,8 +52,8 @@ func MergePosts(p1, p2 Post) Post { // TODO: fix this shit
 	if len(p2.Images) != 0 {
 		p1.Images = p2.Images
 	}
-	if p2.Source != "" {
-		p1.Source = p2.Source
+	if p2.Origin != "" {
+		p1.Origin = p2.Origin
 	}
 	if p2.Via != "" {
 		p1.Via = p2.Via

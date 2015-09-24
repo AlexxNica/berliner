@@ -20,7 +20,7 @@ func trim(s string, length int) string {
 func Terminal() (string, func([]content.Post)) {
 	return "Terminal", func(posts []content.Post) {
 		for i, post := range posts {
-			fmt.Println(strconv.Itoa(i+1) + ". " + color.WhiteString(post.Title) + " (" + color.GreenString(post.Source) + ")")
+			fmt.Println(strconv.Itoa(i+1) + ". " + color.WhiteString(post.Title) + " (" + color.GreenString(post.Origin) + ")")
 			fmt.Println("  -> " + color.BlueString(post.Permalink))
 			fmt.Println("  -> " + color.BlueString(strconv.Itoa(post.Points) + " points"))
 			fmt.Println("  -> " + color.BlueString(strconv.Itoa(post.Wordcount()) + " words"))

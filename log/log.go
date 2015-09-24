@@ -8,6 +8,7 @@ import (
 )
 
 // logger is private because the only instance is the global package-level one (`std`)
+// TODO: add mutex now that writers can be user-provided
 type logger struct {
 	ch chan Entry
 	writer Writer

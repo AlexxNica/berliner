@@ -20,7 +20,7 @@
 					{{ range .Images }}
 						<img class="img-responsive" src="{{.}}" />
 					{{ end }}
-					<h2><a href="{{.Permalink}}">{{ .Title }}</a> <small><span class="label label-pill label-default">ᔥ {{.Source}}</span> <span class="label label-pill label-primary">↬ {{.Via}}</span></small></h2>
+					<h2><a href="{{.Permalink}}">{{ .Title }}</a> <small><span class="label label-pill label-default">ᔥ {{.Origin}}</span> <span class="label label-pill label-primary">↬ {{.Via}}</span></small></h2>
 					{{ range .Authors }}
 						<h3>by {{.}}</h3>
 					{{end}}
