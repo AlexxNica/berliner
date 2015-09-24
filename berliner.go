@@ -1,10 +1,12 @@
 package berliner
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/scrape"
+	"github.com/s3ththompson/berliner/log"
 )
 
 type Berliner struct {
@@ -17,6 +19,11 @@ func New() Berliner {
 }
 
 func (b *Berliner) Go() {
+	go func() {
+		for entry := range log.Read() {
+			fmt.Println("Filter error: " + entry.Message)
+		}
+	}()
 	posts := []content.Post{}
 	for post := range b.stream.posts(scrape.NewClient()) {
 		posts = append(posts, post)
@@ -30,6 +37,7 @@ func (b *Berliner) Go() {
 		}(renderer)
 	}
 	wg.Wait()
+	log.Close()
 }
 
 func (b *Berliner) Renderer(f func([]content.Post)) {

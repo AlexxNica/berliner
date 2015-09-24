@@ -3,6 +3,7 @@ package filters
 import (
 	"bufio"
 	"github.com/s3ththompson/berliner/content"
+	"github.com/s3ththompson/berliner/log"
 	"os"
 )
 
@@ -52,11 +53,15 @@ func stringInSlice(a string, list []string) bool {
 func Dedupe(filenames ...string) func(<-chan content.Post) <-chan content.Post {
 	return func(posts <-chan content.Post) <-chan content.Post {
 		var seen []string
+		var err error
 
 		var filename string
 		if len(filenames) > 0 {
 			filename = filenames[0]
-			seen, _ = readLines(filename)
+			seen, err = readLines(filename)
+			if err != nil {
+				log.Error(err)
+			}
 		}
 
 		out := make(chan content.Post)
@@ -80,7 +85,11 @@ func Dedupe(filenames ...string) func(<-chan content.Post) <-chan content.Post {
 func PersistPosts(filename string) func(<-chan content.Post) <-chan content.Post {
 	return func(posts <-chan content.Post) <-chan content.Post {
 		var seen []string
-		seen, _ = readLines(filename)
+		var err error
+		seen, err = readLines(filename)
+		if err != nil {
+			log.Error(err)
+		}
 
 		out := make(chan content.Post)
 		go func() {
@@ -89,8 +98,12 @@ func PersistPosts(filename string) func(<-chan content.Post) <-chan content.Post
 				// We check if each link is already in the file just to avoid unnecessarily
 				// writing the same link twice.
 				if !stringInSlice(post.Permalink, seen) {
-					appendLine(filename, post.Permalink)
-					seen = append(seen, post.Permalink)
+					err := appendLine(filename, post.Permalink)
+					if err != nil {
+						log.WithPost(post).Error(err)
+					} else {
+						seen = append(seen, post.Permalink)
+					}
 				}
 				out <- post
 			}
