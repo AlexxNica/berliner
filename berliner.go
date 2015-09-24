@@ -42,6 +42,7 @@ func (b *Berliner) Go() {
 		}(renderer)
 	}
 	wg.Wait()
+	log.ResetWriter()
 	b.errors.close()
 }
 

@@ -58,6 +58,10 @@ func SetWriter(writer Writer) {
 	std.writer = writer
 }
 
+func ResetWriter() {
+	std.writer = &StdOutWriter{}
+}
+
 type context struct {
 	post content.Post
 	hasPost bool // I'm too lazy to check if the content.Post object is actually empty
