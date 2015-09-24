@@ -22,8 +22,8 @@ func Terminal() (string, func([]content.Post)) {
 		for i, post := range posts {
 			fmt.Println(strconv.Itoa(i+1) + ". " + color.WhiteString(post.Title) + " (" + color.GreenString(post.Origin) + ")")
 			fmt.Println("  -> " + color.BlueString(post.Permalink))
-			fmt.Println("  -> " + color.BlueString(strconv.Itoa(post.Points) + " points"))
-			fmt.Println("  -> " + color.BlueString(strconv.Itoa(post.Wordcount()) + " words"))
+			fmt.Println("  -> " + color.BlueString(strconv.Itoa(post.Points)+" points"))
+			fmt.Println("  -> " + color.BlueString(strconv.Itoa(post.Wordcount())+" words"))
 			fmt.Println("  -> " + color.YellowString(trim(post.Body, 80)+"..."))
 		}
 	}

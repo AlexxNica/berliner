@@ -2,7 +2,7 @@ package sources
 
 import (
 	"time"
-	
+
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/scrape"
 )

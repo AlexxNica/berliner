@@ -2,9 +2,10 @@ package filters
 
 import (
 	"bufio"
+	"os"
+
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/log"
-	"os"
 )
 
 func readLines(path string) ([]string, error) {
@@ -23,7 +24,7 @@ func readLines(path string) ([]string, error) {
 }
 
 func appendLine(path string, line string) error {
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660);
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660)
 	if err != nil {
 		return err
 	}

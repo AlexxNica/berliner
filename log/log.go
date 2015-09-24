@@ -1,8 +1,8 @@
 package log
 
 import (
-	"time"
 	"fmt"
+	"time"
 
 	"github.com/s3ththompson/berliner/content"
 )
@@ -10,13 +10,13 @@ import (
 // logger is private because the only instance is the global package-level one (`std`)
 // TODO: add mutex now that writers can be user-provided
 type logger struct {
-	ch chan Entry
+	ch     chan Entry
 	writer Writer
 }
 
 type Entry struct {
-	Post content.Post
-	Time time.Time
+	Post    content.Post
+	Time    time.Time
 	Message string
 }
 
@@ -29,7 +29,7 @@ var std = new()
 func new() *logger {
 	return &logger{
 		// buffered channel so that logging doesn't block if there's no reader
-		ch: make(chan Entry, 1000),
+		ch:     make(chan Entry, 1000),
 		writer: &StdOutWriter{},
 	}
 }
@@ -50,7 +50,7 @@ func Errorln(args ...interface{}) {
 
 func WithPost(post content.Post) *context {
 	return &context{
-		post: post,
+		post:    post,
 		hasPost: true,
 	}
 }
@@ -64,13 +64,13 @@ func ResetWriter() {
 }
 
 type context struct {
-	post content.Post
+	post    content.Post
 	hasPost bool // I'm too lazy to check if the content.Post object is actually empty
 }
 
 func (ctx *context) log(msg string) {
 	entry := Entry{
-		Time: time.Now(),
+		Time:    time.Now(),
 		Message: msg,
 	}
 	if ctx.hasPost {

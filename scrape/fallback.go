@@ -2,9 +2,10 @@ package scrape
 
 import (
 	"bytes"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 	"html/template"
 	"strings"
+
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 
 	goose "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/GoOse" // TODO: update goose
 	"github.com/s3ththompson/berliner/content"

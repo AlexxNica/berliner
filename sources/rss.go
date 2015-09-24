@@ -1,10 +1,11 @@
 package sources
 
 import (
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/SlyMarbo/rss"
-	"github.com/s3ththompson/berliner/content"
 	"net/url"
 	"time"
+
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/SlyMarbo/rss"
+	"github.com/s3ththompson/berliner/content"
 )
 
 func RSS(feed string) func(time.Duration) <-chan content.Post {

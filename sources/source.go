@@ -1,9 +1,10 @@
 package sources
 
 import (
+	"time"
+
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/scrape"
-	"time"
 )
 
 func New(name string, entries func(time.Duration) <-chan content.Post) (string, func(*scrape.Client, time.Duration) <-chan content.Post) {

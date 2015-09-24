@@ -1,12 +1,14 @@
 package filters
 
 import (
-	"github.com/s3ththompson/berliner/content"
 	"sort"
+
+	"github.com/s3ththompson/berliner/content"
 )
 
 // Define the sorting interface
 type ByPoints []content.Post
+
 func (a ByPoints) Len() int           { return len(a) }
 func (a ByPoints) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByPoints) Less(i, j int) bool { return a[i].Points < a[j].Points }

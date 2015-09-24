@@ -1,13 +1,13 @@
 package content
 
 import (
-	"time"
-	"strings"
 	"fmt"
 	"os"
+	"strings"
+	"time"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/microcosm-cc/bluemonday"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/microcosm-cc/bluemonday"
 )
 
 type Post struct {

@@ -1,10 +1,11 @@
 package berliner
 
 import (
-	"github.com/s3ththompson/berliner/content"
-	"github.com/s3ththompson/berliner/scrape"
 	"sync"
 	"time"
+
+	"github.com/s3ththompson/berliner/content"
+	"github.com/s3ththompson/berliner/scrape"
 )
 
 // a stream is a set of "things that can emit posts" + filters to apply to those posts.
@@ -164,7 +165,7 @@ func (s *stream) posts(c *scrape.Client, d time.Duration) <-chan content.Post {
 func (s *stream) Filter(name string, f func(<-chan content.Post) <-chan content.Post) {
 	s.addFilter(filter{
 		name: name,
-		f: f,
+		f:    f,
 	})
 }
 

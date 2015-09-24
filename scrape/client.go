@@ -1,12 +1,13 @@
 package scrape
 
 import (
+	"io"
+
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/headzoo/surf/browser"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html/charset"
 	"github.com/s3ththompson/berliner/content"
-	"io"
 )
 
 type Client struct {

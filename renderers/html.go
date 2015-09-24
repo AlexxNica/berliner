@@ -2,11 +2,12 @@ package renderers
 
 import (
 	"bufio"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/GeertJohan/go.rice"
-	"github.com/s3ththompson/berliner/content"
 	"os"
 	"path"
 	"text/template"
+
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/GeertJohan/go.rice"
+	"github.com/s3ththompson/berliner/content"
 )
 
 func HTML(filename string, args ...string) (string, func([]content.Post)) {
