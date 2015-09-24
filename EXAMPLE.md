@@ -21,6 +21,7 @@ func main() {
 	opts.Debug =	true			// default false
 	
 	b := berliner.New(opts)
+	defer b.CleanUp()
 
 	// Add sources
 	newYorker := b.Source(s.NewYorker())
