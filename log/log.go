@@ -10,6 +10,7 @@ import (
 // logger is private because the only instance is the global package-level one (`std`)
 type logger struct {
 	ch chan Entry
+	writer Writer
 }
 
 type Entry struct {
@@ -18,12 +19,17 @@ type Entry struct {
 	Message string
 }
 
+type Writer interface {
+	Write(Entry)
+}
+
 var std = new()
 
 func new() *logger {
 	return &logger{
 		// buffered channel so that logging doesn't block if there's no reader
 		ch: make(chan Entry, 1000),
+		writer: &StdOutWriter{},
 	}
 }
 
@@ -48,16 +54,8 @@ func WithPost(post content.Post) *context {
 	}
 }
 
-// close channel of logs entries
-// TODO: this is super dangerous.  If you close channel and then try to write to it, it will panic
-// in general senders close: receivers check for closed
-func Close() {
-	close(std.ch)
-}
-
-// returns buffered channel of logs entries
-func Read() <-chan Entry {
-	return std.ch
+func SetWriter(writer Writer) {
+	std.writer = writer
 }
 
 type context struct {
@@ -73,11 +71,7 @@ func (ctx *context) log(msg string) {
 	if ctx.hasPost {
 		entry.Post = ctx.post
 	}
-	// send entry to channel, or throw away if buffer is full
-	select {
-		case std.ch <- entry:
-		default:
-	}
+	std.writer.Write(entry)
 }
 
 func (ctx *context) Error(args ...interface{}) {
@@ -100,4 +94,12 @@ func (ctx *context) Errorln(args ...interface{}) {
 func sprintlnn(args ...interface{}) string {
 	msg := fmt.Sprintln(args...)
 	return msg[:len(msg)-1]
+}
+
+type StdOutWriter struct {
+}
+
+// TODO: look up regular log behavior
+func (w *StdOutWriter) Write(entry Entry) {
+	fmt.Println(entry)
 }

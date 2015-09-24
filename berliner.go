@@ -12,15 +12,20 @@ import (
 type Berliner struct {
 	stream    stream
 	renderers []func([]content.Post)
+	errors	*errorWriter
 }
 
 func New() Berliner {
-	return Berliner{}
+	w := newErrorWriter(1000)
+	return Berliner{
+		errors: w,
+	}
 }
 
 func (b *Berliner) Go() {
 	go func() {
-		for entry := range log.Read() {
+		log.SetWriter(b.errors)
+		for entry := range b.errors.entries() {
 			fmt.Println("Filter error: " + entry.Message)
 		}
 	}()
@@ -37,7 +42,7 @@ func (b *Berliner) Go() {
 		}(renderer)
 	}
 	wg.Wait()
-	log.Close()
+	b.errors.close()
 }
 
 func (b *Berliner) Renderer(f func([]content.Post)) {
