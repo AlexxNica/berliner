@@ -2,18 +2,40 @@ package berliner
 
 import (
 	"sync"
+	"time"
 
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/scrape"
 )
 
 type Berliner struct {
+	options Options
 	stream    stream
 	renderers []renderer
 }
 
-func New() Berliner {
-	return Berliner{}
+type Options struct {
+	cadence time.Duration
+	refetch	bool
+	debug 	bool
+}
+
+const (
+	Daily = 24*time.Hour
+	Weekly = 7*Daily
+)
+
+func New(args ...Options) Berliner {
+	options := Options{}
+	if len(args) > 0 {
+		options = args[0]
+	}
+	if options.cadence == 0 {
+		options.cadence = Daily
+	}
+	return Berliner{
+		options: options,
+	}
 }
 
 func (b *Berliner) posts() <-chan content.Post {
