@@ -15,31 +15,35 @@ type Berliner struct {
 }
 
 type Options struct {
-	cadence time.Duration
-	refetch	bool
-	debug 	bool
+	Cadence time.Duration
+	Refetch	bool
+	Debug 	bool
 }
 
 const (
 	Daily = 24*time.Hour
 	Weekly = 7*Daily
+	Forever = 0
 )
 
 func New(args ...Options) Berliner {
-	options := Options{}
+	options := NewOptions()
 	if len(args) > 0 {
 		options = args[0]
-	}
-	if options.cadence == 0 {
-		options.cadence = Daily
 	}
 	return Berliner{
 		options: options,
 	}
 }
 
+func NewOptions() Options {
+	return Options{
+		Cadence: Daily,
+	}
+}
+
 func (b *Berliner) posts() <-chan content.Post {
-	return b.stream.posts(scrape.NewClient())
+	return b.stream.posts(scrape.NewClient(), b.options.Cadence)
 }
 
 func (b *Berliner) render(posts []content.Post) {
@@ -61,14 +65,14 @@ func (b *Berliner) Go() {
 
 type source struct {
 	name string
-	f func(*scrape.Client) <-chan content.Post
+	f func(*scrape.Client, time.Duration) <-chan content.Post
 }
 
-func (s source) posts(c *scrape.Client) <-chan content.Post {
-	return s.f(c)
+func (s source) posts(c *scrape.Client, d time.Duration) <-chan content.Post {
+	return s.f(c, d)
 }
 
-func (b *Berliner) Source(name string, f func(*scrape.Client) <-chan content.Post) *stream {
+func (b *Berliner) Source(name string, f func(*scrape.Client, time.Duration) <-chan content.Post) *stream {
 	return b.addSource(source{
 		name: name,
 		f: f,

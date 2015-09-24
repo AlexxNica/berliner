@@ -3,14 +3,15 @@ package sources
 import (
 	"encoding/json"
 	"io/ioutil"
+	"time"
 
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/scrape"
 )
 
 // TODO: change to FromFile and add FromStdin
-func FromJSON(filename string) (string, func(*scrape.Client) <-chan content.Post) {
-	return "FromJSON", func(c *scrape.Client) <-chan content.Post {
+func FromJSON(filename string) (string, func(*scrape.Client, time.Duration) <-chan content.Post) {
+	return "FromJSON", func(c *scrape.Client, d time.Duration) <-chan content.Post {
 		out := make(chan content.Post)
 		go func() {
 			defer close(out)
@@ -24,6 +25,9 @@ func FromJSON(filename string) (string, func(*scrape.Client) <-chan content.Post
 				return
 			}
 			for _, post := range posts {
+				if d != 0 && time.Since(post.Date) > d {
+					continue
+				}
 				out <- post
 			}
 		}()

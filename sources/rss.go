@@ -4,10 +4,11 @@ import (
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/SlyMarbo/rss"
 	"github.com/s3ththompson/berliner/content"
 	"net/url"
+	"time"
 )
 
-func RSS(feed string) func() <-chan content.Post {
-	return func() <-chan content.Post {
+func RSS(feed string) func(time.Duration) <-chan content.Post {
+	return func(d time.Duration) <-chan content.Post {
 		out := make(chan content.Post)
 		go func() {
 			defer close(out)
@@ -16,6 +17,9 @@ func RSS(feed string) func() <-chan content.Post {
 				return
 			}
 			for _, item := range f.Items {
+				if d != 0 && time.Since(item.Date) > d {
+					continue
+				}
 				permalink := item.Link
 				// In some cases the permalink may be found in item ID for some reason.
 				if permalink == "" {

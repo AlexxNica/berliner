@@ -14,11 +14,12 @@ import (
 )
 
 func main() {
-	b := berliner.New(berliner.Options{
-		cadence: 	Weekly, // default Daily (note: Daily & Weekly are constants, but this field can take any duration)
-		refetch: 	false,	// default false, caches all article fetches
-		debug: 		true,	// default false
-	})
+	opts := berliner.NewOptions()
+	opts.Cadence = 	berliner.Weekly // default Daily (note: Daily & Weekly are constants, but this field can take any duration)
+	opts.Refetch = 	false			// default false, caches all article fetches
+	opts.Debug =	true			// default false
+	
+	b := berliner.New(opts)
 
 	// Add sources
 	newYorker := b.Source(s.NewYorker())
