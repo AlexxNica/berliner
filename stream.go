@@ -123,7 +123,7 @@ import (
 // posts() on the top-level stream...
 
 type streamer interface {
-	posts(*scrape.Client, time.Duration) <-chan content.Post
+	posts(scrape.Client, time.Duration) <-chan content.Post
 }
 
 type stream struct {
@@ -138,7 +138,7 @@ type stream struct {
 // 	case <-time.After(5 * time.Second):
 // }
 
-func (s *stream) posts(c *scrape.Client, d time.Duration) <-chan content.Post {
+func (s *stream) posts(c scrape.Client, d time.Duration) <-chan content.Post {
 	agg := make(chan content.Post)
 	var wg sync.WaitGroup
 	go func() {
@@ -179,8 +179,8 @@ func (s *stream) addSource(source source) *stream {
 	return child
 }
 
-func clean(f func(*scrape.Client, time.Duration) <-chan content.Post) func(*scrape.Client, time.Duration) <-chan content.Post {
-	return func(c *scrape.Client, d time.Duration) <-chan content.Post {
+func clean(f func(scrape.Client, time.Duration) <-chan content.Post) func(scrape.Client, time.Duration) <-chan content.Post {
+	return func(c scrape.Client, d time.Duration) <-chan content.Post {
 		out := make(chan content.Post)
 		go func() {
 			defer close(out)

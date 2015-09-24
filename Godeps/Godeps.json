@@ -49,6 +49,11 @@
 			"Rev": "4dfe9ba2a293f28a5e06fc7ffe56b1d71a47b8c8"
 		},
 		{
+			"ImportPath": "github.com/boltdb/bolt",
+			"Comment": "v1.0-129-g51f99c8",
+			"Rev": "51f99c862475898df9773747d3accd05a7ca33c1"
+		},
+		{
 			"ImportPath": "github.com/daaku/go.zipexe",
 			"Rev": "a5fe2436ffcb3236e175e5149162b41cd28bd27d"
 		},

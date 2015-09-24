@@ -10,23 +10,27 @@ import (
 	"github.com/s3ththompson/berliner/content"
 )
 
-type Client struct {
+type Client interface {
+	GetPost(string) (content.Post, error)
+}
+
+type DefaultClient struct {
 	Bow *browser.Browser
 }
 
-func NewClient() *Client {
-	c := &Client{}
+func NewClient() *DefaultClient {
+	c := &DefaultClient{}
 	c.init()
 	return c
 }
 
-func (c *Client) init() {
+func (c *DefaultClient) init() {
 	c.Bow = surf.NewBrowser()
 	c.Bow.AddRequestHeader("Accept", "text/html")
 	c.Bow.AddRequestHeader("Accept-Charset", "utf8")
 }
 
-func (c *Client) Get(url string) (*html.Node, string, error) {
+func (c *DefaultClient) Get(url string) (*html.Node, string, error) {
 	err := c.Bow.Open(url)
 	if err != nil {
 		return nil, "", err
@@ -47,7 +51,7 @@ func (c *Client) Get(url string) (*html.Node, string, error) {
 	return page, c.Bow.Url().String(), nil
 }
 
-func (c *Client) GetPost(url string) (content.Post, error) {
+func (c *DefaultClient) GetPost(url string) (content.Post, error) {
 	page, permalink, err := c.Get(url)
 	if err != nil {
 		return content.Post{}, err

@@ -7,8 +7,8 @@ import (
 	"github.com/s3ththompson/berliner/scrape"
 )
 
-func New(name string, entries func(time.Duration) <-chan content.Post) (string, func(*scrape.Client, time.Duration) <-chan content.Post) {
-	return name, func(c *scrape.Client, d time.Duration) <-chan content.Post {
+func New(name string, entries func(time.Duration) <-chan content.Post) (string, func(scrape.Client, time.Duration) <-chan content.Post) {
+	return name, func(c scrape.Client, d time.Duration) <-chan content.Post {
 		out := make(chan content.Post)
 		go func() {
 			defer close(out)

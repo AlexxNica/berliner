@@ -16,7 +16,8 @@ import (
 func main() {
 	opts := berliner.NewOptions()
 	opts.Cadence = 	berliner.Weekly // default Daily (note: Daily & Weekly are constants, but this field can take any duration)
-	opts.Refetch = 	false			// default false, caches all article fetches
+	opts.Cache = 	true			// default false, caches all articles fetched
+	opts.CacheFile = "bCache.db"	// file location of cache
 	opts.Debug =	true			// default false
 	
 	b := berliner.New(opts)

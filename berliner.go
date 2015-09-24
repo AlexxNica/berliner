@@ -1,6 +1,7 @@
 package berliner
 
 import (
+	"errors"
 	"sync"
 	"time"
 
@@ -9,15 +10,17 @@ import (
 )
 
 type Berliner struct {
-	options   Options
-	stream    stream
-	renderers []renderer
+	cache		*Cache
+	options   	Options
+	stream    	stream
+	renderers 	[]renderer
 }
 
 type Options struct {
-	Cadence time.Duration
-	Refetch bool
-	Debug   bool
+	Cache 		bool
+	CacheFile	string
+	Cadence 	time.Duration
+	Debug   	bool
 }
 
 const (
@@ -26,14 +29,26 @@ const (
 	Forever = 0
 )
 
-func New(args ...Options) Berliner {
+// TODO: document that berliners themselves are not threadsafe
+func New(args ...Options) (Berliner, error) {
 	options := NewOptions()
 	if len(args) > 0 {
 		options = args[0]
 	}
-	return Berliner{
+	b := Berliner{
 		options: options,
 	}
+	if b.options.Cache {
+		if b.options.CacheFile == "" {
+			return Berliner{}, errors.New("no cache file specified")
+		}
+		cache, err := NewCache(b.options.CacheFile)
+		if err != nil {
+			return Berliner{}, err
+		}
+		b.cache = cache
+	}
+	return b, nil
 }
 
 func NewOptions() Options {
@@ -43,7 +58,13 @@ func NewOptions() Options {
 }
 
 func (b *Berliner) posts() <-chan content.Post {
-	return b.stream.posts(scrape.NewClient(), b.options.Cadence)
+	var client scrape.Client
+	if b.options.Cache {
+		client = NewCachedClient(b.cache)
+	} else {
+		client = scrape.NewClient()
+	}
+	return b.stream.posts(client, b.options.Cadence)
 }
 
 func (b *Berliner) render(posts []content.Post) {
@@ -63,16 +84,20 @@ func (b *Berliner) Go() {
 	b.render(posts)
 }
 
-type source struct {
-	name string
-	f    func(*scrape.Client, time.Duration) <-chan content.Post
+func (b *Berliner) CleanUp() error {
+	return b.cache.Close()
 }
 
-func (s source) posts(c *scrape.Client, d time.Duration) <-chan content.Post {
+type source struct {
+	name string
+	f    func(scrape.Client, time.Duration) <-chan content.Post
+}
+
+func (s source) posts(c scrape.Client, d time.Duration) <-chan content.Post {
 	return s.f(c, d)
 }
 
-func (b *Berliner) Source(name string, f func(*scrape.Client, time.Duration) <-chan content.Post) *stream {
+func (b *Berliner) Source(name string, f func(scrape.Client, time.Duration) <-chan content.Post) *stream {
 	return b.addSource(source{
 		name: name,
 		f:    f,
