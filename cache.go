@@ -2,7 +2,7 @@ package berliner
 
 import (
 	"bytes"
-	"encoding/json"
+	"encoding/gob"
 	"errors"
 
 	"github.com/s3ththompson/berliner/content"
@@ -88,7 +88,7 @@ func NewStore(db *bolt.DB, bucket []byte) *store {
 
 func (s *store) Put(key []byte, post *content.Post) error {
 	buf := bytes.NewBuffer(nil)
-	enc := json.NewEncoder(buf)
+	enc := gob.NewEncoder(buf)
 	if err := enc.Encode(post); err != nil {
 		return err
 	}
@@ -121,7 +121,7 @@ func (s *store) Get(key []byte, post *content.Post) error {
 		return err
 	}
 
-	dec := json.NewDecoder(buf)
+	dec := gob.NewDecoder(buf)
 	err = dec.Decode(post)
 
 	return err
