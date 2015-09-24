@@ -5,8 +5,8 @@ import (
 	"github.com/s3ththompson/berliner/scrape"
 )
 
-func New(name string, entries func() <-chan content.Post) func(*scrape.Client) <-chan content.Post {
-	return func(c *scrape.Client) <-chan content.Post {
+func New(name string, entries func() <-chan content.Post) (string, func(*scrape.Client) <-chan content.Post) {
+	return name, func(c *scrape.Client) <-chan content.Post {
 		out := make(chan content.Post)
 		go func() {
 			defer close(out)

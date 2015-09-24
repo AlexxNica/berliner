@@ -6,8 +6,8 @@ import (
 	"github.com/s3ththompson/berliner/content"
 )
 
-func ReadFor(duration time.Duration, wpms ...int) func(<-chan content.Post) <-chan content.Post {
-	return func(posts <-chan content.Post) <-chan content.Post {
+func ReadFor(duration time.Duration, wpms ...int) (string, func(<-chan content.Post) <-chan content.Post) {
+	return "readFor", func(posts <-chan content.Post) <-chan content.Post {
 		wpm := 250
 		if len(wpms) > 0 {
 			wpm = wpms[0]

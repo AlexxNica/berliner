@@ -17,8 +17,8 @@ func (a ByPoints) Less(i, j int) bool { return a[i].Points < a[j].Points }
 // to sort them, it is a blocking filter that does not output any posts until
 // the incoming channel has been closed. This may have performance implications
 // depending on where this filter is placed in the chain.
-func SortByPoints() func(<-chan content.Post) <-chan content.Post {
-	return func(posts <-chan content.Post) <-chan content.Post {
+func SortByPoints() (string, func(<-chan content.Post) <-chan content.Post) {
+	return "sort by points", func(posts <-chan content.Post) <-chan content.Post {
 		out := make(chan content.Post)
 		go func() {
 			defer close(out)

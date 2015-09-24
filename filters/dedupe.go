@@ -50,8 +50,8 @@ func stringInSlice(a string, list []string) bool {
 // Don't let through two posts with the same permalink.
 // Additionally, if a filename is passed, read previous links from that file and
 // don't allow through posts which were output from a previous berliner.
-func Dedupe(filenames ...string) func(<-chan content.Post) <-chan content.Post {
-	return func(posts <-chan content.Post) <-chan content.Post {
+func Dedupe(filenames ...string) (string, func(<-chan content.Post) <-chan content.Post) {
+	return "Dedupe", func(posts <-chan content.Post) <-chan content.Post {
 		var seen []string
 		var err error
 
@@ -82,8 +82,8 @@ func Dedupe(filenames ...string) func(<-chan content.Post) <-chan content.Post {
 // the dedupe filter.
 // This filter should be placed last in your filter chain to accurately record
 // which posts were included in a final Berliner.
-func PersistPosts(filename string) func(<-chan content.Post) <-chan content.Post {
-	return func(posts <-chan content.Post) <-chan content.Post {
+func PersistPosts(filename string) (string, func(<-chan content.Post) <-chan content.Post) {
+	return "Persist Posts", func(posts <-chan content.Post) <-chan content.Post {
 		var seen []string
 		var err error
 		seen, err = readLines(filename)

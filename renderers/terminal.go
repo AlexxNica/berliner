@@ -17,8 +17,8 @@ func trim(s string, length int) string {
 	}
 }
 
-func Terminal() func([]content.Post) {
-	return func(posts []content.Post) {
+func Terminal() (string, func([]content.Post)) {
+	return "Terminal", func(posts []content.Post) {
 		for i, post := range posts {
 			fmt.Println(strconv.Itoa(i+1) + ". " + color.WhiteString(post.Title) + " (" + color.GreenString(post.Source) + ")")
 			fmt.Println("  -> " + color.BlueString(post.Permalink))

@@ -124,17 +124,9 @@ type streamer interface {
 	posts(*scrape.Client) <-chan content.Post
 }
 
-type source struct {
-	f func(*scrape.Client) <-chan content.Post
-}
-
-func (s *source) posts(c *scrape.Client) <-chan content.Post {
-	return s.f(c)
-}
-
 type stream struct {
 	children []streamer
-	filters  []func(<-chan content.Post) <-chan content.Post
+	filters  []filter
 	// TODO: cache posts
 }
 
@@ -163,21 +155,24 @@ func (s *stream) posts(c *scrape.Client) <-chan content.Post {
 	var out <-chan content.Post
 	out = agg
 	for _, filter := range s.filters {
-		out = filter(out)
+		out = filter.f(out)
 	}
 	return out
 }
 
-func (s *stream) Filter(f func(<-chan content.Post) <-chan content.Post) {
-	s.addFilter(f)
+func (s *stream) Filter(name string, f func(<-chan content.Post) <-chan content.Post) {
+	s.addFilter(filter{
+		name: name,
+		f: f,
+	})
 }
 
-func (s *stream) addFilter(f func(<-chan content.Post) <-chan content.Post) {
-	s.filters = append(s.filters, f)
+func (s *stream) addFilter(filter filter) {
+	s.filters = append(s.filters, filter)
 }
 
-func (s *stream) addSource(f func(*scrape.Client) <-chan content.Post) *stream {
-	child := wrapSource(f)
+func (s *stream) addSource(source source) *stream {
+	child := wrapSource(source)
 	s.children = append(s.children, child)
 	return child
 }
@@ -196,12 +191,11 @@ func clean(f func(*scrape.Client) <-chan content.Post) func(*scrape.Client) <-ch
 	}
 }
 
-func wrapSource(f func(*scrape.Client) <-chan content.Post) *stream {
+func wrapSource(source source) *stream {
+	source.f = clean(source.f)
 	return &stream{
 		children: []streamer{
-			&source{
-				f: clean(f),
-			},
+			source,
 		},
 	}
 }

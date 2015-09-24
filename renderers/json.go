@@ -7,8 +7,8 @@ import (
 	"github.com/s3ththompson/berliner/content"
 )
 
-func ToJSON(filename string) func([]content.Post) {
-	return func(posts []content.Post) {
+func ToJSON(filename string) (string, func([]content.Post)) {
+	return "JSON", func(posts []content.Post) {
 		p, err := json.Marshal(posts)
 		if err != nil {
 			return

@@ -1,63 +1,94 @@
 package berliner
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/scrape"
-	"github.com/s3ththompson/berliner/log"
 )
 
 type Berliner struct {
 	stream    stream
-	renderers []func([]content.Post)
-	errors	*errorWriter
+	renderers []renderer
 }
 
 func New() Berliner {
-	w := newErrorWriter(1000)
-	return Berliner{
-		errors: w,
+	return Berliner{}
+}
+
+func (b *Berliner) posts() <-chan content.Post {
+	return b.stream.posts(scrape.NewClient())
+}
+
+func (b *Berliner) render(posts []content.Post) {
+	var wg sync.WaitGroup
+	for _, r := range b.renderers {
+		wg.Add(1)
+		go func(r renderer) {
+			defer wg.Done()
+			r.f(posts)
+		}(r)
 	}
+	wg.Wait()
 }
 
 func (b *Berliner) Go() {
-	go func() {
-		log.SetWriter(b.errors)
-		for entry := range b.errors.entries() {
-			fmt.Println("Filter error: " + entry.Message)
-		}
-	}()
-	posts := []content.Post{}
-	for post := range b.stream.posts(scrape.NewClient()) {
-		posts = append(posts, post)
-	}
-	var wg sync.WaitGroup
-	for _, renderer := range b.renderers {
-		wg.Add(1)
-		go func(renderer func([]content.Post)) {
-			defer wg.Done()
-			renderer(posts)
-		}(renderer)
-	}
-	wg.Wait()
-	log.ResetWriter()
-	b.errors.close()
+	posts := gather(b.posts())
+	b.render(posts)
 }
 
-func (b *Berliner) Renderer(f func([]content.Post)) {
-	b.renderers = append(b.renderers, f)
+type source struct {
+	name string
+	f func(*scrape.Client) <-chan content.Post
 }
 
-func (b *Berliner) Filter(f func(<-chan content.Post) <-chan content.Post) {
-	b.stream.addFilter(f)
+func (s source) posts(c *scrape.Client) <-chan content.Post {
+	return s.f(c)
 }
 
-func (b *Berliner) Source(f func(*scrape.Client) <-chan content.Post) *stream {
-	return b.stream.addSource(f)
+func (b *Berliner) Source(name string, f func(*scrape.Client) <-chan content.Post) *stream {
+	return b.addSource(source{
+		name: name,
+		f: f,
+	})
+}
+
+func (b *Berliner) addSource(source source) *stream {
+	return b.stream.addSource(source)
+}
+
+type filter struct {
+	name string
+	f func(<-chan content.Post) <-chan content.Post
+}
+
+func (b *Berliner) Filter(name string, f func(<-chan content.Post) <-chan content.Post) {
+	b.addFilter(filter{
+		name: name,
+		f: f,
+	})
+}
+
+func (b *Berliner) addFilter(filter filter) {
+	b.stream.addFilter(filter)
+}
+
+type renderer struct {
+	name string
+	f func([]content.Post)
+}
+
+func (b *Berliner) Renderer(name string, f func([]content.Post)) {
+	b.addRenderer(renderer{
+		name: name,
+		f: f,
+	})
+}
+
+func (b *Berliner) addRenderer(renderer renderer) {
+	b.renderers = append(b.renderers, renderer)
 }
 
 func (b *Berliner) Posts() <-chan content.Post {
-	return b.stream.posts(scrape.NewClient())
+	return b.posts()
 }
