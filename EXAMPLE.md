@@ -26,11 +26,15 @@ func main() {
 	// Add filters to specific sources
 	newYorker.Filter(f.Clamp(3)) // Clamp filter allows only n posts
 
-	// Dedupe filter persists list of seen posts to disk
-	b.Filter(f.Dedupe("~/berliner/dedupe"))
+	// Dedupe filter removes posts which were already output by a previous run
+	b.Filter(f.Dedupe("/Users/foo/.berliner/dedupe"))
 
 	// ReadFor filters posts to those which can be read in 20 minutes at x wpm
 	b.Filter(f.ReadFor(20*time.Minute, 250))
+
+	// PersistPosts filter records the permalinks of posts that were in the final
+	// output into a file, for future use by the Dedupe filter
+	b.Filter(f.PersistPosts("/Users/foo/.berliner/dedupe"))
 
 	// Render output to the terminal
 	b.Renderer(r.Terminal())

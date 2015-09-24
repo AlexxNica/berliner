@@ -21,23 +21,22 @@ func readLines(path string) ([]string, error) {
 	return lines, scanner.Err()
 }
 
-func writeLines(file string, lines []string) error {
-	f, err := os.Create(file)
+func appendLine(path string, line string) error {
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660);
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	w := bufio.NewWriter(f)
 	defer w.Flush()
-	for _, line := range lines {
-		_, err := w.WriteString(line + "\n")
-		if err != nil {
-			return err
-		}
+	_, err = w.WriteString(line + "\n")
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
+// TODO: make this faster avoiding linear time search
 func stringInSlice(a string, list []string) bool {
 	for _, b := range list {
 		if b == a {
@@ -47,14 +46,15 @@ func stringInSlice(a string, list []string) bool {
 	return false
 }
 
+// Don't let through two posts with the same permalink.
+// Additionally, if a filename is passed, read previous links from that file and
+// don't allow through posts which were output from a previous berliner.
 func Dedupe(filenames ...string) func(<-chan content.Post) <-chan content.Post {
 	return func(posts <-chan content.Post) <-chan content.Post {
 		var seen []string
-		persist := false
 
 		var filename string
 		if len(filenames) > 0 {
-			persist = true
 			filename = filenames[0]
 			seen, _ = readLines(filename)
 		}
@@ -68,8 +68,31 @@ func Dedupe(filenames ...string) func(<-chan content.Post) <-chan content.Post {
 					seen = append(seen, post.Permalink)
 				}
 			}
-			if persist {
-				writeLines(filename, seen)
+		}()
+		return out
+	}
+}
+
+// Lets all posts through while writing permalinks to a file for later use by
+// the dedupe filter.
+// This filter should be placed last in your filter chain to accurately record
+// which posts were included in a final Berliner.
+func PersistPosts(filename string) func(<-chan content.Post) <-chan content.Post {
+	return func(posts <-chan content.Post) <-chan content.Post {
+		var seen []string
+		seen, _ = readLines(filename)
+
+		out := make(chan content.Post)
+		go func() {
+			defer close(out)
+			for post := range posts {
+				// We check if each link is already in the file just to avoid unnecessarily
+				// writing the same link twice.
+				if !stringInSlice(post.Permalink, seen) {
+					appendLine(filename, post.Permalink)
+					seen = append(seen, post.Permalink)
+				}
+				out <- post
 			}
 		}()
 		return out
