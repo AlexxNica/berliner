@@ -85,7 +85,10 @@ func (b *Berliner) Go() {
 }
 
 func (b *Berliner) CleanUp() error {
-	return b.cache.Close()
+	if b.options.Cache {
+		return b.cache.Close()
+	}
+	return nil
 }
 
 type source struct {
