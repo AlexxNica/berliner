@@ -19,8 +19,8 @@ func main() {
 	opts.Cache = 	true			// default false, caches all articles fetched
 	opts.CacheFile = "/Users/foo/.berliner/cache.db"	// file location of cache
 	opts.Debug =	true			// default false
-	
-	b := berliner.New(opts)
+
+	b, _ := berliner.New(opts)
 	defer b.CleanUp()
 
 	// Add sources
