@@ -2,109 +2,122 @@ package log
 
 import (
 	"fmt"
+	"io"
+	"os"
+	"sync"
 	"time"
 
-	"github.com/s3ththompson/berliner/content"
+	isatty "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/mattn/go-isatty"
 )
 
-// logger is private because the only instance is the global package-level one (`std`)
-// TODO: add mutex now that writers can be user-provided
-type logger struct {
-	ch     chan Entry
-	writer Writer
+type Logger struct {
+	mu  sync.Mutex
+	out io.Writer
+	terminal bool
+	ids map[int]int
 }
 
-type Entry struct {
-	Post    content.Post
-	Time    time.Time
-	Message string
+var std = New(os.Stdout, isatty.IsTerminal(os.Stdout.Fd()))
+
+func Println(args ...interface{}) *entry {
+	return std.Println(args...)
 }
 
-type Writer interface {
-	Write(Entry)
-}
-
-var std = new()
-
-func new() *logger {
-	return &logger{
-		// buffered channel so that logging doesn't block if there's no reader
-		ch:     make(chan Entry, 1000),
-		writer: &StdOutWriter{},
+func New(out io.Writer, isTerminal bool) *Logger {
+	return &Logger{
+		out: out,
+		ids: make(map[int]int),
+		terminal: isTerminal,
 	}
 }
 
-// Only errors are exposed because it's an antipattern for filters to log stuff themselves
-// All (non-error) logging is handled by the berliner core framework
-func Error(args ...interface{}) {
-	(&context{}).Error(args...)
+func (l *Logger) isTerminal() bool {
+	return l.terminal
 }
 
-func Errorf(format string, args ...interface{}) {
-	(&context{}).Errorf(format, args...)
-}
-
-func Errorln(args ...interface{}) {
-	(&context{}).Errorln(args...)
-}
-
-func WithPost(post content.Post) *context {
-	return &context{
-		post:    post,
-		hasPost: true,
-	}
-}
-
-func SetWriter(writer Writer) {
-	std.writer = writer
-}
-
-func ResetWriter() {
-	std.writer = &StdOutWriter{}
-}
-
-type context struct {
-	post    content.Post
-	hasPost bool // I'm too lazy to check if the content.Post object is actually empty
-}
-
-func (ctx *context) log(msg string) {
-	entry := Entry{
+func (l *Logger) newEntry(message string) *entry {
+	id := len(l.ids)
+	line := id // while line/id are same today, we may add capability to insert entries between existing lines, which would break this
+	l.ids[id] = line
+	return &entry{
+		l:       l,
+		Message: message,
 		Time:    time.Now(),
-		Message: msg,
+		id:      id,
 	}
-	if ctx.hasPost {
-		entry.Post = ctx.post
+}
+
+func (l *Logger) Print(args ...interface{}) *entry {
+	s := fmt.Sprint(args...)
+	return l.output(s)
+}
+
+func (l *Logger) Printf(format string, args ...interface{}) *entry {
+	s := fmt.Sprintf(format, args...)
+	return l.output(s)
+}
+
+func (l *Logger) Println(args ...interface{}) *entry {
+	s := fmt.Sprintln(args...)
+	return l.output(s)
+}
+
+func (l *Logger) output(s string) *entry {
+	if len(s) == 0 || s[len(s)-1] != '\n' {
+		s += "\n"
 	}
-	std.writer.Write(entry)
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	entry := l.newEntry(s)
+	fmt.Fprint(l.out, s)
+	return entry
 }
 
-func (ctx *context) Error(args ...interface{}) {
-	ctx.log(fmt.Sprint(args...))
+type entry struct {
+	l       *Logger
+	Message string
+	Time    time.Time
+	id      int
 }
 
-func (ctx *context) Errorf(format string, args ...interface{}) {
-	ctx.Error(fmt.Sprintf(format, args...))
+func (e *entry) stealCursor() {
+	diff := len(e.l.ids) - e.l.ids[e.id] // current line - entry line
+	// <ESC>[{diff}A = move cursor up diff rows
+	fmt.Fprintf(e.l.out, "%c[%dA", 27, diff)
 }
 
-func (ctx *context) Errorln(args ...interface{}) {
-	ctx.Error(sprintlnn(args...))
+func (e *entry) resetCursor() {
+	diff := len(e.l.ids) - e.l.ids[e.id] // current line - entry line
+	// <ESC>[{diff}B = move cursor down diff rows
+	fmt.Fprintf(e.l.out, "%c[%dB", 27, diff)
 }
 
-// TODO: less hacky implementation??
-// sprintlnn => Sprint no newline. This is to get the behavior of how
-// fmt.Sprintln where spaces are always added between operands, regardless of
-// their type. Instead of vendoring the Sprintln implementation to spare a
-// string allocation, we do the simplest thing.
-func sprintlnn(args ...interface{}) string {
-	msg := fmt.Sprintln(args...)
-	return msg[:len(msg)-1]
+func (e *entry) Update(args ...interface{}) {
+	s := fmt.Sprint(args...)
+	e.output(s)
 }
 
-type StdOutWriter struct {
+func (e *entry) Updatef(format string, args ...interface{}) {
+	s := fmt.Sprintf(format, args...)
+	e.output(s)
 }
 
-// TODO: look up regular log behavior
-func (w *StdOutWriter) Write(entry Entry) {
-	fmt.Println(entry)
+func (e *entry) Updateln(args ...interface{}) {
+	s := fmt.Sprintln(args...)
+	e.output(s)
+}
+
+func (e *entry) output(s string) {
+	if len(s) == 0 || s[len(s)-1] != '\n' {
+		s += "\n"
+	}
+	e.l.mu.Lock()
+	defer e.l.mu.Unlock()
+	if !e.l.terminal {
+		fmt.Fprint(e.l.out, s)
+		return
+	}
+	e.stealCursor()
+	fmt.Fprint(e.l.out, s)
+	e.resetCursor()
 }

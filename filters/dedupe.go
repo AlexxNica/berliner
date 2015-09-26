@@ -61,7 +61,7 @@ func Dedupe(filenames ...string) (string, func(<-chan content.Post) <-chan conte
 			filename = filenames[0]
 			seen, err = readLines(filename)
 			if err != nil {
-				log.Error(err)
+				log.Println(err)
 			}
 		}
 
@@ -89,7 +89,7 @@ func PersistPosts(filename string) (string, func(<-chan content.Post) <-chan con
 		var err error
 		seen, err = readLines(filename)
 		if err != nil {
-			log.Error(err)
+			log.Println(err)
 		}
 
 		out := make(chan content.Post)
@@ -101,7 +101,7 @@ func PersistPosts(filename string) (string, func(<-chan content.Post) <-chan con
 				if !stringInSlice(post.Permalink, seen) {
 					err := appendLine(filename, post.Permalink)
 					if err != nil {
-						log.WithPost(post).Error(err)
+						log.Println(err)
 					} else {
 						seen = append(seen, post.Permalink)
 					}
