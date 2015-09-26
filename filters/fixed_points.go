@@ -1,12 +1,13 @@
 package filters
 
 import (
+	"fmt"
 	"github.com/s3ththompson/berliner/content"
 )
 
 // Assigns a fixed point value to all posts in a stream
 func FixedPoints(points int) (string, func(<-chan content.Post) <-chan content.Post) {
-	return "fixed points", func(posts <-chan content.Post) <-chan content.Post {
+	return fmt.Sprintf("%d fixed points", points), func(posts <-chan content.Post) <-chan content.Post {
 		out := make(chan content.Post)
 		go func() {
 			defer close(out)

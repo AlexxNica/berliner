@@ -8,5 +8,5 @@ import (
 )
 
 func NewYorker() (string, func(scrape.Client, time.Duration) <-chan content.Post) {
-	return New("New Yorker", RSS("http://www.newyorker.com/feed/everything"))
+	return New("The New Yorker", RSS("http://www.newyorker.com/feed/everything"))
 }

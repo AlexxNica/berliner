@@ -128,7 +128,7 @@ type streamer interface {
 
 type stream struct {
 	children []streamer
-	filters  []filter
+	filters  []*filter
 	// TODO: cache posts
 }
 
@@ -163,17 +163,17 @@ func (s *stream) posts(c scrape.Client, d time.Duration) <-chan content.Post {
 }
 
 func (s *stream) Filter(name string, f func(<-chan content.Post) <-chan content.Post) {
-	s.addFilter(filter{
+	s.addFilter(&filter{
 		name: name,
 		f:    f,
 	})
 }
 
-func (s *stream) addFilter(filter filter) {
+func (s *stream) addFilter(filter *filter) {
 	s.filters = append(s.filters, filter)
 }
 
-func (s *stream) addSource(source source) *stream {
+func (s *stream) addSource(source *source) *stream {
 	child := wrapSource(source)
 	s.children = append(s.children, child)
 	return child
@@ -193,7 +193,7 @@ func clean(f func(scrape.Client, time.Duration) <-chan content.Post) func(scrape
 	}
 }
 
-func wrapSource(source source) *stream {
+func wrapSource(source *source) *stream {
 	source.f = clean(source.f)
 	return &stream{
 		children: []streamer{

@@ -1,11 +1,11 @@
 package renderers
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/fatih/color"
 	"github.com/s3ththompson/berliner/content"
+	"github.com/s3ththompson/berliner/log"
 )
 
 func trim(s string, length int) string {
@@ -20,11 +20,11 @@ func trim(s string, length int) string {
 func Terminal() (string, func([]content.Post)) {
 	return "Terminal", func(posts []content.Post) {
 		for i, post := range posts {
-			fmt.Println(strconv.Itoa(i+1) + ". " + color.WhiteString(post.Title) + " (" + color.GreenString(post.Origin) + ")")
-			fmt.Println("  -> " + color.BlueString(post.Permalink))
-			fmt.Println("  -> " + color.BlueString(strconv.Itoa(post.Points)+" points"))
-			fmt.Println("  -> " + color.BlueString(strconv.Itoa(post.Wordcount())+" words"))
-			fmt.Println("  -> " + color.YellowString(trim(post.Body, 80)+"..."))
+			log.Println(strconv.Itoa(i+1) + ". " + color.WhiteString(post.Title) + " (" + color.GreenString(post.Origin) + ")")
+			log.Println("  -> " + color.BlueString(post.Permalink))
+			log.Println("  -> " + color.BlueString(strconv.Itoa(post.Points)+" points"))
+			log.Println("  -> " + color.BlueString(strconv.Itoa(post.Wordcount())+" words"))
+			log.Println("  -> " + color.YellowString(trim(post.Body, 80)+"..."))
 		}
 	}
 }

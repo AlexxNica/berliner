@@ -1,11 +1,12 @@
 package filters
 
 import (
+	"fmt"
 	"github.com/s3ththompson/berliner/content"
 )
 
 func Clamp(n int) (string, func(<-chan content.Post) <-chan content.Post) {
-	return "clamp", func(posts <-chan content.Post) <-chan content.Post {
+	return fmt.Sprintf("clamp to %d posts", n), func(posts <-chan content.Post) <-chan content.Post {
 		out := make(chan content.Post)
 		go func() {
 			defer close(out)
@@ -14,8 +15,6 @@ func Clamp(n int) (string, func(<-chan content.Post) <-chan content.Post) {
 				if n > i {
 					out <- post
 					i++
-				} else {
-					return
 				}
 			}
 		}()

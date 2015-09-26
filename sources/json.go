@@ -11,7 +11,7 @@ import (
 
 // TODO: change to FromFile and add FromStdin
 func FromJSON(filename string) (string, func(scrape.Client, time.Duration) <-chan content.Post) {
-	return "FromJSON", func(c scrape.Client, d time.Duration) <-chan content.Post {
+	return "from JSON", func(c scrape.Client, d time.Duration) <-chan content.Post {
 		out := make(chan content.Post)
 		go func() {
 			defer close(out)

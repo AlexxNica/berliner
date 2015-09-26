@@ -19,7 +19,15 @@ type Logger struct {
 
 var std = New(os.Stdout, isatty.IsTerminal(os.Stdout.Fd()))
 
-func Println(args ...interface{}) *entry {
+func Print(args ...interface{}) *Entry {
+	return std.Print(args...)
+}
+
+func Printf(format string, args ...interface{}) *Entry {
+	return std.Printf(format, args...)
+}
+
+func Println(args ...interface{}) *Entry {
 	return std.Println(args...)
 }
 
@@ -35,11 +43,11 @@ func (l *Logger) isTerminal() bool {
 	return l.terminal
 }
 
-func (l *Logger) newEntry(message string) *entry {
+func (l *Logger) newEntry(message string) *Entry {
 	id := len(l.ids)
 	line := id // while line/id are same today, we may add capability to insert entries between existing lines, which would break this
 	l.ids[id] = line
-	return &entry{
+	return &Entry{
 		l:       l,
 		Message: message,
 		Time:    time.Now(),
@@ -47,22 +55,22 @@ func (l *Logger) newEntry(message string) *entry {
 	}
 }
 
-func (l *Logger) Print(args ...interface{}) *entry {
+func (l *Logger) Print(args ...interface{}) *Entry {
 	s := fmt.Sprint(args...)
 	return l.output(s)
 }
 
-func (l *Logger) Printf(format string, args ...interface{}) *entry {
+func (l *Logger) Printf(format string, args ...interface{}) *Entry {
 	s := fmt.Sprintf(format, args...)
 	return l.output(s)
 }
 
-func (l *Logger) Println(args ...interface{}) *entry {
+func (l *Logger) Println(args ...interface{}) *Entry {
 	s := fmt.Sprintln(args...)
 	return l.output(s)
 }
 
-func (l *Logger) output(s string) *entry {
+func (l *Logger) output(s string) *Entry {
 	if len(s) == 0 || s[len(s)-1] != '\n' {
 		s += "\n"
 	}
@@ -73,41 +81,41 @@ func (l *Logger) output(s string) *entry {
 	return entry
 }
 
-type entry struct {
+type Entry struct {
 	l       *Logger
 	Message string
 	Time    time.Time
 	id      int
 }
 
-func (e *entry) stealCursor() {
+func (e *Entry) stealCursor() {
 	diff := len(e.l.ids) - e.l.ids[e.id] // current line - entry line
 	// <ESC>[{diff}A = move cursor up diff rows
-	fmt.Fprintf(e.l.out, "%c[%dA", 27, diff)
+	fmt.Fprintf(e.l.out, "%c[%dA", 27, diff) // TODO: look up more idiomatic way to do this in stdlib
 }
 
-func (e *entry) resetCursor() {
+func (e *Entry) resetCursor() {
 	diff := len(e.l.ids) - e.l.ids[e.id] // current line - entry line
 	// <ESC>[{diff}B = move cursor down diff rows
-	fmt.Fprintf(e.l.out, "%c[%dB", 27, diff)
+	fmt.Fprintf(e.l.out, "%c[%dB", 27, diff) // TODO: look up more idiomatic way to do this in stdlib
 }
 
-func (e *entry) Update(args ...interface{}) {
+func (e *Entry) Update(args ...interface{}) {
 	s := fmt.Sprint(args...)
 	e.output(s)
 }
 
-func (e *entry) Updatef(format string, args ...interface{}) {
+func (e *Entry) Updatef(format string, args ...interface{}) {
 	s := fmt.Sprintf(format, args...)
 	e.output(s)
 }
 
-func (e *entry) Updateln(args ...interface{}) {
+func (e *Entry) Updateln(args ...interface{}) {
 	s := fmt.Sprintln(args...)
 	e.output(s)
 }
 
-func (e *entry) output(s string) {
+func (e *Entry) output(s string) {
 	if len(s) == 0 || s[len(s)-1] != '\n' {
 		s += "\n"
 	}
