@@ -8,13 +8,42 @@ import (
 
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
 	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/microcosm-cc/bluemonday"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/rubenfonseca/fastimage"
 )
+
+type Image struct {
+	URL     string
+	Caption string
+	Width   uint32
+	Height  uint32
+}
+
+func (i Image) HTML() string {
+	if i.Caption != "" {
+		return fmt.Sprintf("<figure><img src=\"%s\"/><figcaption>%s</figcaption></figure>", i.URL, i.Caption)
+	} else {
+		return fmt.Sprintf("<figure><img src=\"%s\"/></figure>", i.URL)
+	}
+}
+
+func NewImage(url, caption string) Image {
+	i := Image{
+		URL:     url,
+		Caption: caption,
+	}
+	_, size, err := fastimage.DetectImageType(i.URL)
+	if err == nil {
+		i.Width = size.Width
+		i.Height = size.Height
+	}
+	return i
+}
 
 type Post struct {
 	Title     string
 	Permalink string
 	Body      string
-	Images    []string
+	Images    []Image
 	// Videos    []Video
 	Date     time.Time
 	Authors  []string
@@ -23,6 +52,13 @@ type Post struct {
 	Via      string
 	Language string
 	Points   int
+}
+
+func (p *Post) OriginVia() string {
+	if p.Origin == p.Via {
+		return p.Origin
+	}
+	return fmt.Sprintf("%s, via %s", p.Origin, p.Via)
 }
 
 func (p *Post) Sanitize() {
@@ -62,6 +98,10 @@ func MergePosts(p1, p2 Post) Post { // TODO: fix this shit
 		p1.Language = p2.Language
 	}
 	return p1
+}
+
+func (p *Post) AddImage(url string, caption string) {
+	p.Images = append(p.Images, NewImage(url, caption))
 }
 
 // Returns the word count of the post.

@@ -26,7 +26,7 @@ func (s *pitchfork) scrape(page *html.Node) (content.Post, error) {
 		Tags:     nil,
 		Origin:   "Pitchfork",
 		Language: doc.Find("html").AttrOr("lang", "en"),
-		Images:   []string{doc.Find("#content #main .artwork img").AttrOr("src", "")},
+		Images:   []content.Image{content.NewImage(doc.Find("#content #main .artwork img").AttrOr("src", ""), "")},
 	}, nil
 }
 

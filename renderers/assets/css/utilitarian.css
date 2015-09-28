@@ -39,7 +39,7 @@ article aside h5 {
 }
 
 .container {
-	width: 800px;
+	width: 960px;
 	margin-left: 40px;
 }
 
@@ -50,12 +50,13 @@ article aside {
 }
 
 article aside .tags {
-	text-indent: -3px;
+	margin-left: -3px;
 }
 
 article aside span.tag {
 	background-color: #ededed;
 	padding: 0px 3px;
+	white-space: nowrap;
 }
 
 a {
@@ -65,7 +66,7 @@ a {
 }
 
 article .content {
-	width: 500px;
+	width: 660px;
 }
 
 article figure {
@@ -73,7 +74,7 @@ article figure {
 }
 
 article figure img {
-	width: 800px;
+	max-width: 960px;
 	margin-bottom: 20px;
 }
 

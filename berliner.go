@@ -4,29 +4,29 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
-	"sync"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/s3ththompson/berliner/content"
-	"github.com/s3ththompson/berliner/scrape"
 	"github.com/s3ththompson/berliner/log"
+	"github.com/s3ththompson/berliner/scrape"
 
-	"github.com/fatih/color"
+	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/fatih/color"
 )
 
 type Berliner struct {
-	cache		*Cache
-	options   	Options
-	stream    	*stream
-	renderers 	[]*renderer
+	cache     *Cache
+	options   Options
+	stream    *stream
+	renderers []*renderer
 }
 
 type Options struct {
-	Cache 		bool
-	CacheFile	string
-	Cadence 	time.Duration
-	Debug   	bool
+	Cache     bool
+	CacheFile string
+	Cadence   time.Duration
+	Debug     bool
 }
 
 const (
@@ -43,7 +43,7 @@ func New(args ...Options) (Berliner, error) {
 	}
 	b := Berliner{
 		options: options,
-		stream: &stream{},
+		stream:  &stream{},
 	}
 	if b.options.Cache {
 		if b.options.CacheFile == "" {
@@ -122,8 +122,8 @@ func (b *Berliner) CleanUp() error {
 }
 
 type source struct {
-	name string
-	f    func(scrape.Client, time.Duration) <-chan content.Post
+	name  string
+	f     func(scrape.Client, time.Duration) <-chan content.Post
 	entry *log.Entry
 }
 
@@ -133,12 +133,12 @@ func (s *source) init(indent int) {
 	s.f = func(c scrape.Client, d time.Duration) <-chan content.Post {
 		seen := 0
 		out := make(chan content.Post)
-		go func(){
+		go func() {
 			defer close(out)
-			for post := range oldf(c,d) {
+			for post := range oldf(c, d) {
 				seen++
 				s.entry.Updateln(sourceMessage(indent, s.name, seen, false))
-				out <-post
+				out <- post
 			}
 			s.entry.Updateln(sourceMessage(indent, s.name, seen, true))
 		}()
@@ -162,8 +162,8 @@ func (b *Berliner) addSource(source *source) *stream {
 }
 
 type filter struct {
-	name string
-	f    func(<-chan content.Post) <-chan content.Post
+	name  string
+	f     func(<-chan content.Post) <-chan content.Post
 	entry *log.Entry
 }
 
@@ -179,7 +179,7 @@ func (f *filter) init(indent int) {
 			for post := range posts {
 				seenIn++
 				f.entry.Updateln(filterMessage(indent, f.name, seenIn, seenOut, false))
-				in <-post
+				in <- post
 			}
 		}()
 		out := make(chan content.Post)
@@ -188,7 +188,7 @@ func (f *filter) init(indent int) {
 			for post := range oldf(in) {
 				seenOut++
 				f.entry.Updateln(filterMessage(indent, f.name, seenIn, seenOut, false))
-				out <-post
+				out <- post
 			}
 			f.entry.Updateln(filterMessage(indent, f.name, seenIn, seenOut, true))
 		}()
@@ -208,8 +208,8 @@ func (b *Berliner) addFilter(filter *filter) {
 }
 
 type renderer struct {
-	name string
-	f    func([]content.Post)
+	name  string
+	f     func([]content.Post)
 	entry *log.Entry
 }
 

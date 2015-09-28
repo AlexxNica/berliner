@@ -11,25 +11,28 @@
 	<div class="container">
 	<header>
 		<h1>Berliner</h1>
+		<h2>{{fDate .Now}}</h2>
 	</header>
 	<section>
 		{{ range .Posts }}
-			<article>
-				<h1><a href="{{.Permalink}}">{{ .Title }}</a></h1>
-				<aside>
-				<h2>{{.Origin}}, via {{.Via}}</h2>
-				<h3>{{.Date}}</h3>
-				{{ range .Authors }}
-					<h4>{{.}}</h4>
-				{{end}}
-				<div class="tags">
-					{{ range .Tags }}
-						<span class="tag">{{.}}</span>
-					{{end}}
-				</div>
-				</aside>
-				<div class="content">{{ .Body }}</div>
-			</article>
+			{{ if .Body }}
+				<article>
+					<h1><a href="{{.Permalink}}">{{ .Title }}</a></h1>
+					<aside>
+						<h2>{{.OriginVia}}</h2>
+						<h3>{{fDate .Date}}</h3>
+						{{ range .Authors }}
+							<h4>{{.}}</h4>
+						{{end}}
+						<div class="tags">
+							{{ range .Tags }}
+								<span class="tag">{{.}}</span>
+							{{end}}
+						</div>
+					</aside>
+					<div class="content">{{ insertImage .Body ((index .Images 0).HTML) }}</div>
+				</article>
+			{{ end }}
 		{{ end }}
 	<section>
 	</div>

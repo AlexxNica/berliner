@@ -80,6 +80,10 @@
 			"Rev": "85ba47ef2ca30f636a36c5c3f31f91092e26db60"
 		},
 		{
+			"ImportPath": "github.com/rubenfonseca/fastimage",
+			"Rev": "dce6ab04375b253cef619aac0f81200137c8d19f"
+		},
+		{
 			"ImportPath": "github.com/shiena/ansicolor",
 			"Rev": "a54d7ff4d92a268defe26e50d3187e6b6a2fa047"
 		},

@@ -38,12 +38,18 @@ func (s *fallback) scrape(page *html.Node) (content.Post, error) {
 	rawHtml := raw.String()
 	g := goose.New()
 	article := g.ExtractFromRawHtml("", rawHtml) // TODO: why does it need url??
+	var tags []string
+	if article.MetaKeywords != "" {
+		tags = strings.Split(article.MetaKeywords, ",")
+	} else {
+		tags = make([]string, 0)
+	}
 
 	p := content.Post{
 		Title:     article.Title,
 		Body:      textToHtml(article.CleanedText),
 		Permalink: article.CanonicalLink,
-		Tags:      strings.Split(article.MetaKeywords, ","),
+		Tags:      tags,
 		Language:  article.MetaLang,
 	}
 	return p, nil

@@ -16,6 +16,8 @@ func (s *newYorker) recognize(url string) bool {
 
 func (s *newYorker) scrape(page *html.Node) (content.Post, error) {
 	doc := goquery.NewDocumentFromNode(page)
+	src := doc.Find("figure.featured a").AttrOr("href", "")
+	caption, _ := doc.Find("figure.featured figcaption .caption-text").Html()
 	return content.Post{
 		Title: doc.Find("hgroup h1").Text(),
 		Body: strings.Join(doc.Find(".articleBody > p").Map(func(_ int, s *goquery.Selection) string {
@@ -26,7 +28,7 @@ func (s *newYorker) scrape(page *html.Node) (content.Post, error) {
 		Tags:     strings.Split(doc.Find("meta[name=news_keywords]").AttrOr("content", ""), ","),
 		Origin:   "The New Yorker",
 		Language: doc.Find("html").AttrOr("lang", "en"),
-		Images:   []string{doc.Find("figure.featured img").AttrOr("src", "")},
+		Images:   []content.Image{content.NewImage(src, caption)},
 	}, nil
 }
 
