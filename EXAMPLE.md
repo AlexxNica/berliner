@@ -48,6 +48,7 @@ func main() {
 
 	// Render HTML to output file; specify template name and css name (found in assets folder)
 	b.Renderer(r.HTML("berliner.html", "bootstrap", "bootstrap"))
+	// b.Renderer(r.HTML("berliner2.html", "utilitarian", "utilitarian"))
 
 	// Render posts to JSON for future use
 	// b.Renderer(r.ToJSON("berliner.json"))

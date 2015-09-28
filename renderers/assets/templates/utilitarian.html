@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Berliner</title>
+	<style type="text/css">
+		{{.Style}}
+	</style>
+</head>
+<body>
+	<div class="container">
+	<header>
+		<h1>Berliner</h1>
+	</header>
+	<section>
+		{{ range .Posts }}
+			<article>
+				<h1><a href="{{.Permalink}}">{{ .Title }}</a></h1>
+				<aside>
+				<h2>{{.Origin}}, via {{.Via}}</h2>
+				<h3>{{.Date}}</h3>
+				{{ range .Authors }}
+					<h4>{{.}}</h4>
+				{{end}}
+				<div class="tags">
+					{{ range .Tags }}
+						<span class="tag">{{.}}</span>
+					{{end}}
+				</div>
+				</aside>
+				<div class="content">{{ .Body }}</div>
+			</article>
+		{{ end }}
+	<section>
+	</div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font: 16px/19.5px Helvetica, Arial, sans-serif;
+    color: #1d1d1d;
+    letter-spacing: 1.2px;
+}
+
+body {
+    word-spacing: 5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    word-spacing: 1px;
+}
+
+header {
+	margin-top: 100px;
+}
+
+header h1 {
+	text-transform: uppercase;
+}
+
+article aside h1,
+article aside h2,
+article aside h3,
+article aside h4,
+article aside h5 {
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	width: 800px;
+	margin-left: 40px;
+}
+
+article aside {
+	float: right;
+	margin-left: 40px;
+	width: 260px;
+}
+
+article aside .tags {
+	text-indent: -3px;
+}
+
+article aside span.tag {
+	background-color: #ededed;
+	padding: 0px 3px;
+}
+
+a {
+	text-decoration: none;
+	border-bottom: 1px solid #1d1d1d;
+    color: #1d1d1d;
+}
+
+article .content {
+	width: 500px;
+}
+
+article figure {
+	margin: 0;
+}
+
+article figure img {
+	width: 800px;
+	margin-bottom: 20px;
+}
+
+article figure figcaption {
+	font-style: italic;
+}
