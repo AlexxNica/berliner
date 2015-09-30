@@ -74,12 +74,11 @@ article .content {
 }
 
 article figure {
-	margin: 0;
+	margin: 0 0 20px 0;
 }
 
 article figure img {
 	max-width: 960px;
-	margin-bottom: 20px;
 }
 
 article figure figcaption {
