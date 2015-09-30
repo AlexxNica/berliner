@@ -41,7 +41,7 @@ func main() {
 
 	// PersistPosts filter records the permalinks of posts that were in the final
 	// output into a file, for future use by the Dedupe filter
-	b.Filter(f.PersistPosts("/Users/foo/.berliner/dedupe"))
+	b.Filter(f.Remember("/Users/foo/.berliner/dedupe"))
 
 	// Render output to the terminal
 	b.Renderer(r.Terminal())

@@ -83,7 +83,7 @@ func Dedupe(filenames ...string) (string, func(<-chan content.Post) <-chan conte
 // the dedupe filter.
 // This filter should be placed last in your filter chain to accurately record
 // which posts were included in a final Berliner.
-func PersistPosts(filename string) (string, func(<-chan content.Post) <-chan content.Post) {
+func Remember(filename string) (string, func(<-chan content.Post) <-chan content.Post) {
 	return "remember (for dedupe)", func(posts <-chan content.Post) <-chan content.Post {
 		var seen []string
 		var err error
