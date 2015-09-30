@@ -29,6 +29,10 @@ header h1 {
 	text-transform: uppercase;
 }
 
+article {
+	margin-bottom: 100px;
+}
+
 article aside h1,
 article aside h2,
 article aside h3,

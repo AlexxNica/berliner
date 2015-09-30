@@ -30,7 +30,11 @@
 							{{end}}
 						</div>
 					</aside>
-					<div class="content">{{ insertImage .Body ((index .Images 0).HTML) }}</div>
+					{{ if gt (len .Images) 0 }}
+						<div class="content">{{ insertImage .Body ((index .Images 0).HTML) }}</div>
+					{{ else }}
+						<div class="content">{{ .Body }}</div>
+					{{ end }}
 				</article>
 			{{ end }}
 		{{ end }}
