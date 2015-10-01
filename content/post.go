@@ -48,6 +48,7 @@ type Post struct {
 	Date     time.Time
 	Authors  []string
 	Tags     []string
+	Summary  string
 	Origin   string
 	Via      string
 	Language string
@@ -84,6 +85,9 @@ func MergePosts(p1, p2 Post) Post { // TODO: fix this shit
 	}
 	if len(p2.Tags) != 0 {
 		p1.Tags = p2.Tags
+	}
+	if len(p2.Summary) != 0 {
+		p1.Summary = p2.Summary
 	}
 	if len(p2.Images) != 0 {
 		p1.Images = p2.Images
