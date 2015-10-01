@@ -25,10 +25,6 @@ func (s *grantland) scrape(page *html.Node) (content.Post, error) {
 		Origin:   "Grantland",
 		Language: doc.Find("html").AttrOr("lang", "en"),
 	}
-	doc.Find(".article-header-slice__breadcrumbs a").Each(func(_ int, s *goquery.Selection) {
-		tag := s.Text()
-		post.Tags = append(post.Tags, tag)
-	})
 	doc.Find("span.feature img").Each(func(_ int, s *goquery.Selection) {
 		src := s.AttrOr("src", "")
 		post.AddImage(src, "")
