@@ -17,6 +17,7 @@ type EmailParams struct {
 	SmtpPassword string
 	FromAddress  string
 	ToAddress    string
+	Subject      string
 }
 
 func Email(params EmailParams, args ...string) (string, func([]content.Post)) {
@@ -59,7 +60,7 @@ func Email(params EmailParams, args ...string) (string, func([]content.Post)) {
 		m := gomail.NewMessage()
 		m.SetHeader("From", params.FromAddress)
 		m.SetHeader("To", params.ToAddress)
-		m.SetHeader("Subject", "Berliner")
+		m.SetHeader("Subject", params.Subject)
 		m.SetBody("text/html", doc.String())
 
 		d := gomail.NewPlainDialer(params.SmtpServer, params.SmtpPort, params.SmtpUsername, params.SmtpPassword)
