@@ -26,6 +26,9 @@ func (s *fallback) scrape(page *html.Node) (content.Post, error) {
 	if err != nil {
 		return content.Post{}, err
 	}
+	if article.TopNode == nil {
+		return content.Post{}, err
+	}
 	body, err := article.TopNode.Html()
 	if err != nil {
 		return content.Post{}, err
