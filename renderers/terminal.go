@@ -3,7 +3,7 @@ package renderers
 import (
 	"strconv"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/fatih/color"
+	"github.com/fatih/color"
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/log"
 )

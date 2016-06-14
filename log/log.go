@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	isatty "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/mattn/go-isatty"
+	isatty "github.com/mattn/go-isatty"
 )
 
 type Logger struct {

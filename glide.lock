@@ -1,0 +1,98 @@
+hash: 5625771b6bc6cc49ed91c02ffd786074193a50473b55c0b8af9cec46b2d63248
+updated: 2016-06-14T06:00:58.72952195+01:00
+imports:
+- name: github.com/advancedlogic/gojs-config
+  version: bff36193fca8bd2f6269e8c4e8c723991fd20565
+- name: github.com/advancedlogic/goquery
+  version: aeb03ad57afc3c00f7c2422504d3bbd58e2326b4
+- name: github.com/andybalholm/cascadia
+  version: 54abbbf07a45a3ef346ebe903e0715d9a3c19352
+- name: github.com/axgle/mahonia
+  version: 5dd783869dfe0a7d5a3049b20b8ae1418c5dcc8a
+- name: github.com/bjarneh/latinx
+  version: 4dfe9ba2a293f28a5e06fc7ffe56b1d71a47b8c8
+- name: github.com/boltdb/bolt
+  version: 51f99c862475898df9773747d3accd05a7ca33c1
+- name: github.com/daaku/go.zipexe
+  version: a5fe2436ffcb3236e175e5149162b41cd28bd27d
+- name: github.com/fatih/color
+  version: 87d4004f2ab62d0d255e0a38f1680aa534549fe3
+- name: github.com/GeertJohan/go.rice
+  version: ada95a01c963696fb73320ee662195af68be81ae
+  subpackages:
+  - embedded
+- name: github.com/headzoo/surf
+  version: d8c2ee11cb0d0f16eb1e58b68497058b580eada6
+  subpackages:
+  - browser
+  - agent
+  - jar
+  - errors
+  - util
+- name: github.com/kardianos/osext
+  version: 6e7f843663477789fac7c02def0d0909e969b4e5
+- name: github.com/mattn/go-colorable
+  version: 9056b7a9f2d1f2d96498d6d146acd1f9d5ed3d59
+- name: github.com/mattn/go-isatty
+  version: 7fcbc72f853b92b5720db4a6b8482be612daef24
+- name: github.com/microcosm-cc/bluemonday
+  version: 85ba47ef2ca30f636a36c5c3f31f91092e26db60
+- name: github.com/PuerkitoBio/goquery
+  version: 60ec77b0032de8548a0d67f76154458850264a99
+- name: github.com/rubenfonseca/fastimage
+  version: dce6ab04375b253cef619aac0f81200137c8d19f
+- name: github.com/saintfish/chardet
+  version: 3af4cd4741ca4f3eb0c407c034571a6fb0ea529c
+- name: github.com/shiena/ansicolor
+  version: a54d7ff4d92a268defe26e50d3187e6b6a2fa047
+- name: github.com/SlyMarbo/rss
+  version: d18e7250e12bf0283685ac4c37ca7611cbd626cb
+- name: github.com/tdewolff/buffer
+  version: 0edfcb7b750146ff879e95831de2ef53605a5cb5
+- name: github.com/tdewolff/minify
+  version: 28aac1f92d928dfb63dd0258a3b2248a020e86da
+  subpackages:
+  - html
+- name: github.com/tdewolff/parse
+  version: 34d5c1160d4503da4b456e5094609f2331d6dde3
+  subpackages:
+  - html
+- name: github.com/tdewolff/strconv
+  version: 3e8091f4417ebaaa3910da63a45ea394ebbfb0e3
+- name: github.com/thatguystone/swan
+  version: 542231c39761673f667abe1d8258cb1c3ef81e9c
+- name: golang.org/x/net
+  version: 3f122ce3dbbe488b7e6a8bdb26f41edec852a40b
+  subpackages:
+  - html
+  - html/charset
+  - html/atom
+- name: golang.org/x/sys
+  version: 7f918dd405547ecb864d14a8ecbbfe205b5f930f
+  subpackages:
+  - unix
+- name: golang.org/x/text
+  version: e4775119bd79944a15a741ac4be61e43509a70d9
+  subpackages:
+  - encoding
+  - transform
+  - encoding/charmap
+  - encoding/japanese
+  - encoding/korean
+  - encoding/simplifiedchinese
+  - encoding/traditionalchinese
+  - encoding/unicode
+  - encoding/htmlindex
+  - encoding/internal/identifier
+  - encoding/internal
+  - internal/utf8internal
+  - runes
+  - language
+  - internal/tag
+- name: gopkg.in/alexcesaro/quotedprintable.v3
+  version: 2caba252f4dc53eaf6b553000885530023f54623
+- name: gopkg.in/fatih/set.v0
+  version: 27c40922c40b43fe04554d8223a402af3ea333f3
+- name: gopkg.in/gomail.v2
+  version: b1e55520bf557d8a614f1e1f493ce892c1b5e97e
+devImports: []

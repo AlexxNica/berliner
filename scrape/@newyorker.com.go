@@ -3,8 +3,8 @@ package scrape
 import (
 	"strings"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
+	"github.com/PuerkitoBio/goquery"
+	"golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/content"
 )
 

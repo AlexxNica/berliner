@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/microcosm-cc/bluemonday"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/rubenfonseca/fastimage"
+	"github.com/PuerkitoBio/goquery"
+	"github.com/microcosm-cc/bluemonday"
+	"github.com/rubenfonseca/fastimage"
 )
 
 type Image struct {

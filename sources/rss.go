@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/SlyMarbo/rss"
+	"github.com/SlyMarbo/rss"
 	"github.com/s3ththompson/berliner/content"
 )
 

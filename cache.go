@@ -6,7 +6,7 @@ import (
 	"errors"
 
 	"github.com/s3ththompson/berliner/content"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/boltdb/bolt"
+	"github.com/boltdb/bolt"
 	"github.com/s3ththompson/berliner/scrape"
 )
 

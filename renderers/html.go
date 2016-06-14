@@ -8,8 +8,8 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/GeertJohan/go.rice"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/PuerkitoBio/goquery"
+	"github.com/GeertJohan/go.rice"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/log"
 )

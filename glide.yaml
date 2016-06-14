@@ -1,0 +1,49 @@
+package: github.com/s3ththompson/berliner
+import:
+- package: github.com/GeertJohan/go.rice
+  version: ada95a01c963696fb73320ee662195af68be81ae
+- package: github.com/PuerkitoBio/goquery
+  version: 60ec77b0032de8548a0d67f76154458850264a99
+- package: github.com/SlyMarbo/rss
+  version: d18e7250e12bf0283685ac4c37ca7611cbd626cb
+- package: github.com/advancedlogic/gojs-config
+  version: bff36193fca8bd2f6269e8c4e8c723991fd20565
+- package: github.com/advancedlogic/goquery
+  version: aeb03ad57afc3c00f7c2422504d3bbd58e2326b4
+- package: github.com/andybalholm/cascadia
+  version: 54abbbf07a45a3ef346ebe903e0715d9a3c19352
+- package: github.com/axgle/mahonia
+  version: 5dd783869dfe0a7d5a3049b20b8ae1418c5dcc8a
+- package: github.com/bjarneh/latinx
+  version: 4dfe9ba2a293f28a5e06fc7ffe56b1d71a47b8c8
+- package: github.com/boltdb/bolt
+  version: 51f99c862475898df9773747d3accd05a7ca33c1
+- package: github.com/daaku/go.zipexe
+  version: a5fe2436ffcb3236e175e5149162b41cd28bd27d
+- package: github.com/fatih/color
+- package: github.com/headzoo/surf
+  version: d8c2ee11cb0d0f16eb1e58b68497058b580eada6
+- package: github.com/kardianos/osext
+  version: 6e7f843663477789fac7c02def0d0909e969b4e5
+- package: github.com/mattn/go-isatty
+  version: 7fcbc72f853b92b5720db4a6b8482be612daef24
+- package: github.com/microcosm-cc/bluemonday
+  version: 85ba47ef2ca30f636a36c5c3f31f91092e26db60
+- package: github.com/rubenfonseca/fastimage
+  version: dce6ab04375b253cef619aac0f81200137c8d19f
+- package: github.com/shiena/ansicolor
+  version: a54d7ff4d92a268defe26e50d3187e6b6a2fa047
+- package: golang.org/x/net
+  subpackages:
+  - html
+- package: golang.org/x/text
+  subpackages:
+  - encoding
+  - transform
+- package: gopkg.in/alexcesaro/quotedprintable.v3
+  version: 2caba252f4dc53eaf6b553000885530023f54623
+- package: gopkg.in/fatih/set.v0
+  version: 27c40922c40b43fe04554d8223a402af3ea333f3
+- package: gopkg.in/gomail.v2
+  version: b1e55520bf557d8a614f1e1f493ce892c1b5e97e
+- package: github.com/thatguystone/swan

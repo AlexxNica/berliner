@@ -2,12 +2,11 @@ package scrape
 
 import (
 	"bytes"
-	"html/template"
 	"strings"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/golang.org/x/net/html"
+	"golang.org/x/net/html"
 
-	goose "github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/advancedlogic/GoOse" // TODO: update goose
+	"github.com/thatguystone/swan"
 	"github.com/s3ththompson/berliner/content"
 )
 
@@ -17,40 +16,32 @@ func (s *fallback) recognize(url string) bool {
 	return true
 }
 
-// Converts an article with newline-delimited paragraphs to an HTML string
-// with each paragraph wrapped in a <p> tag
-func textToHtml(text string) string {
-	var buf bytes.Buffer
-	var t = template.Must(template.New("name").Parse("{{range .}}<p>{{.}}</p>{{end}}"))
-	err := t.Execute(&buf, strings.Split(text, "\n\n"))
-	if err != nil {
-		panic(err)
-	}
-	return buf.String()
-}
-
 func (s *fallback) scrape(page *html.Node) (content.Post, error) {
-	var raw bytes.Buffer
-	err := html.Render(&raw, page)
+	var rawHTML bytes.Buffer
+	err := html.Render(&rawHTML, page)
 	if err != nil {
 		return content.Post{}, err
 	}
-	rawHtml := raw.String()
-	g := goose.New()
-	article := g.ExtractFromRawHtml("", rawHtml) // TODO: why does it need url??
+	article, err := swan.FromHTML("", rawHTML.Bytes()) // TODO: why does it need url??
+	if err != nil {
+		return content.Post{}, err
+	}
+	body, err := article.TopNode.Html()
+	if err != nil {
+		return content.Post{}, err
+	}
 	var tags []string
-	if article.MetaKeywords != "" {
-		tags = strings.Split(article.MetaKeywords, ",")
+	if article.Meta.Keywords != "" {
+		tags = strings.Split(article.Meta.Keywords, ",")
 	} else {
 		tags = make([]string, 0)
 	}
-
 	p := content.Post{
-		Title:     article.Title,
-		Body:      textToHtml(article.CleanedText),
-		Permalink: article.CanonicalLink,
+		Title:     article.Meta.Title,
+		Body:      body,
+		Permalink: article.Meta.Canonical,
 		Tags:      tags,
-		Language:  article.MetaLang,
+		Language:  article.Meta.Lang,
 	}
 	return p, nil
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/s3ththompson/berliner/log"
 	"github.com/s3ththompson/berliner/scrape"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/fatih/color"
+	"github.com/fatih/color"
 )
 
 type Berliner struct {

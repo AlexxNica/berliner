@@ -5,8 +5,8 @@ import (
 	"path"
 	"text/template"
 
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/github.com/GeertJohan/go.rice"
-	"github.com/s3ththompson/berliner/Godeps/_workspace/src/gopkg.in/gomail.v2"
+	"github.com/GeertJohan/go.rice"
+	"gopkg.in/gomail.v2"
 	"github.com/s3ththompson/berliner/content"
 )
 
