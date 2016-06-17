@@ -4,8 +4,8 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/content"
+	"golang.org/x/net/html"
 )
 
 type newYorker struct{}

@@ -1,8 +1,8 @@
 package scrape
 
 import (
-	"golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/content"
+	"golang.org/x/net/html"
 )
 
 type scraper interface {

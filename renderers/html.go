@@ -60,7 +60,7 @@ func HTML(filename string, args ...string) (string, func([]content.Post)) {
 		data := struct {
 			Posts []content.Post
 			Style string
-			Now time.Time
+			Now   time.Time
 		}{
 			posts,
 			css,

@@ -6,8 +6,8 @@ import (
 
 	"golang.org/x/net/html"
 
-	"github.com/thatguystone/swan"
 	"github.com/s3ththompson/berliner/content"
+	"github.com/thatguystone/swan"
 )
 
 type fallback struct{}

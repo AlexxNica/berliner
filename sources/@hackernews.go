@@ -15,9 +15,9 @@ type hnList []int
 
 type hnItem struct {
 	Score int
-	Time int64
+	Time  int64
 	Title string
-	URL string
+	URL   string
 }
 
 func getJSON(url string, target interface{}) error {
@@ -46,7 +46,7 @@ func HackerNews50() (string, func(scrape.Client, time.Duration) <-chan content.P
 				go func(id int) {
 					defer wg.Done()
 					var item hnItem
-					url := "https://hacker-news.firebaseio.com/v0/item/"+strconv.Itoa(id)+".json"
+					url := "https://hacker-news.firebaseio.com/v0/item/" + strconv.Itoa(id) + ".json"
 					err := getJSON(url, &item)
 					if err != nil {
 						return
@@ -57,9 +57,9 @@ func HackerNews50() (string, func(scrape.Client, time.Duration) <-chan content.P
 					}
 					out <- content.Post{
 						Permalink: item.URL,
-						Title: item.Title,
-						Date: date,
-						Points: item.Score, // TODO: we probably need some conversion here
+						Title:     item.Title,
+						Date:      date,
+						Points:    item.Score, // TODO: we probably need some conversion here
 					}
 				}(id)
 			}

@@ -6,8 +6,8 @@ import (
 	"text/template"
 
 	"github.com/GeertJohan/go.rice"
-	"gopkg.in/gomail.v2"
 	"github.com/s3ththompson/berliner/content"
+	"gopkg.in/gomail.v2"
 )
 
 type EmailParams struct {

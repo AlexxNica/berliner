@@ -5,9 +5,9 @@ import (
 
 	"github.com/headzoo/surf"
 	"github.com/headzoo/surf/browser"
+	"github.com/s3ththompson/berliner/content"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/charset"
-	"github.com/s3ththompson/berliner/content"
 )
 
 type Client interface {

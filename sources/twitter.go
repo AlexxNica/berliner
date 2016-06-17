@@ -1,12 +1,12 @@
 package sources
 
 import (
-	"fmt"
-	"time"
-	"net/http"
 	"encoding/json"
-	"strings"
+	"fmt"
 	"io/ioutil"
+	"net/http"
+	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/s3ththompson/berliner/content"
@@ -43,7 +43,7 @@ func Twitter(username string) func(time.Duration) <-chan content.Post {
 			}
 
 			// todo: distinguish between linked tweets and external links
-			doc.Find(".tweet-text").Each(func(i int, s *goquery.Selection){
+			doc.Find(".tweet-text").Each(func(i int, s *goquery.Selection) {
 				url := s.Find("a").AttrOr("data-expanded-url", "")
 				if url != "" {
 					out <- content.Post{

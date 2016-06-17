@@ -5,19 +5,19 @@ import (
 	"encoding/gob"
 	"errors"
 
-	"github.com/s3ththompson/berliner/content"
 	"github.com/boltdb/bolt"
+	"github.com/s3ththompson/berliner/content"
 	"github.com/s3ththompson/berliner/scrape"
 )
 
 type CachedClient struct {
-	cache *Cache
+	cache  *Cache
 	client scrape.Client
 }
 
 func NewCachedClient(cache *Cache) *CachedClient {
-	return &CachedClient {
-		cache: cache,
+	return &CachedClient{
+		cache:  cache,
 		client: scrape.NewClient(),
 	}
 }
@@ -38,7 +38,7 @@ func (c *CachedClient) GetPost(url string) (content.Post, error) {
 // TODO: switch to binary encoding for smaller space
 // TODO: cache eviction when cache reaches max size
 type Cache struct {
-	db *bolt.DB
+	db    *bolt.DB
 	store *store
 }
 
@@ -48,7 +48,7 @@ func NewCache(path string) (*Cache, error) {
 		return nil, err
 	}
 	return &Cache{
-		db: db,
+		db:    db,
 		store: NewStore(db, []byte("posts")),
 	}, nil
 }

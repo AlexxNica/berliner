@@ -11,10 +11,10 @@ import (
 )
 
 type Logger struct {
-	mu  sync.Mutex
-	out io.Writer
+	mu       sync.Mutex
+	out      io.Writer
 	terminal bool
-	ids map[int]int
+	ids      map[int]int
 }
 
 var std = New(os.Stdout, isatty.IsTerminal(os.Stdout.Fd()))
@@ -33,8 +33,8 @@ func Println(args ...interface{}) *Entry {
 
 func New(out io.Writer, isTerminal bool) *Logger {
 	return &Logger{
-		out: out,
-		ids: make(map[int]int),
+		out:      out,
+		ids:      make(map[int]int),
 		terminal: isTerminal,
 	}
 }

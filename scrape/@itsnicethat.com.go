@@ -2,8 +2,8 @@ package scrape
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/content"
+	"golang.org/x/net/html"
 )
 
 type itsnicethat struct{}
@@ -16,10 +16,10 @@ func (s *itsnicethat) scrape(page *html.Node) (content.Post, error) {
 	doc := goquery.NewDocumentFromNode(page)
 	body, _ := doc.Find("article .text-slice.container .text-slice__text").Html()
 	post := content.Post{
-		Title: doc.Find("article header.article-header-slice container h1").Text(),
-		Body: body,
+		Title:    doc.Find("article header.article-header-slice container h1").Text(),
+		Body:     body,
 		Authors:  []string{doc.Find("article .article-header-slice__byline a").First().Text()},
-		Tags: []string{},
+		Tags:     []string{},
 		Origin:   "It's Nice That",
 		Language: doc.Find("html").AttrOr("lang", "en"),
 	}

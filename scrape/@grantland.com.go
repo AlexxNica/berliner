@@ -2,8 +2,8 @@ package scrape
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"golang.org/x/net/html"
 	"github.com/s3ththompson/berliner/content"
+	"golang.org/x/net/html"
 )
 
 type grantland struct{}
@@ -17,11 +17,11 @@ func (s *grantland) scrape(page *html.Node) (content.Post, error) {
 	body, _ := doc.Find(".article-body").Html()
 
 	post := content.Post{
-		Title: doc.Find("header.title-card h1.title").Text(),
-		Summary: doc.Find("header.title-card p.summary").Text(),
-		Body: body,
+		Title:    doc.Find("header.title-card h1.title").Text(),
+		Summary:  doc.Find("header.title-card p.summary").Text(),
+		Body:     body,
 		Authors:  []string{doc.Find(".byline a[rel='author']").First().Text()},
-		Tags: []string{},
+		Tags:     []string{},
 		Origin:   "Grantland",
 		Language: doc.Find("html").AttrOr("lang", "en"),
 	}

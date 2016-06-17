@@ -8,5 +8,5 @@ import (
 )
 
 func GrantlandFeatures() (string, func(scrape.Client, time.Duration) <-chan content.Post) {
-  return New("Grantland: Features", RSS("http://grantland.com/features/feed/"))
+	return New("Grantland: Features", RSS("http://grantland.com/features/feed/"))
 }
