@@ -5,7 +5,7 @@ import:
 - package: github.com/PuerkitoBio/goquery
   version: 60ec77b0032de8548a0d67f76154458850264a99
 - package: github.com/SlyMarbo/rss
-  version: d18e7250e12bf0283685ac4c37ca7611cbd626cb
+  version: 5e6e66b814395e9f52074d642e50cbeb9b6c1f8f
 - package: github.com/advancedlogic/gojs-config
   version: bff36193fca8bd2f6269e8c4e8c723991fd20565
 - package: github.com/advancedlogic/goquery
@@ -13,7 +13,7 @@ import:
 - package: github.com/andybalholm/cascadia
   version: 54abbbf07a45a3ef346ebe903e0715d9a3c19352
 - package: github.com/axgle/mahonia
-  version: 5dd783869dfe0a7d5a3049b20b8ae1418c5dcc8a
+  version: c528b747d92d41ca581a7acf3e604c396fc7c034
 - package: github.com/bjarneh/latinx
   version: 4dfe9ba2a293f28a5e06fc7ffe56b1d71a47b8c8
 - package: github.com/boltdb/bolt

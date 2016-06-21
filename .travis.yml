@@ -1,1 +1,9 @@
 language: go
+
+go:
+  - 1.6
+  - tip
+
+install: echo "no deps"
+
+script: go test $(go list ./...|grep -v vendor)

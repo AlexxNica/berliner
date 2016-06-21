@@ -1,5 +1,5 @@
-hash: 5625771b6bc6cc49ed91c02ffd786074193a50473b55c0b8af9cec46b2d63248
-updated: 2016-06-14T06:00:58.72952195+01:00
+hash: 7ddc094263dd85b7351ad96e92ca7cc54b5b191f30bbef2038eafd3323193494
+updated: 2016-06-21T15:10:24.198829571+02:00
 imports:
 - name: github.com/advancedlogic/gojs-config
   version: bff36193fca8bd2f6269e8c4e8c723991fd20565
@@ -8,7 +8,7 @@ imports:
 - name: github.com/andybalholm/cascadia
   version: 54abbbf07a45a3ef346ebe903e0715d9a3c19352
 - name: github.com/axgle/mahonia
-  version: 5dd783869dfe0a7d5a3049b20b8ae1418c5dcc8a
+  version: c528b747d92d41ca581a7acf3e604c396fc7c034
 - name: github.com/bjarneh/latinx
   version: 4dfe9ba2a293f28a5e06fc7ffe56b1d71a47b8c8
 - name: github.com/boltdb/bolt
@@ -46,7 +46,7 @@ imports:
 - name: github.com/shiena/ansicolor
   version: a54d7ff4d92a268defe26e50d3187e6b6a2fa047
 - name: github.com/SlyMarbo/rss
-  version: d18e7250e12bf0283685ac4c37ca7611cbd626cb
+  version: 5e6e66b814395e9f52074d642e50cbeb9b6c1f8f
 - name: github.com/tdewolff/buffer
   version: 0edfcb7b750146ff879e95831de2ef53605a5cb5
 - name: github.com/tdewolff/minify
@@ -62,17 +62,17 @@ imports:
 - name: github.com/thatguystone/swan
   version: 542231c39761673f667abe1d8258cb1c3ef81e9c
 - name: golang.org/x/net
-  version: 3f122ce3dbbe488b7e6a8bdb26f41edec852a40b
+  version: 7c71ca708c71bcbd0e6c856b01468ee07fe24557
   subpackages:
   - html
   - html/charset
   - html/atom
 - name: golang.org/x/sys
-  version: 7f918dd405547ecb864d14a8ecbbfe205b5f930f
+  version: 62bee037599929a6e9146f29d10dd5208c43507d
   subpackages:
   - unix
 - name: golang.org/x/text
-  version: e4775119bd79944a15a741ac4be61e43509a70d9
+  version: e3c902a8b2c4c420ce61514795e05b8e28a6364e
   subpackages:
   - encoding
   - transform
